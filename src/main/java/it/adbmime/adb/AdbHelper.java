@@ -6,6 +6,27 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class AdbHelper {
 
+    protected static <T extends AdbStreamResult> T getAdbStreamResult(Class<T> clazz){
+        try {
+            AdbStreamResult result = clazz.newInstance();
+            while(true) {
+                Runtime run = Runtime.getRuntime();
+                Process pr = run.exec("adb shell getevent -l | grep ABS_MT_POSITION");
+                pr.waitFor(1, TimeUnit.SECONDS);
+                BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                String line = "";
+                while ((line=buf.readLine())!=null) {
+                    if(result.isReady(line)){
+                        return (T) result;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     protected static String run(String command){
         try {
             Runtime run = Runtime.getRuntime();
@@ -24,34 +45,9 @@ public abstract class AdbHelper {
         }
     }
 
-    protected static String run(String command, int timeout, int rows){
-        try {
-            Runtime run = Runtime.getRuntime();
-            Process pr = run.exec(command);
-            pr.waitFor(timeout, TimeUnit.SECONDS);
-            BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            String line = "";
-            StringBuffer sb = new StringBuffer();
-            int size = 0;
-            while ((line=buf.readLine())!=null && size < rows) {
-                sb.append(line + "\n");
-                size++;
-            }
-            return sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
     public static PhysicalSize getSize(){
         String cmd = run("adb shell wm size");
         return new PhysicalSize(cmd);
-    }
-
-    public static PhysicalTouch getTouch(){
-        String cmd = AdbHelper.run("adb shell getevent -l | grep ABS_MT_POSITION", 4, 4);
-        return new PhysicalTouch(cmd);
     }
 
     // adb shell getevent -l | grep ABS_MT_POSITION
