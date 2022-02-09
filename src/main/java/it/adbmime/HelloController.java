@@ -22,5 +22,7 @@ public class HelloController {
     @FXML
     protected void onHelloButtonClick() {
         welcomeText.setText("Welcome to JavaFX Application!");
+        PhysicalScreen screen = AdbHelper.getScreen();
+        imageView.setImage(screen.getImage());
     }
 }

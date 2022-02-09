@@ -31,7 +31,7 @@ public abstract class AdbHelper {
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
-            pr.waitFor();
+            pr.waitFor(200, TimeUnit.MILLISECONDS);
             Image image = new Image(pr.getInputStream());
             return image;
         } catch (Exception e) {
