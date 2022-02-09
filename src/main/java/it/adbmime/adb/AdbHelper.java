@@ -40,7 +40,7 @@ public abstract class AdbHelper {
         }
     }
 
-    public static <T extends AdbStreamResult> T getAdbStreamResult(Class<T> clazz){
+    protected static <T extends AdbStreamResult> T getAdbStreamResult(Class<T> clazz){
         try {
             AdbStreamResult result = clazz.getDeclaredConstructor().newInstance();
             while(true) {
@@ -66,9 +66,20 @@ public abstract class AdbHelper {
         return new PhysicalSize(cmd);
     }
 
+    public static PhysicalTouch getTouch(){
+        PhysicalTouch pt = AdbHelper.getAdbStreamResult(PhysicalTouch.class);
+        return pt;
+    }
+
+
+
     public static PhysicalScreen getScreen(){
         Image image = runImage("adb exec-out screencap -p");
         return new PhysicalScreen(image);
+    }
+
+    public static void pressHomeButton() {
+        run("adb shell input keyevent 3");
     }
 
     // adb shell getevent -l | grep ABS_MT_POSITION
