@@ -1,5 +1,7 @@
 package it.adbmime.adb;
 
+import javafx.scene.image.Image;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -25,21 +27,16 @@ public abstract class AdbHelper {
         }
     }
 
-    protected static String run(String command, File dir){
+    protected static Image runImage(String command){
         try {
             Runtime run = Runtime.getRuntime();
-            Process pr = run.exec(command, null, dir);
+            Process pr = run.exec(command);
             pr.waitFor();
-            BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            String line = "";
-            StringBuffer sb = new StringBuffer();
-            while ((line=buf.readLine())!=null) {
-                sb.append(line + "\n");
-            }
-            return sb.toString();
+            Image image = new Image(pr.getInputStream());
+            return image;
         } catch (Exception e) {
             e.printStackTrace();
-            return "";
+            return null;
         }
     }
 
@@ -70,22 +67,8 @@ public abstract class AdbHelper {
     }
 
     public static PhysicalScreen getScreen(){
-        File file = null;
-        try {
-            file = File.createTempFile("screen", ".png");
-            // file = new File("screen.png");
-            String path = file.getAbsolutePath();
-            // run("adb exec-out screencap -p > " + path);
-            run("adb exec-out screencap -p > " + file.getName(), file.getParentFile());
-            return new PhysicalScreen(file);
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if(file != null && file.exists()) {
-                file.delete();
-            }
-        }
-        return null;
+        Image image = runImage("adb exec-out screencap -p");
+        return new PhysicalScreen(image);
     }
 
     // adb shell getevent -l | grep ABS_MT_POSITION

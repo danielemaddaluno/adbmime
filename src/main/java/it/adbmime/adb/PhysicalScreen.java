@@ -10,8 +10,12 @@ import java.util.regex.Pattern;
 public final class PhysicalScreen {
     private final Image image;
 
-    PhysicalScreen(File screenFile) {
-        this.image = ImageUtils.image(screenFile.getAbsolutePath());
+    PhysicalScreen(String adbResponse) {
+        this.image = null;//ImageUtils.image(screenFile.getAbsolutePath());
+    }
+
+    public PhysicalScreen(Image image) {
+        this.image = image;
     }
 
     public Image getImage() {
