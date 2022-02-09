@@ -5,8 +5,6 @@ import it.adbmime.adb.AdbHelper;
 import it.adbmime.adb.PhysicalSize;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import se.vidstige.jadb.JadbConnection;
-import se.vidstige.jadb.JadbDevice;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -41,25 +39,6 @@ public class AdbHelperTests {
 			e.printStackTrace();
 			return "";
 		}
-	}
-
-	@Test
-	public void testHelper() throws Exception {
-		JadbConnection jadb = new JadbConnection();
-		List<JadbDevice> devices = jadb.getDevices();
-		JadbDevice d = devices.get(0);
-		System.out.println(devices.size());
-
-		InputStream is = d.execute("adb shell getevent -l | grep ABS_MT_POSITION");
-		InputStreamReader isr = new InputStreamReader(is);
-
-		int data = isr.read();
-		while(data != -1){
-			char theChar = (char) data;
-			data = isr.read();
-		}
-
-		isr.close();
 	}
 	
 }

@@ -6,27 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class AdbHelper {
 
-    protected static <T extends AdbStreamResult> T getAdbStreamResult(Class<T> clazz){
-        try {
-            AdbStreamResult result = clazz.newInstance();
-            while(true) {
-                Runtime run = Runtime.getRuntime();
-                Process pr = run.exec("adb shell getevent -l | grep ABS_MT_POSITION");
-                pr.waitFor(1, TimeUnit.SECONDS);
-                BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-                String line = "";
-                while ((line=buf.readLine())!=null) {
-                    if(result.isReady(line)){
-                        return (T) result;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     protected static String run(String command){
         try {
             Runtime run = Runtime.getRuntime();
@@ -42,6 +21,27 @@ public abstract class AdbHelper {
         } catch (Exception e) {
             e.printStackTrace();
             return "";
+        }
+    }
+
+    public static <T extends AdbStreamResult> T getAdbStreamResult(Class<T> clazz){
+        try {
+            AdbStreamResult result = clazz.getDeclaredConstructor().newInstance();
+            while(true) {
+                Runtime run = Runtime.getRuntime();
+                Process pr = run.exec("adb shell getevent -l | grep ABS_MT_POSITION");
+                pr.waitFor(1, TimeUnit.SECONDS);
+                BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                String line = "";
+                while ((line=buf.readLine())!=null) {
+                    if(result.isReady(line)){
+                        return (T) result;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

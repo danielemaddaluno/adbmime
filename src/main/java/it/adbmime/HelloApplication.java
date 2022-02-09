@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.StandardSocketOptions;
 
 public class HelloApplication extends Application {
     @Override
@@ -19,6 +20,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
+        System.out.println(AdbHelper.getSize());
         System.out.println(AdbHelper.getSize());
     }
 

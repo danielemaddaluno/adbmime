@@ -27,11 +27,15 @@ public final class PhysicalTouch implements AdbStreamResult {
     public boolean isReady(String adbResponseRow){
         if(x == null){
             hexX = PhysicalTouch.getX(adbResponseRow);
-            x = Integer.parseInt(hexX,16);
+            if(hexX != null){
+                x = Integer.parseInt(hexX,16);
+            }
         }
         if(y == null){
-            hexY = PhysicalTouch.getX(adbResponseRow);
-            y = Integer.parseInt(hexY,16);
+            hexY = PhysicalTouch.getY(adbResponseRow);
+            if(hexY != null){
+                y = Integer.parseInt(hexY,16);
+            }
         }
         return x != null && y != null;
     }
