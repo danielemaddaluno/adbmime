@@ -3,10 +3,12 @@ package it.adbmime.adb;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public final class PhysicalTouch implements AdbStreamResult {
-    private static final String REGEX_X = "^/dev/input/event2: EV_ABS       ABS_MT_POSITION_X    (\\S+)?";
+    // https://regex101.com/
+    private static final String REGEX_X = "^.+: EV_ABS       ABS_MT_POSITION_X    (\\S+)?";
     private static final Pattern REGEX_PATTERN_X = Pattern.compile(REGEX_X);
-    private static final String REGEX_Y = "^/dev/input/event2: EV_ABS       ABS_MT_POSITION_Y    (\\S+)?";
+    private static final String REGEX_Y = "^.+: EV_ABS       ABS_MT_POSITION_Y    (\\S+)?";
     private static final Pattern REGEX_PATTERN_Y = Pattern.compile(REGEX_Y);
 
     private String hexX;

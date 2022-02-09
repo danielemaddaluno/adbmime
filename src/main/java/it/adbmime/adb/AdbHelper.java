@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
+// getevent -il /dev/input/event2 | grep ABS_MT_POSITION
+// adb shell getevent -l | grep ABS_MT_POSITION
+//
 public abstract class AdbHelper {
 
     protected static String run(String command){
@@ -62,8 +65,7 @@ public abstract class AdbHelper {
     }
 
     public static PhysicalSize getSize(){
-        String cmd = run("adb shell wm size");
-        return new PhysicalSize(cmd);
+        return new PhysicalSize();
     }
 
     public static PhysicalTouch getTouch(){

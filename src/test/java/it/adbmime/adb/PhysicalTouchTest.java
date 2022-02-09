@@ -4,7 +4,7 @@ package it.adbmime.adb;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class PhysicalTouchTests {
+public class PhysicalTouchTest {
 
 	@Test
 	public void testPhysicalTouch() throws Exception {

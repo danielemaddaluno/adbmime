@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class AdbHelperTests {
+public class AdbHelperTest {
 
 	@Test
 	public void testConstructor() throws Exception {
