@@ -10,7 +10,7 @@ public final class PhysicalSize {
     private final int width;
     private final int height;
 
-    public PhysicalSize(int width, int height) {
+    PhysicalSize(int width, int height) {
         this.width = width;
         this.height = height;
     }
@@ -19,7 +19,7 @@ public final class PhysicalSize {
      *
      * @param adbResponse the response from an "adb shell wm size" execution
      */
-    public PhysicalSize(String adbResponse) {
+    PhysicalSize(String adbResponse) {
         Matcher m = REGEX_PATTERN.matcher(adbResponse);
         if (m.find()) {
             this.width = Integer.valueOf(m.group(1));
