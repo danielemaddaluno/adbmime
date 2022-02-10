@@ -8,7 +8,7 @@ import java.lang.reflect.Constructor;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AdbHelper {
-    protected static String run(String command){
+    static String run(String command){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
@@ -26,7 +26,7 @@ public abstract class AdbHelper {
         }
     }
 
-    protected static Image runForImage(String command){
+    static Image runForImage(String command){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
@@ -39,7 +39,7 @@ public abstract class AdbHelper {
         }
     }
 
-    protected static <T extends AdbStreamResult> T runForAdbStreamResult(String command, Class<T> clazz){
+    static <T extends AdbStreamResult> T runForAdbStreamResult(String command, Class<T> clazz){
         try {
             Constructor<T> constructor = clazz.getDeclaredConstructor();
             constructor.setAccessible(true);
