@@ -4,15 +4,18 @@ import it.adbmime.adb.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 public class AdbMimeController {
 
     private PhysicalSize physicalSize;
+    private PhysicalTouch physicalTouch;
     @FXML
     private ImageView imageView;
     @FXML
@@ -33,6 +36,11 @@ public class AdbMimeController {
     }
 
     @FXML
+    protected void onBackButtonClick() {
+        AdbHelper.pressBackButton();
+    }
+
+    @FXML
     protected void onOpenBrowserButtonClick() {
         AdbHelper.pressBrowserButton();
     }
@@ -48,14 +56,49 @@ public class AdbMimeController {
     @FXML
     protected void onCaptureTapButtonClick() {
         Platform.runLater(() -> {
-            PhysicalTouch pt = AdbHelper.getTouch();
-            textArea.appendText(pt.toString(physicalSize) + "\n");
+            this.physicalTouch = AdbHelper.getTouch(physicalSize);
+            textArea.appendText(physicalTouch + "\n");
+        });
+    }
+
+    @FXML
+    protected void onReplayTapButtonClick() {
+        Platform.runLater(() -> {
+            if(physicalTouch != null){
+               physicalTouch.tap();
+            }
         });
     }
 
     @FXML
     public void textFieldAction(ActionEvent ae){
         AdbHelper.writeText(textField.getText());
+    }
+
+    /**
+     * https://stackoverflow.com/a/41416574/3138238
+     * @param e
+     */
+    @FXML
+    public void onMouseClickedAction(MouseEvent e){
+        double x = e.getX();
+        double y = e.getY();
+
+        ImageView view = (ImageView) e.getSource();
+        Bounds bounds = view.getLayoutBounds();
+        double xScale = bounds.getWidth() / view.getImage().getWidth();
+        double yScale = bounds.getHeight() / view.getImage().getHeight();
+
+        x /= xScale;
+        y /= yScale;
+
+        int xCord = (int) x;
+        int yCord = (int) y;
+
+        PhysicalTouch physicalTouch = PhysicalTouch.newInstance(xCord, yCord);
+        physicalTouch.tap();
+
+        textArea.appendText(physicalTouch + "\n");
     }
 
 }

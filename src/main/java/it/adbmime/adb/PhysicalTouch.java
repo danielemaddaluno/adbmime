@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public final class PhysicalTouch implements AdbStreamResult {
 
     protected static final String GET_ABS_MT_POSITION = "adb shell getevent -l | grep ABS_MT_POSITION";
+    protected static final String INPUT_TAP = "adb shell input tap %d %d";
 
     // https://regex101.com/
     private static final String REGEX_X = "^.+: EV_ABS       ABS_MT_POSITION_X    (\\S+)?";
@@ -13,6 +14,7 @@ public final class PhysicalTouch implements AdbStreamResult {
     private static final String REGEX_Y = "^.+: EV_ABS       ABS_MT_POSITION_Y    (\\S+)?";
     private static final Pattern REGEX_PATTERN_Y = Pattern.compile(REGEX_Y);
 
+    private PhysicalSize size;
     private Integer x;
     private Integer y;
 
@@ -22,8 +24,18 @@ public final class PhysicalTouch implements AdbStreamResult {
     protected PhysicalTouch(){
     }
 
-    public static PhysicalTouch newInstance() {
-        return AdbHelper.runForAdbStreamResult(GET_ABS_MT_POSITION, PhysicalTouch.class);
+    protected PhysicalTouch(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+    public static PhysicalTouch newInstance(int x, int y) {
+        return new PhysicalTouch(x, y);
+    }
+
+    public static PhysicalTouch newInstance(PhysicalSize physicalSize) {
+        PhysicalTouch physicalTouch =  AdbHelper.runForAdbStreamResult(GET_ABS_MT_POSITION, PhysicalTouch.class);
+        physicalTouch.setSize(physicalSize);
+        return  physicalTouch;
     }
 
     public boolean isReady(String adbRow){
@@ -54,28 +66,35 @@ public final class PhysicalTouch implements AdbStreamResult {
         return matchXY(REGEX_PATTERN_Y, adbResponseRow);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getX() {
-        return x;
+        if(size != null){
+            return x*size.getWidth()/size.getMaxX();
+        } else {
+            return x;
+        }
+
     }
 
     public int getY() {
-        return y;
+        if(size != null){
+            return y*size.getHeight()/size.getMaxY();
+        } else {
+            return y;
+        }
+
     }
 
-    public int getX(PhysicalSize size) {
-        return x*size.getWidth()/size.getMaxX();
+    public void setSize(PhysicalSize size) {
+        this.size = size;
     }
 
-    public int getY(PhysicalSize size) {
-        return y*size.getHeight()/size.getMaxY();
-    }
-
-    public String getHexX() {
-        return String.format("%08X", x);
-    }
-
-    public String getHexY() {
-        return String.format("%08X", y);
+    public void tap() {
+        String command = String.format(INPUT_TAP, getX(), getY());
+        AdbHelper.run(command);
     }
 
     @Override
@@ -83,13 +102,6 @@ public final class PhysicalTouch implements AdbStreamResult {
         return "PhysicalTouch{" +
                 "x=" + x +
                 ", y=" + y +
-                '}';
-    }
-
-    public String toString(PhysicalSize size) {
-        return "PhysicalTouch{" +
-                "x=" + getX(size) +
-                ", y=" + getY(size) +
                 '}';
     }
 

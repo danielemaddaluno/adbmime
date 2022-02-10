@@ -64,8 +64,8 @@ public abstract class AdbHelper {
         return PhysicalSize.newInstance();
     }
 
-    public static PhysicalTouch getTouch(){
-        return PhysicalTouch.newInstance();
+    public static PhysicalTouch getTouch(PhysicalSize physicalSize){
+        return PhysicalTouch.newInstance(physicalSize);
     }
 
     public static Screenshot getScreen(){
@@ -78,6 +78,10 @@ public abstract class AdbHelper {
 
     public static void pressBrowserButton() {
         Key.EXPLORER.press();
+    }
+
+    public static void pressBackButton() {
+        Key.BACK.press();
     }
 
     public static void writeText(String text) {
