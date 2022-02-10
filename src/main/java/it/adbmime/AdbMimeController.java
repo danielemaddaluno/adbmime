@@ -1,13 +1,14 @@
 package it.adbmime;
 
-import it.adbmime.adb.AdbHelper;
-import it.adbmime.adb.PhysicalSize;
-import it.adbmime.adb.Screenshot;
-import it.adbmime.adb.PhysicalTouch;
+import it.adbmime.adb.*;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class AdbMimeController {
 
@@ -16,6 +17,8 @@ public class AdbMimeController {
     private ImageView imageView;
     @FXML
     private TextArea textArea;
+    @FXML
+    private TextField textField;
 
 
     @FXML
@@ -27,6 +30,11 @@ public class AdbMimeController {
     @FXML
     protected void onHomeButtonClick() {
         AdbHelper.pressHomeButton();
+    }
+
+    @FXML
+    protected void onOpenBrowserButtonClick() {
+        AdbHelper.pressBrowserButton();
     }
 
     @FXML
@@ -45,5 +53,9 @@ public class AdbMimeController {
         });
     }
 
+    @FXML
+    public void textFieldAction(ActionEvent ae){
+        AdbHelper.writeText(textField.getText());
+    }
 
 }

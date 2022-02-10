@@ -2,8 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -15,12 +15,12 @@
    <VBox prefHeight="200.0" prefWidth="100.0">
       <children>
           <Button onAction="#onHomeButtonClick" text="Home" />
+         <Button onAction="#onOpenBrowserButtonClick" text="Open Browser" />
          <Button onAction="#onScreenUpdateButtonClick" text="Screen Update" />
          <Button onAction="#onCaptureTapButtonClick" text="Capture Tap" />
-      
-          <Label fx:id="welcomeText" />
+         <TextField fx:id="textField" onAction="#textFieldAction" />
       </children>
    </VBox>
-   <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+   <ImageView fx:id="imageView" fitHeight="418.0" fitWidth="306.0" pickOnBounds="true" preserveRatio="true" />
    <TextArea fx:id="textArea" disable="true" prefHeight="200.0" prefWidth="200.0" />
 </HBox>

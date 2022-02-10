@@ -73,7 +73,14 @@ public abstract class AdbHelper {
     }
 
     public static void pressHomeButton() {
-        run("adb shell input keyevent 3");
+        Key.HOME.press();
     }
 
+    public static void pressBrowserButton() {
+        Key.EXPLORER.press();
+    }
+
+    public static void writeText(String text) {
+        WriteText.newInstance(text).write();
+    }
 }
