@@ -73,6 +73,27 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Launch with mvn package -DskipTests -->
+            <plugin>
+                <groupId>io.github.fvarrui</groupId>
+                <artifactId>javapackager</artifactId>
+                <version>1.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>it.adbmime.AdbMimeApplication</mainClass>
+                            <bundleJre>true</bundleJre>
+                            <customizedJre>false</customizedJre>
+                            <assetsDir>${project.basedir}/src/main/resources/application</assetsDir>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
