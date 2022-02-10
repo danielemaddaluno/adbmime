@@ -12,6 +12,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
+
 public class AdbMimeController {
 
     private PhysicalSize physicalSize;
@@ -27,7 +29,13 @@ public class AdbMimeController {
     @FXML
     protected void initialize() {
         this.physicalSize = AdbHelper.getSize();
+        textArea.appendText(physicalSize + "\n");
         onScreenUpdateButtonClick();
+    }
+
+    @FXML
+    private void openAbout() throws IOException {
+        AdbMimeApplication.setRoot("about");
     }
 
     @FXML

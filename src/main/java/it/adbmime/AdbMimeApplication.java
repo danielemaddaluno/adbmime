@@ -5,6 +5,7 @@ import it.adbmime.images.AppFileIcon;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -12,23 +13,37 @@ import java.io.IOException;
 
 public class AdbMimeApplication extends Application {
     private static final String TITLE = "Adb Mime";
+    private static Scene scene;
+
+    public static Scene getPrimaryScene() {
+        return scene;
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
         setStageIcon(stage);
-        FXMLLoader fxmlLoader = new FXMLLoader(AdbMimeApplication.class.getResource("adbmime-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 640, 480);
+
+        scene = new Scene(loadFXML("adbmime-view"));
+        scene.getStylesheets().add(getClass().getResource("/css/default-theme.css").toExternalForm());
+
         stage.setScene(scene);
-        // used because if you close the app and the Thread is still running, it'll not close immediately
+        // used beacause if you close the app and the Thread is still running, it'll not
+        // close immediately
         stage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
         });
         stage.show();
         stage.setMaximized(true);
+    }
 
-        System.out.println(AdbHelper.getSize());
-        System.out.println(AdbHelper.getSize());
+    public static void setRoot(String fxml) throws IOException {
+        scene.setRoot(loadFXML(fxml));
+    }
+
+    private static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(AdbMimeApplication.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
     }
 
     private static void setStageIcon(Stage stage) {
