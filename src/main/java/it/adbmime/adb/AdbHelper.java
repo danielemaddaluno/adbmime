@@ -3,7 +3,6 @@ package it.adbmime.adb;
 import javafx.scene.image.Image;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
@@ -27,11 +26,11 @@ public abstract class AdbHelper {
         }
     }
 
-    protected static Image runImage(String command){
+    protected static Image runForImage(String command){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
-            pr.waitFor(200, TimeUnit.MILLISECONDS);
+            pr.waitFor(100, TimeUnit.MILLISECONDS);
             Image image = new Image(pr.getInputStream());
             return image;
         } catch (Exception e) {
@@ -40,13 +39,13 @@ public abstract class AdbHelper {
         }
     }
 
-    protected static <T extends AdbStreamResult> T getAdbStreamResult(Class<T> clazz){
+    protected static <T extends AdbStreamResult> T runForAdbStreamResult(String command, Class<T> clazz){
         try {
             AdbStreamResult result = clazz.getDeclaredConstructor().newInstance();
             while(true) {
                 Runtime run = Runtime.getRuntime();
-                Process pr = run.exec("adb shell getevent -l | grep ABS_MT_POSITION");
-                pr.waitFor(1, TimeUnit.SECONDS);
+                Process pr = run.exec(command);
+                pr.waitFor(500, TimeUnit.MILLISECONDS);
                 BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
                 String line = "";
                 while ((line=buf.readLine())!=null) {
@@ -62,34 +61,26 @@ public abstract class AdbHelper {
     }
 
     public static PhysicalSize getSize(){
-        String cmd = run("adb shell wm size");
-        return new PhysicalSize(cmd);
+        return PhysicalSize.newInstance();
     }
 
     public static PhysicalTouch getTouch(){
-        PhysicalTouch pt = AdbHelper.getAdbStreamResult(PhysicalTouch.class);
-        return pt;
+        return PhysicalTouch.newInstance();
     }
 
-
-
-    public static PhysicalScreen getScreen(){
-        Image image = runImage("adb exec-out screencap -p");
-        return new PhysicalScreen(image);
+    public static Screenshot getScreen(){
+        return Screenshot.newInstance();
     }
 
     public static void pressHomeButton() {
-        run("adb shell input keyevent 3");
+        Key.HOME.press();
     }
 
-    // adb shell getevent -l | grep ABS_MT_POSITION
+    public static void pressBrowserButton() {
+        Key.EXPLORER.press();
+    }
 
-    /*
-    adb shell input tap 1919 1079
-    adb connect 192.168.43.1:5555
-    adb disconnect
-    adb shell ifconfig
-    adb shell input tap x y
-     */
-
+    public static void writeText(String text) {
+        WriteText.newInstance(text).write();
+    }
 }

@@ -67,7 +67,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>it.adbmime/it.adbmime.HelloApplication</mainClass>
+                            <mainClass>it.adbmime/it.adbmime.AdbMimeApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>

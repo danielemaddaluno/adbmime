@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 import javafx.scene.image.Image;
 
 public enum AppFileIcon implements AppFile {
-	SYRINGE("syringe.png"), THUMB_UP("1f44d.png"), THUMB_DOWN("1f44e.png");
+	THUMB_UP("1f44d.png"), THUMB_DOWN("1f44e.png");
 
 	private final static String IMAGES_FOLDER = "/images/";
 	private final String filePath;
