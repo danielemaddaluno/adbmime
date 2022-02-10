@@ -15,12 +15,14 @@
    <VBox prefHeight="200.0" prefWidth="100.0">
       <children>
           <Button onAction="#onHomeButtonClick" text="Home" />
+         <Button onAction="#onBackButtonClick" text="Back" />
          <Button onAction="#onOpenBrowserButtonClick" text="Open Browser" />
          <Button onAction="#onScreenUpdateButtonClick" text="Screen Update" />
          <Button onAction="#onCaptureTapButtonClick" text="Capture Tap" />
+         <Button onAction="#onReplayTapButtonClick" text="Replay Tap" />
          <TextField fx:id="textField" onAction="#textFieldAction" />
       </children>
    </VBox>
-   <ImageView fx:id="imageView" fitHeight="418.0" fitWidth="306.0" pickOnBounds="true" preserveRatio="true" />
+   <ImageView fx:id="imageView" fitHeight="418.0" fitWidth="306.0" onMouseClicked="#onMouseClickedAction" pickOnBounds="true" preserveRatio="true" />
    <TextArea fx:id="textArea" disable="true" prefHeight="200.0" prefWidth="200.0" />
 </HBox>

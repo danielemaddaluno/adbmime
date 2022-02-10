@@ -7,7 +7,8 @@ public class PhysicalTouchTest {
 
 	@Test
 	public void testPhysicalTouch() {
-		PhysicalTouch t = AdbHelper.getTouch();
+		PhysicalSize size = AdbHelper.getSize();
+		PhysicalTouch t = AdbHelper.getTouch(size);
 		System.out.println(t);
 	}
 	
