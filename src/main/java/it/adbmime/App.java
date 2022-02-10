@@ -1,6 +1,5 @@
 package it.adbmime;
 
-import it.adbmime.adb.AdbHelper;
 import it.adbmime.images.AppFileIcon;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -11,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class AdbMimeApplication extends Application {
+public class App extends Application {
     private static final String TITLE = "Adb Mime";
     private static Scene scene;
 
@@ -42,7 +41,7 @@ public class AdbMimeApplication extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(AdbMimeApplication.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 

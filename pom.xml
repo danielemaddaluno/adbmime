@@ -68,7 +68,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>it.adbmime/it.adbmime.AdbMimeApplication</mainClass>
+                            <mainClass>it.adbmime/it.adbmime.App</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -86,7 +86,7 @@
                             <goal>package</goal>
                         </goals>
                         <configuration>
-                            <mainClass>it.adbmime.AdbMimeApplication</mainClass>
+                            <mainClass>it.adbmime.App</mainClass>
                             <bundleJre>true</bundleJre>
                             <customizedJre>false</customizedJre>
                             <assetsDir>${project.basedir}/src/main/resources/application</assetsDir>

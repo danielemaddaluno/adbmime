@@ -2,16 +2,16 @@ package it.adbmime.adb;
 
 import javafx.scene.image.Image;
 
-public class Screenshot {
+public final class DeviceScreenCapture {
     protected static final String SCREENCAPTURE = "adb exec-out screencap -p";
     private Image image;
 
-    protected Screenshot(Image image){
+    private DeviceScreenCapture(Image image){
         this.image = image;
     }
 
-    public static Screenshot newInstance() {
-        return new Screenshot(AdbHelper.runForImage(SCREENCAPTURE));
+    protected static DeviceScreenCapture newInstance() {
+        return new DeviceScreenCapture(AdbHelper.runForImage(SCREENCAPTURE));
     }
 
     public Image getImage() {

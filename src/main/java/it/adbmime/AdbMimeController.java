@@ -4,20 +4,15 @@ import it.adbmime.adb.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 
 public class AdbMimeController {
-
-    private PhysicalSize physicalSize;
-    private PhysicalTouch physicalTouch;
+    private DeviceTap deviceTap;
     @FXML
     private ImageView imageView;
     @FXML
@@ -25,38 +20,37 @@ public class AdbMimeController {
     @FXML
     private TextField textField;
 
-
     @FXML
     protected void initialize() {
-        this.physicalSize = AdbHelper.getSize();
-        textArea.appendText(physicalSize + "\n");
+        DeviceScreenSize deviceScreenSize = DeviceOutput.getScreenSize();
+        textArea.appendText(deviceScreenSize + "\n");
         onScreenUpdateButtonClick();
     }
 
     @FXML
     private void openAbout() throws IOException {
-        AdbMimeApplication.setRoot("about");
+        App.setRoot("about");
     }
 
     @FXML
     protected void onHomeButtonClick() {
-        AdbHelper.pressHomeButton();
+        RemoteInput.homeButton().send();
     }
 
     @FXML
     protected void onBackButtonClick() {
-        AdbHelper.pressBackButton();
+        RemoteInput.backButton().send();
     }
 
     @FXML
     protected void onOpenBrowserButtonClick() {
-        AdbHelper.pressBrowserButton();
+        RemoteInput.browserButton().send();
     }
 
     @FXML
     protected void onScreenUpdateButtonClick() {
         Platform.runLater(() -> {
-            Screenshot screen = AdbHelper.getScreen();
+            DeviceScreenCapture screen = DeviceOutput.getScreenCapture();
             imageView.setImage(screen.getImage());
         });
     }
@@ -64,23 +58,25 @@ public class AdbMimeController {
     @FXML
     protected void onCaptureTapButtonClick() {
         Platform.runLater(() -> {
-            this.physicalTouch = AdbHelper.getTouch(physicalSize);
-            textArea.appendText(physicalTouch + "\n");
+            this.deviceTap = DeviceOutput.getTap();
+            textArea.appendText(deviceTap + "\n");
         });
     }
 
     @FXML
     protected void onReplayTapButtonClick() {
         Platform.runLater(() -> {
-            if(physicalTouch != null){
-               physicalTouch.tap();
+            if(deviceTap != null){
+                int x = deviceTap.getX();
+                int y = deviceTap.getY();
+                RemoteInput.tap(x, y).send();
             }
         });
     }
 
     @FXML
     public void textFieldAction(ActionEvent ae){
-        AdbHelper.writeText(textField.getText());
+        RemoteInput.text(textField.getText()).send();
     }
 
     /**
@@ -89,24 +85,8 @@ public class AdbMimeController {
      */
     @FXML
     public void onMouseClickedAction(MouseEvent e){
-        double x = e.getX();
-        double y = e.getY();
-
-        ImageView view = (ImageView) e.getSource();
-        Bounds bounds = view.getLayoutBounds();
-        double xScale = bounds.getWidth() / view.getImage().getWidth();
-        double yScale = bounds.getHeight() / view.getImage().getHeight();
-
-        x /= xScale;
-        y /= yScale;
-
-        int xCord = (int) x;
-        int yCord = (int) y;
-
-        PhysicalTouch physicalTouch = PhysicalTouch.newInstance(xCord, yCord);
-        physicalTouch.tap();
-
-        textArea.appendText(physicalTouch + "\n");
+        RemoteInputTap remoteInputTap = RemoteInput.tap(e);
+        remoteInputTap.send();
+        textArea.appendText(remoteInputTap + "\n");
     }
-
 }

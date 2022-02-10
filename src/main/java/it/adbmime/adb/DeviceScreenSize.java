@@ -3,8 +3,7 @@ package it.adbmime.adb;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class PhysicalSize {
-
+public final class DeviceScreenSize {
     protected static final String WM_SIZE = "adb shell wm size";
     protected static final String WM_SIZE_MAX = "adb shell getevent -il /dev/input/event2 | grep ABS_MT_POSITION";
 
@@ -23,7 +22,7 @@ public final class PhysicalSize {
      * @param adb1 the response from an "adb shell wm size" execution
      * @param adb2 the response from an "adb shell getevent -il /dev/input/event2 | grep ABS_MT_POSITION" execution
      */
-    protected PhysicalSize(String adb1, String adb2) {
+    private DeviceScreenSize(String adb1, String adb2) {
         Matcher m1 = REGEX_PATTERN.matcher(adb1);
         if (m1.find()) {
             this.width = Integer.valueOf(m1.group(1));
@@ -41,8 +40,8 @@ public final class PhysicalSize {
         }
     }
 
-    public static PhysicalSize newInstance() {
-        return new PhysicalSize(AdbHelper.run(WM_SIZE), AdbHelper.run(WM_SIZE_MAX));
+    protected static DeviceScreenSize newInstance() {
+        return new DeviceScreenSize(AdbHelper.run(WM_SIZE), AdbHelper.run(WM_SIZE_MAX));
     }
 
     public int getWidth() {

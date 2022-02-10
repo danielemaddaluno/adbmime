@@ -3,7 +3,7 @@ package it.adbmime.adb;
 /**
  * https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/view/KeyEvent.java
  */
-public enum Key {
+public enum RemoteInputKey implements RemoteInput {
     UNKNOWN(0),
     SOFT_LEFT(1),
     SOFT_RIGHT(2),
@@ -313,7 +313,7 @@ public enum Key {
     private static final String INPUT_KEYEVENT = "adb shell input keyevent";
     private final int keycode;
 
-    Key(int keycode) {
+    RemoteInputKey(int keycode) {
         this.keycode = keycode;
     }
 
@@ -321,7 +321,7 @@ public enum Key {
         return keycode;
     }
 
-    public void press() {
-        AdbHelper.run(INPUT_KEYEVENT + " " + this.keycode);
+    public void send() {
+        AdbHelper.run(INPUT_KEYEVENT + " " + this.getKeycode());
     }
 }
