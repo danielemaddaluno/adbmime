@@ -87,10 +87,14 @@
                             <Button onAction="#onHomeButtonClick" text="Home" />
                             <Button onAction="#onBackButtonClick" text="Back" />
                             <Button onAction="#onOpenBrowserButtonClick" text="Open Browser" />
-                            <Button onAction="#onScreenUpdateButtonClick" text="Screen Update" />
-                            <Button onAction="#onCaptureTapButtonClick" text="Capture Tap" />
-                            <Button onAction="#onReplayTapButtonClick" text="Replay Tap" />
                             <TextField fx:id="textField" onAction="#textFieldAction" />
+                            <Button onAction="#onScreenUpdateButtonClick" text="Screen Update" />
+                        <HBox alignment="CENTER" prefHeight="9.0" prefWidth="354.0" spacing="20.0">
+                           <children>
+                                  <Button onAction="#onCaptureTapButtonClick" text="Capture Tap" />
+                                  <Button onAction="#onReplayTapButtonClick" text="Replay Tap" />
+                           </children>
+                        </HBox>
                         </children>
                     </VBox>
                </children>
