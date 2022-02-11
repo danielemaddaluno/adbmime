@@ -1,17 +1,15 @@
 package it.adbmime;
 
 import it.adbmime.adb.*;
-import it.adbmime.images.AppFileIcon;
-import it.adbmime.images.ImageUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
@@ -41,7 +39,8 @@ public class AdbMimeController {
 
 //        Image image = AppFileIcon.THUMB_UP.createImage();
 //        imageView.setImage(image);
-        imageView.fitWidthProperty().bind(stackPaneForImage.widthProperty());
+        // https://stackoverflow.com/questions/12630296/resizing-images-to-fit-the-parent-node
+        imageView.fitWidthProperty().bind(stackPaneForImage.widthProperty().subtract(10));
 
     }
 
@@ -69,6 +68,16 @@ public class AdbMimeController {
     @FXML
     protected void onOpenBrowserButtonClick() {
         RemoteInput.browserButton().send();
+    }
+
+    @FXML
+    protected void onDeleteButtonClick() {
+        RemoteInput.delButton().send();
+    }
+
+    @FXML
+    protected void onEnterButtonClick() {
+        RemoteInput.enterButton().send();
     }
 
     @FXML

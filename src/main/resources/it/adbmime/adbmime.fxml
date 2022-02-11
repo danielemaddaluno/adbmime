@@ -85,6 +85,8 @@
                         </HBox>
                             <Button onAction="#onHomeButtonClick" text="Home" />
                             <Button onAction="#onBackButtonClick" text="Back" />
+                        <Button onAction="#onDeleteButtonClick" text="Delete" />
+                        <Button onAction="#onEnterButtonClick" text="Enter" />
                             <Button onAction="#onOpenBrowserButtonClick" text="Open Browser" />
                             <TextField fx:id="textField" onAction="#textFieldAction" />
                             <Button onAction="#onScreenUpdateButtonClick" text="Screen Update" />

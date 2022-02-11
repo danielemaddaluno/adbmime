@@ -17,6 +17,14 @@ public interface RemoteInput {
         return RemoteInputKey.HOME;
     }
 
+    static RemoteInputKey delButton() {
+        return RemoteInputKey.DEL;
+    }
+
+    static RemoteInputKey enterButton() {
+        return RemoteInputKey.ENTER;
+    }
+
     static RemoteInputKey browserButton() {
         return RemoteInputKey.EXPLORER;
     }
