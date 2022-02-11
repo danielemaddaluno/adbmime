@@ -1,59 +1,41 @@
 package it.adbmime.adb;
 
-import javafx.geometry.Bounds;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public final class RemoteInputTap implements RemoteInput {
     protected static final String INPUT_TAP = "adb shell input tap %d %d";
-    private final int x;
-    private final int y;
+    private final RemotePoint point;
 
-    private RemoteInputTap(int x, int y){
-        this.x = x;
-        this.y = y;
+    private RemoteInputTap(RemotePoint point){
+        this.point = point;
+    }
+
+    protected static RemoteInputTap newInstance(RemotePoint point) {
+        return new RemoteInputTap(point);
     }
 
     protected static RemoteInputTap newInstance(int x, int y) {
-        return new RemoteInputTap(x, y);
+        return RemoteInputTap.newInstance(new RemotePoint(x, y));
     }
 
     protected static RemoteInputTap newInstance(MouseEvent e) {
-        double x = e.getX();
-        double y = e.getY();
-
-        ImageView view = (ImageView) e.getSource();
-        Bounds bounds = view.getLayoutBounds();
-        double xScale = bounds.getWidth() / view.getImage().getWidth();
-        double yScale = bounds.getHeight() / view.getImage().getHeight();
-
-        x /= xScale;
-        y /= yScale;
-
-        int xCord = (int) x;
-        int yCord = (int) y;
-
-        return RemoteInputTap.newInstance(xCord, yCord);
+        RemotePoint point = RemotePoint.newInstance(e);
+        return RemoteInputTap.newInstance(point);
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+    public RemotePoint getPoint() {
+        return point;
     }
 
     public void send() {
-        String command = String.format(INPUT_TAP, getX(), getY());
+        String command = String.format(INPUT_TAP, point.x(), point.y());
         AdbHelper.run(command);
     }
 
     @Override
     public String toString() {
-        return "PhysicalTouch{" +
-                "x=" + getX() +
-                ", y=" + getY() +
+        return "RemoteInputTap{" +
+                "point=" + point +
                 '}';
     }
 }

@@ -1,6 +1,6 @@
 package it.adbmime.adb;
 
-import it.adbmime.ReflectionUtils;
+import it.adbmime.utils.ReflectionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

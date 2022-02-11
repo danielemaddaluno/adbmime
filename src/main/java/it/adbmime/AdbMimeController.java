@@ -79,14 +79,28 @@ public class AdbMimeController {
         RemoteInput.text(textField.getText()).send();
     }
 
-    /**
-     * https://stackoverflow.com/a/41416574/3138238
-     * @param e
-     */
     @FXML
     public void onMouseClickedAction(MouseEvent e){
-        RemoteInputTap remoteInputTap = RemoteInput.tap(e);
-        remoteInputTap.send();
-        textArea.appendText(remoteInputTap + "\n");
+        System.out.println(e);
+    }
+
+    private MouseEvent lastMousePressed;
+
+    @FXML
+    public void onMousePressedAction(MouseEvent e){
+        this.lastMousePressed = e;
+    }
+
+    @FXML
+    public void onMouseReleasedAction(MouseEvent e){
+        if(lastMousePressed.getX() == e.getX() && lastMousePressed.getY() == e.getY()){
+            RemoteInputTap remoteInputTap = RemoteInput.tap(e);
+            remoteInputTap.send();
+            textArea.appendText(remoteInputTap + "\n");
+        } else {
+            RemoteInputSwipe remoteInputSwipe = RemoteInput.swipe(lastMousePressed, e);
+            remoteInputSwipe.send();
+            textArea.appendText(remoteInputSwipe + "\n");
+        }
     }
 }
