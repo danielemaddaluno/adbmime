@@ -2,6 +2,7 @@ package it.adbmime;
 
 import it.adbmime.adb.*;
 import javafx.application.Platform;
+//import io.reactivex.rxjava3.core.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -10,9 +11,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+//import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class AdbMimeController {
     private DeviceTap deviceTap;
@@ -35,11 +38,13 @@ public class AdbMimeController {
         inputKeyChoiceBox.getItems().addAll(RemoteInputKey.values());
         inputKeyChoiceBox.setValue(RemoteInputKey.HOME);
 
-        onScreenUpdateButtonClick();
-
+        // https://stackoverflow.com/a/12635224/3138238
         // https://stackoverflow.com/questions/49820196/javafx-resize-imageview-to-anchorpane
         imageView.fitWidthProperty().bind(stackPaneForImage.widthProperty().subtract(10));
         imageView.fitHeightProperty().bind(stackPaneForImage.heightProperty().subtract(10));
+
+        onScreenUpdateButtonClick();
+        //Observable.interval(10, TimeUnit.SECONDS, JavaFxScheduler.platform()).map(next -> DeviceOutput.getScreenCapture()).map(DeviceScreenCapture::getImage).subscribe(imageView::setImage);
     }
 
     @FXML
