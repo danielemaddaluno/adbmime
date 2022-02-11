@@ -4,6 +4,7 @@ import it.adbmime.adb.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -13,6 +14,8 @@ import java.io.IOException;
 
 public class AdbMimeController {
     private DeviceTap deviceTap;
+    @FXML
+    private ChoiceBox<RemoteInputKey> inputKeyChoiceBox;
     @FXML
     private ImageView imageView;
     @FXML
@@ -25,11 +28,20 @@ public class AdbMimeController {
         DeviceScreenSize deviceScreenSize = DeviceOutput.getScreenSize();
         textArea.appendText(deviceScreenSize + "\n");
         onScreenUpdateButtonClick();
+
+        inputKeyChoiceBox.getItems().addAll(RemoteInputKey.values());
+        inputKeyChoiceBox.setValue(RemoteInputKey.HOME);
     }
 
     @FXML
     private void openAbout() throws IOException {
         App.setRoot("about");
+    }
+
+    @FXML
+    protected void onInputKeyButtonClick() {
+        inputKeyChoiceBox.getValue().send();
+        textArea.appendText(deviceTap + "\n");
     }
 
     @FXML

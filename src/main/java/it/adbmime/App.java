@@ -22,7 +22,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         setStageIcon(stage);
 
-        scene = new Scene(loadFXML("adbmime-view"));
+        scene = new Scene(loadFXML("adbmime"));
         scene.getStylesheets().add(getClass().getResource("/css/default-theme.css").toExternalForm());
 
         stage.setScene(scene);

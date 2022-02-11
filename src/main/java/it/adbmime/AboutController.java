@@ -12,7 +12,7 @@ public class AboutController {
 	
     @FXML
     private void openPrimary() throws IOException {
-        App.setRoot("adbmime-view");
+        App.setRoot("adbmime");
     }
     
     @FXML
