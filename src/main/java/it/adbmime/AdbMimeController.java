@@ -9,6 +9,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
@@ -22,15 +24,22 @@ public class AdbMimeController {
     private TextArea textArea;
     @FXML
     private TextField textField;
+    @FXML
+    private StackPane stackPaneForImage;
 
     @FXML
     protected void initialize() {
         DeviceScreenSize deviceScreenSize = DeviceOutput.getScreenSize();
         textArea.appendText(deviceScreenSize + "\n");
-        onScreenUpdateButtonClick();
 
         inputKeyChoiceBox.getItems().addAll(RemoteInputKey.values());
         inputKeyChoiceBox.setValue(RemoteInputKey.HOME);
+
+        onScreenUpdateButtonClick();
+
+        // https://stackoverflow.com/questions/49820196/javafx-resize-imageview-to-anchorpane
+        imageView.fitWidthProperty().bind(stackPaneForImage.widthProperty().subtract(10));
+        imageView.fitHeightProperty().bind(stackPaneForImage.heightProperty().subtract(10));
     }
 
     @FXML
@@ -57,6 +66,16 @@ public class AdbMimeController {
     @FXML
     protected void onOpenBrowserButtonClick() {
         RemoteInput.browserButton().send();
+    }
+
+    @FXML
+    protected void onDeleteButtonClick() {
+        RemoteInput.delButton().send();
+    }
+
+    @FXML
+    protected void onEnterButtonClick() {
+        RemoteInput.enterButton().send();
     }
 
     @FXML
