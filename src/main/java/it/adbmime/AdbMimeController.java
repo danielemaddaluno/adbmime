@@ -37,11 +37,9 @@ public class AdbMimeController {
 
         onScreenUpdateButtonClick();
 
-//        Image image = AppFileIcon.THUMB_UP.createImage();
-//        imageView.setImage(image);
-        // https://stackoverflow.com/questions/12630296/resizing-images-to-fit-the-parent-node
+        // https://stackoverflow.com/questions/49820196/javafx-resize-imageview-to-anchorpane
         imageView.fitWidthProperty().bind(stackPaneForImage.widthProperty().subtract(10));
-
+        imageView.fitHeightProperty().bind(stackPaneForImage.heightProperty().subtract(10));
     }
 
     @FXML
