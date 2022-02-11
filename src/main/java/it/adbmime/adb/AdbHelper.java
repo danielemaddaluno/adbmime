@@ -4,11 +4,11 @@ import javafx.scene.image.Image;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AdbHelper {
-
-    protected static String run(String command){
+    static String run(String command){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
@@ -26,7 +26,7 @@ public abstract class AdbHelper {
         }
     }
 
-    protected static Image runForImage(String command){
+    static Image runForImage(String command){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
@@ -39,9 +39,11 @@ public abstract class AdbHelper {
         }
     }
 
-    protected static <T extends AdbStreamResult> T runForAdbStreamResult(String command, Class<T> clazz){
+    static <T extends AdbStreamResult> T runForAdbStreamResult(String command, Class<T> clazz){
         try {
-            AdbStreamResult result = clazz.getDeclaredConstructor().newInstance();
+            Constructor<T> constructor = clazz.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            AdbStreamResult result = constructor.newInstance();
             while(true) {
                 Runtime run = Runtime.getRuntime();
                 Process pr = run.exec(command);
@@ -58,33 +60,5 @@ public abstract class AdbHelper {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public static PhysicalSize getSize(){
-        return PhysicalSize.newInstance();
-    }
-
-    public static PhysicalTouch getTouch(PhysicalSize physicalSize){
-        return PhysicalTouch.newInstance(physicalSize);
-    }
-
-    public static Screenshot getScreen(){
-        return Screenshot.newInstance();
-    }
-
-    public static void pressHomeButton() {
-        Key.HOME.press();
-    }
-
-    public static void pressBrowserButton() {
-        Key.EXPLORER.press();
-    }
-
-    public static void pressBackButton() {
-        Key.BACK.press();
-    }
-
-    public static void writeText(String text) {
-        WriteText.newInstance(text).write();
     }
 }
