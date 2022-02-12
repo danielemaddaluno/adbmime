@@ -66,7 +66,7 @@ public class AdbMimeController {
         iconColumn.setCellValueFactory(cellData -> cellData.getValue().getIconProp());
         typeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProp());
         cmndColumn.setCellValueFactory(cellData -> cellData.getValue().getCmndProp());
-        iconColumn.setCellFactory(getFlagCell());
+        iconColumn.setCellFactory(getIconCell());
 
         remoteInputsTable.setItems(remoteInputsData);
 
@@ -106,27 +106,33 @@ public class AdbMimeController {
 
     private static final int FLAG_SIZE = 26;
 
-    private static <ROW, T> Callback<TableColumn<ROW, T>, TableCell<ROW, T>> getFlagCell() {
-        return column -> {
-            return new TableCell<ROW, T>() {
-                @Override
-                protected void updateItem(T emojiUnicode, boolean empty) {
-                    super.updateItem(emojiUnicode, empty);
+    private static String getImageUrlForCss(String type) {
+        return AdbMimeController.class.getResource("/images/type/RemoteInputTap.png").toExternalForm();
+    }
 
-                    String emojiUnicodePng = null;
-                    if (emojiUnicode == null || empty) {
-                        emojiUnicodePng = "no_flag";
-                    } else {
-                        emojiUnicodePng = emojiUnicode.toString().trim();
-                    }
+    private static <ROW, T> Callback<TableColumn<ROW, T>, TableCell<ROW, T>> getIconCell() {
+        return column -> new TableCell<ROW, T>() {
+            @Override
+            protected void updateItem(T type, boolean empty) {
+                super.updateItem(type, empty);
 
-                    emojiUnicodePng = "it.adbmime.adb.RemoteInputTap";
-                    String twemojiUrl = "url(\"/images/type/" + emojiUnicodePng + ".png\")";
-                    setStyle("-fx-background-image: " + twemojiUrl + ";"
-                            + "-fx-background-repeat: stretch;" + "-fx-background-size: " + FLAG_SIZE + " " + FLAG_SIZE
-                            + ";" + "-fx-background-position: center center;");
+                String emojiUnicodePng = null;
+                if (type == null || empty) {
+                    emojiUnicodePng = "no_type";
+                } else {
+                    emojiUnicodePng = type.toString().trim();
                 }
-            };
+
+                emojiUnicodePng = "1f1ee-1f1f9";
+                String imageUrl = getImageUrlForCss(emojiUnicodePng);
+
+                //setText("Prova");
+
+                setStyle("-fx-background-image: url('" + imageUrl + "');" + ";"
+                        + "-fx-background-repeat: stretch;"
+                        + "-fx-background-size: " + FLAG_SIZE + " " + FLAG_SIZE + ";"
+                        + "-fx-background-position: center center;");
+            }
         };
     }
 
