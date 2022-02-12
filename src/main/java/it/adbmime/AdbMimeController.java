@@ -154,6 +154,17 @@ public class AdbMimeController {
     }
 
     @FXML
+    protected void onReplayCommandsButtonClick(){
+        for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
+            row.getRemoteInput().send();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+
+    @FXML
     private void openAbout() throws IOException {
         App.setRoot("about");
     }
