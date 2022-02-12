@@ -30,9 +30,15 @@ public final class RemoteInputSwipe implements RemoteInput {
         return p1;
     }
 
-    public void send() {
-        String command = String.format(INPUT_SWIPE, p0.x(), p0.y(), p1.x(), p1.y());
-        AdbHelper.run(command);
+    @Override
+    public String command() {
+        return String.format(INPUT_SWIPE, p0.x(), p0.y(), p1.x(), p1.y());
+    }
+
+    @Override
+    public RemoteInput send() {
+        AdbHelper.run(command());
+        return this;
     }
 
     @Override

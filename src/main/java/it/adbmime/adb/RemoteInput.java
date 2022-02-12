@@ -11,7 +11,8 @@ import javafx.scene.input.MouseEvent;
  *
  */
 public interface RemoteInput {
-    void send();
+    String command();
+    RemoteInput send();
 
     static RemoteInputKey homeButton() {
         return RemoteInputKey.HOME;

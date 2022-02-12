@@ -27,9 +27,15 @@ public final class RemoteInputTap implements RemoteInput {
         return point;
     }
 
-    public void send() {
-        String command = String.format(INPUT_TAP, point.x(), point.y());
-        AdbHelper.run(command);
+    @Override
+    public String command() {
+        return String.format(INPUT_TAP, point.x(), point.y());
+    }
+
+    @Override
+    public RemoteInput send() {
+        AdbHelper.run(command());
+        return this;
     }
 
     @Override
