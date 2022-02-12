@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -119,6 +120,7 @@
                       </columnResizePolicy>
                   </TableView>
                   <Button layoutX="555.0" layoutY="721.0" onAction="#onReplayCommandsButtonClick" text="Replay Commands" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                  <Spinner fx:id="replayCommandsSleepSpinner" layoutX="388.0" layoutY="724.0" max="5" min="1" prefHeight="26.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="142.0" />
                </children>
             </AnchorPane>
         </items>

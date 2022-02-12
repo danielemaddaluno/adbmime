@@ -30,6 +30,8 @@ public class AdbMimeController {
     private TextField textField;
     @FXML
     private StackPane stackPaneForImage;
+    @FXML
+    private Spinner<Integer> replayCommandsSleepSpinner;
 
 
     @FXML
@@ -158,7 +160,7 @@ public class AdbMimeController {
         for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
             row.getRemoteInput().send();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
             } catch (InterruptedException e) {
             }
         }
