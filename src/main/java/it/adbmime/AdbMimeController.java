@@ -1,8 +1,9 @@
 package it.adbmime;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import it.adbmime.adb.*;
 import javafx.application.Platform;
-//import io.reactivex.rxjava3.core.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -10,8 +11,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-//import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
@@ -44,7 +43,12 @@ public class AdbMimeController {
         imageView.fitHeightProperty().bind(stackPaneForImage.heightProperty().subtract(10));
 
         onScreenUpdateButtonClick();
-        //Observable.interval(10, TimeUnit.SECONDS, JavaFxScheduler.platform()).map(next -> DeviceOutput.getScreenCapture()).map(DeviceScreenCapture::getImage).subscribe(imageView::setImage);
+        Observable.interval(10, TimeUnit.SECONDS, JavaFxScheduler.platform()).map(next -> DeviceOutput.getScreenCapture()).map(DeviceScreenCapture::getImage).subscribe(imageView::setImage);
+
+//        Media media = new Media();
+//        MediaPlayer mp = new MediaPlayer(media);
+//        mp.setAutoPlay(true);
+//        mediaView.setMediaPlayer(mp);
     }
 
     @FXML

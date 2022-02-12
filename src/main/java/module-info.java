@@ -2,8 +2,8 @@ module it.adbmime {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
-//    requires io.reactivex.rxjava3;
-//    requires rxjavafx;
+    requires io.reactivex.rxjava3;
+    requires rxjavafx;
 
 
     opens it.adbmime to javafx.fxml;
