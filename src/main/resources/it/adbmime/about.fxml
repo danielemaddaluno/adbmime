@@ -21,7 +21,7 @@
             <Font name="System Bold" size="18.0" />
          </font></Label>
       <Label alignment="CENTER" contentDisplay="CENTER" text="Source code available on:" textAlignment="CENTER" />
-      <Hyperlink fx:id="hyperlink" onAction="#openLink" text="https://github.com/danielemaddaluno" />
+      <Hyperlink fx:id="hyperlink" onAction="#openLink" text="https://github.com/danielemaddaluno/adbmime" />
         <Button fx:id="aboutButton" onAction="#openPrimary" text="Close About" />
     </children>
     <padding>

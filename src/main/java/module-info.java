@@ -10,4 +10,6 @@ module it.adbmime {
     exports it.adbmime;
     exports it.adbmime.adb;
     opens it.adbmime.adb to javafx.fxml;
+    exports it.adbmime.view;
+    opens it.adbmime.view to javafx.fxml;
 }

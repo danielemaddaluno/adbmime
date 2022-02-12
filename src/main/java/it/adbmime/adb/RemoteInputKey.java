@@ -321,7 +321,19 @@ public enum RemoteInputKey implements RemoteInput {
         return keycode;
     }
 
-    public void send() {
-        AdbHelper.run(INPUT_KEYEVENT + " " + this.getKeycode());
+    @Override
+    public RemoteInputType type() {
+        return RemoteInputType.KEY;
+    }
+
+    @Override
+    public String command() {
+        return INPUT_KEYEVENT + " " + this.getKeycode();
+    }
+
+    @Override
+    public RemoteInput send() {
+        AdbHelper.run(command());
+        return this;
     }
 }

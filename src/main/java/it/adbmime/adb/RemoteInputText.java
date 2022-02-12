@@ -15,8 +15,26 @@ public final class RemoteInputText implements RemoteInput {
         return new RemoteInputText(text);
     }
 
-    public void send() {
-        String command = String.format(INPUT_TEXT, text.replace(" ", "%s"));
-        AdbHelper.run(command);
+    @Override
+    public RemoteInputType type() {
+        return RemoteInputType.TEXT;
+    }
+
+    @Override
+    public String command() {
+        return String.format(INPUT_TEXT, text.replace(" ", "%s"));
+    }
+
+    @Override
+    public RemoteInput send() {
+        AdbHelper.run(command());
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "RemoteInputText{" +
+                "text='" + text + '\'' +
+                '}';
     }
 }
