@@ -32,7 +32,8 @@ public class AdbMimeController {
     private StackPane stackPaneForImage;
     @FXML
     private Spinner<Integer> replayCommandsSleepSpinner;
-
+    @FXML
+    private Button replayCommandsButton;
 
     @FXML
     private TableView<RemoteInputTableViewRow> remoteInputsTable;
@@ -157,13 +158,19 @@ public class AdbMimeController {
 
     @FXML
     protected void onReplayCommandsButtonClick(){
-        for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
-            row.getRemoteInput().send();
-            try {
-                Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
-            } catch (InterruptedException e) {
+        new Thread(() -> {
+            replayCommandsButton.setDisable(true);
+            replayCommandsSleepSpinner.setDisable(true);
+            for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
+                row.getRemoteInput().send();
+                try {
+                    Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
+                } catch (InterruptedException e) {
+                }
             }
-        }
+            replayCommandsButton.setDisable(false);
+            replayCommandsSleepSpinner.setDisable(false);
+        }).start();
     }
 
     @FXML
