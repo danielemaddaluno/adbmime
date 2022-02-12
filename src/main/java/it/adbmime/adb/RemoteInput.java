@@ -11,10 +11,20 @@ import javafx.scene.input.MouseEvent;
  *
  */
 public interface RemoteInput {
-    void send();
+    RemoteInputType type();
+    String command();
+    RemoteInput send();
 
     static RemoteInputKey homeButton() {
         return RemoteInputKey.HOME;
+    }
+
+    static RemoteInputKey delButton() {
+        return RemoteInputKey.DEL;
+    }
+
+    static RemoteInputKey enterButton() {
+        return RemoteInputKey.ENTER;
     }
 
     static RemoteInputKey browserButton() {
