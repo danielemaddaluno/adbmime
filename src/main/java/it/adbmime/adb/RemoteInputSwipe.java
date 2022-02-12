@@ -31,6 +31,11 @@ public final class RemoteInputSwipe implements RemoteInput {
     }
 
     @Override
+    public RemoteInputType type() {
+        return RemoteInputType.SWIPE;
+    }
+
+    @Override
     public String command() {
         return String.format(INPUT_SWIPE, p0.x(), p0.y(), p1.x(), p1.y());
     }

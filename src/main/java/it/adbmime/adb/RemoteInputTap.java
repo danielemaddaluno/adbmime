@@ -28,6 +28,11 @@ public final class RemoteInputTap implements RemoteInput {
     }
 
     @Override
+    public RemoteInputType type() {
+        return RemoteInputType.TAP;
+    }
+
+    @Override
     public String command() {
         return String.format(INPUT_TAP, point.x(), point.y());
     }

@@ -12,8 +12,8 @@ public final class RemoteInputTableViewRow {
 
     private RemoteInputTableViewRow(RemoteInput remoteInput) {
         this.remoteInput = remoteInput;
-        this.iconProp = new SimpleStringProperty(remoteInput.getClass().getSimpleName());
-        this.typeProp = new SimpleStringProperty(remoteInput.getClass().getSimpleName());
+        this.iconProp = new SimpleStringProperty(remoteInput.type().name());
+        this.typeProp = new SimpleStringProperty(remoteInput.type().name());
         this.cmndProp = new SimpleStringProperty(remoteInput.command());
     }
 

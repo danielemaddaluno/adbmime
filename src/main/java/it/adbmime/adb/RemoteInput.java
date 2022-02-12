@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
  *
  */
 public interface RemoteInput {
+    RemoteInputType type();
     String command();
     RemoteInput send();
 

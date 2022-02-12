@@ -79,8 +79,6 @@ public class AdbMimeController {
         typeColumn.setResizable(false);
         cmndColumn.setResizable(false);
 
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.tap(1,2)));
-
 //        economicEventsTable.setRowFactory(tableView -> {
 //            TableRow<EconomicEvent> row = new TableRow<>();
 //            ChangeListener<String> changeListener = (obs, oldTitle, newTitle) -> {
@@ -104,30 +102,27 @@ public class AdbMimeController {
 
     }
 
-    private static final int FLAG_SIZE = 26;
+    private static final int FLAG_SIZE = 20;
 
-    private static String getImageUrlForCss(String type) {
-        return AdbMimeController.class.getResource("/images/type/RemoteInputTap.png").toExternalForm();
-    }
-
+    /**
+     * https://edencoding.com/resources/css_properties/url/
+     * @param <ROW>
+     * @param <T>
+     * @return
+     */
     private static <ROW, T> Callback<TableColumn<ROW, T>, TableCell<ROW, T>> getIconCell() {
         return column -> new TableCell<ROW, T>() {
             @Override
             protected void updateItem(T type, boolean empty) {
                 super.updateItem(type, empty);
 
-                String emojiUnicodePng = null;
+                String typePng = null;
                 if (type == null || empty) {
-                    emojiUnicodePng = "no_type";
+                    typePng = "no_type";
                 } else {
-                    emojiUnicodePng = type.toString().trim();
+                    typePng = type.toString().trim();
                 }
-
-                emojiUnicodePng = "1f1ee-1f1f9";
-                String imageUrl = getImageUrlForCss(emojiUnicodePng);
-
-                //setText("Prova");
-
+                String imageUrl = AdbMimeController.class.getResource("/images/type/" + typePng + ".png").toExternalForm();
                 setStyle("-fx-background-image: url('" + imageUrl + "');" + ";"
                         + "-fx-background-repeat: stretch;"
                         + "-fx-background-size: " + FLAG_SIZE + " " + FLAG_SIZE + ";"

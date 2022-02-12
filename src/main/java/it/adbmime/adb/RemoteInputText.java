@@ -16,6 +16,11 @@ public final class RemoteInputText implements RemoteInput {
     }
 
     @Override
+    public RemoteInputType type() {
+        return RemoteInputType.TEXT;
+    }
+
+    @Override
     public String command() {
         return String.format(INPUT_TEXT, text.replace(" ", "%s"));
     }
