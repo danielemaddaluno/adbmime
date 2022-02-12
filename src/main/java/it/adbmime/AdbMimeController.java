@@ -6,14 +6,19 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdbMimeController {
     private DeviceTap deviceTap;
@@ -79,6 +84,17 @@ public class AdbMimeController {
         typeColumn.setResizable(false);
         cmndColumn.setResizable(false);
 
+        iconColumn.setSortable(false);
+        typeColumn.setSortable(false);
+        cmndColumn.setSortable(false);
+
+        // Delete button listener
+        remoteInputsTable.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.DELETE) || keyEvent.getCode().equals(KeyCode.BACK_SPACE)) {
+                deleteRemoteInput();
+            }
+        });
+
 //        economicEventsTable.setRowFactory(tableView -> {
 //            TableRow<EconomicEvent> row = new TableRow<>();
 //            ChangeListener<String> changeListener = (obs, oldTitle, newTitle) -> {
@@ -100,6 +116,12 @@ public class AdbMimeController {
 //            return row;
 //        });
 
+    }
+
+    private void deleteRemoteInput() {
+        ObservableList<RemoteInputTableViewRow> selectedRows = remoteInputsTable.getSelectionModel().getSelectedItems();
+        List<RemoteInputTableViewRow> rows = new ArrayList<>(selectedRows);
+        rows.forEach(row -> remoteInputsTable.getItems().remove(row));
     }
 
     private static final int FLAG_SIZE = 20;
