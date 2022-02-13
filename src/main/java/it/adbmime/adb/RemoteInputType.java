@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// Test regex at: https://regex101.com/
 public enum RemoteInputType {
     KEY(RemoteInputKey.class, "adb shell input keyevent %d", "^.+ input keyevent (\\d+)?"),
     SWIPE(RemoteInputSwipe.class, "adb shell input swipe %d %d %d %d", "^.+ input swipe (\\d+) (\\d+) (\\d+) (\\d+)?", int.class, int.class, int.class, int.class),

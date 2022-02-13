@@ -54,6 +54,11 @@ public class AdbMimeController {
     @FXML
     private TableColumn<RemoteInputTableViewRow, String> cmndColumn;
 
+    @FXML
+    private TitledPane tableRowsActionsTitlePane;
+
+    @FXML
+    private TitledPane replayActionsTitlePane;
 
 
     @FXML
@@ -94,9 +99,14 @@ public class AdbMimeController {
         // Delete button listener
         remoteInputsTable.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode().equals(KeyCode.DELETE) || keyEvent.getCode().equals(KeyCode.BACK_SPACE)) {
-                deleteRemoteInput();
+                deleteTableRow();
             }
         });
+
+        tableRowsActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3).multiply(2).subtract(10));
+        replayActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3));
+
+
 
 //        economicEventsTable.setRowFactory(tableView -> {
 //            TableRow<EconomicEvent> row = new TableRow<>();
@@ -121,7 +131,13 @@ public class AdbMimeController {
 
     }
 
-    private void deleteRemoteInput() {
+    @FXML
+    private void deleteTableRows() {
+        remoteInputsData.clear();
+    }
+
+    @FXML
+    private void deleteTableRow() {
         ObservableList<RemoteInputTableViewRow> selectedRows = remoteInputsTable.getSelectionModel().getSelectedItems();
         List<RemoteInputTableViewRow> rows = new ArrayList<>(selectedRows);
         rows.forEach(row -> remoteInputsTable.getItems().remove(row));
