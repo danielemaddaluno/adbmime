@@ -1,6 +1,7 @@
 package it.adbmime;
 
 import it.adbmime.adb.*;
+import it.adbmime.view.ImportExportUtils;
 import it.adbmime.view.RemoteInputTableViewRow;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -14,8 +15,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +35,20 @@ public class AdbMimeController {
     private TextField textField;
     @FXML
     private StackPane stackPaneForImage;
+
     @FXML
     private Spinner<Integer> replayCommandsSleepSpinner;
     @FXML
     private Button replayCommandsButton;
+
+    @FXML
+    private Button deleteTableRowsButton;
+    @FXML
+    private Button deleteTableRowButton;
+    @FXML
+    private Button exportTableRowsButton;
+    @FXML
+    private Button importTableRowsButton;
 
     @FXML
     private TableView<RemoteInputTableViewRow> remoteInputsTable;
@@ -132,15 +147,44 @@ public class AdbMimeController {
     }
 
     @FXML
+    private void exportTableRows() {
+        System.out.println("Export");
+        final FileChooser directoryChooser = new FileChooser();
+        directoryChooser.setInitialFileName(ImportExportUtils.FILE_PREFIX + ImportExportUtils.getDate() + ImportExportUtils.ICS_EXTENSION);
+        File file = directoryChooser.showSaveDialog(App.getPrimaryScene().getWindow());
+        System.out.println(file);
+
+        if (file != null) {
+            Platform.runLater(() -> {
+                setDisabledForReplay(true);
+                new Thread(() -> {
+                    ImportExportUtils.export(remoteInputsData, file);
+                    setDisabledForReplay(false);
+                }).start();
+            });
+
+        } else {
+            System.out.println("Save command cancelled by user.");
+        }
+    }
+
+    @FXML
+    private void importTableRows() {
+        System.out.println("Import");
+    }
+
+    @FXML
     private void deleteTableRows() {
         remoteInputsData.clear();
     }
 
     @FXML
     private void deleteTableRow() {
-        ObservableList<RemoteInputTableViewRow> selectedRows = remoteInputsTable.getSelectionModel().getSelectedItems();
-        List<RemoteInputTableViewRow> rows = new ArrayList<>(selectedRows);
-        rows.forEach(row -> remoteInputsTable.getItems().remove(row));
+        if(!deleteTableRowButton.isDisable()){ // it's important when the replay is running to disable deletion
+            ObservableList<RemoteInputTableViewRow> selectedRows = remoteInputsTable.getSelectionModel().getSelectedItems();
+            List<RemoteInputTableViewRow> rows = new ArrayList<>(selectedRows);
+            rows.forEach(row -> remoteInputsTable.getItems().remove(row));
+        }
     }
 
     private static final int FLAG_SIZE = 20;
@@ -172,20 +216,28 @@ public class AdbMimeController {
         };
     }
 
+    private void setDisabledForReplay(boolean disabled){
+        replayCommandsSleepSpinner.setDisable(disabled);
+        replayCommandsButton.setDisable(disabled);
+        deleteTableRowsButton.setDisable(disabled);
+        deleteTableRowButton.setDisable(disabled);
+        exportTableRowsButton.setDisable(disabled);
+        importTableRowsButton.setDisable(disabled);
+    }
     @FXML
     protected void onReplayCommandsButtonClick(){
         new Thread(() -> {
-            replayCommandsButton.setDisable(true);
-            replayCommandsSleepSpinner.setDisable(true);
+            setDisabledForReplay(true);
             for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
+                remoteInputsTable.getSelectionModel().select(row);
                 row.getRemoteInput().send();
                 try {
                     Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
                 } catch (InterruptedException e) {
                 }
             }
-            replayCommandsButton.setDisable(false);
-            replayCommandsSleepSpinner.setDisable(false);
+            remoteInputsTable.getSelectionModel().clearSelection();
+            setDisabledForReplay(false);
         }).start();
     }
 
