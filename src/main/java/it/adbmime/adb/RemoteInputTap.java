@@ -3,8 +3,14 @@ package it.adbmime.adb;
 import javafx.scene.input.MouseEvent;
 
 public final class RemoteInputTap implements RemoteInput {
-    protected static final String INPUT_TAP = "adb shell input tap %d %d";
     private final RemotePoint point;
+
+    /**
+     * This is used to instantiate it with reflection
+     */
+    private RemoteInputTap(int x0, int y0) {
+        this.point = new RemotePoint(x0, y0);
+    }
 
     private RemoteInputTap(RemotePoint point){
         this.point = point;
@@ -34,7 +40,7 @@ public final class RemoteInputTap implements RemoteInput {
 
     @Override
     public String command() {
-        return String.format(INPUT_TAP, point.x(), point.y());
+        return String.format(type().getCommand(), point.x(), point.y());
     }
 
     @Override

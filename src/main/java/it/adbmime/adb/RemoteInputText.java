@@ -4,9 +4,11 @@ package it.adbmime.adb;
  * https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/view/KeyEvent.java
  */
 public final class RemoteInputText implements RemoteInput {
-    private static final String INPUT_TEXT = "adb shell input text '%s'";
     private String text;
 
+    /**
+     * This is used to instantiate it with reflection
+     */
     private RemoteInputText(String text){
         this.text = text;
     }
@@ -22,7 +24,7 @@ public final class RemoteInputText implements RemoteInput {
 
     @Override
     public String command() {
-        return String.format(INPUT_TEXT, text.replace(" ", "%s"));
+        return String.format(type().getCommand(), text.replace(" ", "%s"));
     }
 
     @Override

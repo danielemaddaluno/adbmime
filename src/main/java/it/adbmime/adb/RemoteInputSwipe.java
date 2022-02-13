@@ -3,9 +3,16 @@ package it.adbmime.adb;
 import javafx.scene.input.MouseEvent;
 
 public final class RemoteInputSwipe implements RemoteInput {
-    protected static final String INPUT_SWIPE = "adb shell input swipe %d %d %d %d";
     private final RemotePoint p0;
     private final RemotePoint p1;
+
+    /**
+     * This is used to instantiate it with reflection
+     */
+    private RemoteInputSwipe(int x0, int y0, int x1, int y1) {
+        this.p0 = new RemotePoint(x0, y0);
+        this.p1 = new RemotePoint(x1, y1);
+    }
 
     private RemoteInputSwipe(RemotePoint p0, RemotePoint p1) {
         this.p0 = p0;
@@ -37,7 +44,7 @@ public final class RemoteInputSwipe implements RemoteInput {
 
     @Override
     public String command() {
-        return String.format(INPUT_SWIPE, p0.x(), p0.y(), p1.x(), p1.y());
+        return String.format(type().getCommand(), p0.x(), p0.y(), p1.x(), p1.y());
     }
 
     @Override
