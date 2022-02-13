@@ -7,20 +7,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,29 +142,12 @@ public class AdbMimeController {
 
     @FXML
     private void exportTableRows() {
-        System.out.println("Export");
-        final FileChooser directoryChooser = new FileChooser();
-        directoryChooser.setInitialFileName(ImportExportUtils.FILE_PREFIX + ImportExportUtils.getDate() + ImportExportUtils.ICS_EXTENSION);
-        File file = directoryChooser.showSaveDialog(App.getPrimaryScene().getWindow());
-        System.out.println(file);
-
-        if (file != null) {
-            Platform.runLater(() -> {
-                setDisabledForReplay(true);
-                new Thread(() -> {
-                    ImportExportUtils.export(remoteInputsData, file);
-                    setDisabledForReplay(false);
-                }).start();
-            });
-
-        } else {
-            System.out.println("Save command cancelled by user.");
-        }
+        ImportExportUtils.exportRows(this, remoteInputsData);
     }
 
     @FXML
     private void importTableRows() {
-        System.out.println("Import");
+        ImportExportUtils.importRows(this, remoteInputsData);
     }
 
     @FXML
@@ -216,7 +193,7 @@ public class AdbMimeController {
         };
     }
 
-    private void setDisabledForReplay(boolean disabled){
+    public void setDisabledForActions(boolean disabled){
         replayCommandsSleepSpinner.setDisable(disabled);
         replayCommandsButton.setDisable(disabled);
         deleteTableRowsButton.setDisable(disabled);
@@ -227,7 +204,7 @@ public class AdbMimeController {
     @FXML
     protected void onReplayCommandsButtonClick(){
         new Thread(() -> {
-            setDisabledForReplay(true);
+            setDisabledForActions(true);
             for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
                 remoteInputsTable.getSelectionModel().select(row);
                 row.getRemoteInput().send();
@@ -237,7 +214,7 @@ public class AdbMimeController {
                 }
             }
             remoteInputsTable.getSelectionModel().clearSelection();
-            setDisabledForReplay(false);
+            setDisabledForActions(false);
         }).start();
     }
 
