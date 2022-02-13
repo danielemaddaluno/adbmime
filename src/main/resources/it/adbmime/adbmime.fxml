@@ -87,7 +87,7 @@
                         <children>
                         <HBox alignment="CENTER" prefHeight="9.0" prefWidth="354.0" spacing="20.0">
                            <children>
-                              <ChoiceBox fx:id="inputKeyChoiceBox" prefWidth="150.0" />
+                              <ChoiceBox fx:id="inputKeyChoiceBox" prefHeight="26.0" prefWidth="92.0" />
                               <Button onAction="#onInputKeyButtonClick" text="Send" />
                            </children>
                         </HBox>

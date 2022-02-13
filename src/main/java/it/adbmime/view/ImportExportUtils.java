@@ -3,7 +3,6 @@ package it.adbmime.view;
 import it.adbmime.AdbMimeController;
 import it.adbmime.App;
 import it.adbmime.adb.RemoteInput;
-import it.adbmime.adb.RemoteInputType;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
@@ -31,9 +30,9 @@ public final class ImportExportUtils {
         fileChooser.setTitle("Export to File:");
         fileChooser.setInitialFileName(FILE_PREFIX + DATE_FORMAT.format(new Date()) + EXTENSION);
         File file = fileChooser.showSaveDialog(App.getPrimaryScene().getWindow());
-        System.out.println(file);
 
         if (file != null) {
+            System.out.println(file);
             Platform.runLater(() -> {
                 adbMimeController.setDisabledForActions(true);
                 new Thread(() -> {
@@ -64,24 +63,29 @@ public final class ImportExportUtils {
                 new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt")
         );
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        File selectedFile = fileChooser.showOpenDialog(null);
+        File file = fileChooser.showOpenDialog(null);
 
-        if (selectedFile != null) {
-            adbMimeController.setDisabledForActions(true);
-            importRows(remoteInputsData, selectedFile);
-            adbMimeController.setDisabledForActions(false);
+        if (file != null) {
+            System.out.println(file);
+            Platform.runLater(() -> {
+                adbMimeController.setDisabledForActions(true);
+                new Thread(() -> {
+                    ImportExportUtils.importRows(remoteInputsData, file);
+                    adbMimeController.setDisabledForActions(false);
+                }).start();
+            });
         } else {
             System.out.println("Import command cancelled by user.");
         }
     }
 
-    private static void importRows(ObservableList<RemoteInputTableViewRow> remoteInputsData, File selectedFile) {
+    private static void importRows(ObservableList<RemoteInputTableViewRow> remoteInputsData, File file) {
         remoteInputsData.clear();
         try {
-            Path path = Paths.get(selectedFile.toURI());
+            Path path = Paths.get(file.toURI());
             List<String> lines = Files.readAllLines(path);
             for(String line: lines){
-                RemoteInput remoteInput = RemoteInputType.fromCommand(line);
+                RemoteInput remoteInput = RemoteInput.fromCommand(line);
                 if(remoteInput != null){
                     remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
                 }
@@ -90,5 +94,4 @@ public final class ImportExportUtils {
             e.printStackTrace();
         }
     }
-
 }

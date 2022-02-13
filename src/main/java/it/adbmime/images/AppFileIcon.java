@@ -4,13 +4,12 @@ import javax.swing.ImageIcon;
 import javafx.scene.image.Image;
 
 public enum AppFileIcon implements AppFile {
-	THUMB_UP("1f44d.png"), THUMB_DOWN("1f44e.png");
+	LOGO("/application/linux/adbmime.png");
 
-	private final static String IMAGES_FOLDER = "/images/";
 	private final String filePath;
 
-	AppFileIcon(String fileName) {
-		this.filePath = IMAGES_FOLDER + fileName;
+	AppFileIcon(String filePath) {
+		this.filePath = filePath;
 	}
 
 	@Override

@@ -16,12 +16,12 @@ public final class RemoteInputTap implements RemoteInput {
         this.point = point;
     }
 
-    protected static RemoteInputTap newInstance(RemotePoint point) {
-        return new RemoteInputTap(point);
+    protected static RemoteInputTap newInstance(int x, int y) {
+        return new RemoteInputTap(x, y);
     }
 
-    protected static RemoteInputTap newInstance(int x, int y) {
-        return RemoteInputTap.newInstance(new RemotePoint(x, y));
+    protected static RemoteInputTap newInstance(RemotePoint point) {
+        return new RemoteInputTap(point);
     }
 
     protected static RemoteInputTap newInstance(MouseEvent e) {

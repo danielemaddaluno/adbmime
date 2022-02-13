@@ -48,7 +48,7 @@ public class App extends Application {
     private static void setStageIcon(Stage stage) {
         stage.setIconified(false);
         stage.setTitle(TITLE);
-        stage.getIcons().add(AppFileIcon.THUMB_UP.createImage());
+        stage.getIcons().add(AppFileIcon.LOGO.createImage());
         stage.setMaximized(true);
     }
 
