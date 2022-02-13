@@ -310,7 +310,6 @@ public enum RemoteInputKey implements RemoteInput {
     DEMO_APP_3(303),
     DEMO_APP_4(304);
 
-    private static final String INPUT_KEYEVENT = "adb shell input keyevent";
     private final int keycode;
 
     RemoteInputKey(int keycode) {
@@ -328,7 +327,7 @@ public enum RemoteInputKey implements RemoteInput {
 
     @Override
     public String command() {
-        return INPUT_KEYEVENT + " " + this.getKeycode();
+        return String.format(type().getCommand(), this.getKeycode());
     }
 
     @Override
