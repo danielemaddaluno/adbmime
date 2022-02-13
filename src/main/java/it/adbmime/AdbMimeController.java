@@ -1,17 +1,16 @@
 package it.adbmime;
 
 import it.adbmime.adb.*;
+import it.adbmime.view.ImportExportUtils;
 import it.adbmime.view.RemoteInputTableViewRow;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
@@ -31,6 +30,19 @@ public class AdbMimeController {
     @FXML
     private StackPane stackPaneForImage;
 
+    @FXML
+    private Spinner<Integer> replayCommandsSleepSpinner;
+    @FXML
+    private Button replayCommandsButton;
+
+    @FXML
+    private Button deleteTableRowsButton;
+    @FXML
+    private Button deleteTableRowButton;
+    @FXML
+    private Button exportTableRowsButton;
+    @FXML
+    private Button importTableRowsButton;
 
     @FXML
     private TableView<RemoteInputTableViewRow> remoteInputsTable;
@@ -51,6 +63,11 @@ public class AdbMimeController {
     @FXML
     private TableColumn<RemoteInputTableViewRow, String> cmndColumn;
 
+    @FXML
+    private TitledPane tableRowsActionsTitlePane;
+
+    @FXML
+    private TitledPane replayActionsTitlePane;
 
 
     @FXML
@@ -91,9 +108,14 @@ public class AdbMimeController {
         // Delete button listener
         remoteInputsTable.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode().equals(KeyCode.DELETE) || keyEvent.getCode().equals(KeyCode.BACK_SPACE)) {
-                deleteRemoteInput();
+                deleteTableRow();
             }
         });
+
+        tableRowsActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3).multiply(2).subtract(10));
+        replayActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3));
+
+
 
 //        economicEventsTable.setRowFactory(tableView -> {
 //            TableRow<EconomicEvent> row = new TableRow<>();
@@ -118,10 +140,28 @@ public class AdbMimeController {
 
     }
 
-    private void deleteRemoteInput() {
-        ObservableList<RemoteInputTableViewRow> selectedRows = remoteInputsTable.getSelectionModel().getSelectedItems();
-        List<RemoteInputTableViewRow> rows = new ArrayList<>(selectedRows);
-        rows.forEach(row -> remoteInputsTable.getItems().remove(row));
+    @FXML
+    private void exportTableRows() {
+        ImportExportUtils.exportRows(this, remoteInputsData);
+    }
+
+    @FXML
+    private void importTableRows() {
+        ImportExportUtils.importRows(this, remoteInputsData);
+    }
+
+    @FXML
+    private void deleteTableRows() {
+        remoteInputsData.clear();
+    }
+
+    @FXML
+    private void deleteTableRow() {
+        if(!deleteTableRowButton.isDisable()){ // it's important when the replay is running to disable deletion
+            ObservableList<RemoteInputTableViewRow> selectedRows = remoteInputsTable.getSelectionModel().getSelectedItems();
+            List<RemoteInputTableViewRow> rows = new ArrayList<>(selectedRows);
+            rows.forEach(row -> remoteInputsTable.getItems().remove(row));
+        }
     }
 
     private static final int FLAG_SIZE = 20;
@@ -153,15 +193,29 @@ public class AdbMimeController {
         };
     }
 
+    public void setDisabledForActions(boolean disabled){
+        replayCommandsSleepSpinner.setDisable(disabled);
+        replayCommandsButton.setDisable(disabled);
+        deleteTableRowsButton.setDisable(disabled);
+        deleteTableRowButton.setDisable(disabled);
+        exportTableRowsButton.setDisable(disabled);
+        importTableRowsButton.setDisable(disabled);
+    }
     @FXML
     protected void onReplayCommandsButtonClick(){
-        for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
-            row.getRemoteInput().send();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
+        new Thread(() -> {
+            setDisabledForActions(true);
+            for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
+                remoteInputsTable.getSelectionModel().select(row);
+                row.getRemoteInput().send();
+                try {
+                    Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
+                } catch (InterruptedException e) {
+                }
             }
-        }
+            remoteInputsTable.getSelectionModel().clearSelection();
+            setDisabledForActions(false);
+        }).start();
     }
 
     @FXML
