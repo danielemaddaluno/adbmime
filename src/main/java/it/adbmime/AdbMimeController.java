@@ -194,6 +194,7 @@ public class AdbMimeController {
     }
     @FXML
     protected void onReplayCommandsButtonClick(){
+        remoteInputsTable.requestFocus();
         new Thread(() -> {
             setDisabledForActions(true);
             for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
