@@ -2,6 +2,7 @@ package it.adbmime.adb;
 
 import javafx.scene.input.MouseEvent;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
@@ -34,6 +35,8 @@ public interface RemoteInput {
                             Class<?> parameterClass = type.getParameterTypes()[i];
                             if(parameterClass == int.class){
                                 parameters[i] = Integer.valueOf(matcher.group(i+1));
+                            } else if(parameterClass == File.class){
+                                parameters[i] = new File(matcher.group(i+1));
                             } else {
                                 parameters[i] = matcher.group(i+1);
                             }
