@@ -142,6 +142,11 @@ public class AdbMimeController {
     }
 
     @FXML
+    private void installApk() {
+        ImportExportUtils.installApk(this, remoteInputsData);
+    }
+
+    @FXML
     private void deleteTableRows() {
         remoteInputsData.clear();
     }

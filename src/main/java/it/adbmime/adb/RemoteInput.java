@@ -106,4 +106,12 @@ public interface RemoteInput {
     static RemoteInputSwipe swipe(MouseEvent e0, MouseEvent e1){
         return RemoteInputSwipe.newInstance(e0, e1);
     }
+
+    static RemoteInputInstall install(File apk){
+        return RemoteInputInstall.newInstance(apk);
+    }
+
+    static RemoteInputUninstall uninstall(String packageName){
+        return RemoteInputUninstall.newInstance(packageName);
+    }
 }

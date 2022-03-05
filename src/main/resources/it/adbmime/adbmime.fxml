@@ -204,6 +204,15 @@
                                     <Button layoutX="466.0" layoutY="79.0" onAction="#onDeleteButtonClick" text="Delete" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="66.0" />
                                     <Button layoutX="794.0" layoutY="87.0" onAction="#onEnterButtonClick" text="Enter" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                                         <Button layoutX="228.0" layoutY="79.0" onAction="#onOpenBrowserButtonClick" text="Open Browser" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="130.0" />
+                                    <Button fx:id="installApkButton" layoutX="1.0" layoutY="79.0" onAction="#installApk" text="Install Apk">
+                                       <graphic>
+                                          <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../images/buttons/table-arrow-left.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
                                  </children>
                               </AnchorPane>
                         </content>
