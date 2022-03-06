@@ -3,7 +3,6 @@ package it.adbmime;
 import it.adbmime.adb.*;
 import it.adbmime.view.ImportExportUtils;
 import it.adbmime.view.RemoteInputTableViewRow;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +22,7 @@ import java.util.List;
 public class AdbMimeController {
     private DeviceTap deviceTap;
     @FXML
-    private ChoiceBox<RemoteInputKey> inputKeyChoiceBox;
+    private ChoiceBox<RemoteInputKeycode> inputKeyChoiceBox;
     @FXML
     private ImageView imageView;
     @FXML
@@ -64,8 +63,8 @@ public class AdbMimeController {
     protected void initialize() {
 //        DeviceScreenSize deviceScreenSize = DeviceOutput.getScreenSize();
 
-        inputKeyChoiceBox.getItems().addAll(RemoteInputKey.values());
-        inputKeyChoiceBox.setValue(RemoteInputKey.HOME);
+        inputKeyChoiceBox.getItems().addAll(RemoteInputKeycode.values());
+        inputKeyChoiceBox.setValue(RemoteInputKeycode.HOME);
 
         // https://stackoverflow.com/a/12635224/3138238
         // https://stackoverflow.com/questions/49820196/javafx-resize-imageview-to-anchorpane
@@ -223,7 +222,9 @@ public class AdbMimeController {
 
     @FXML
     protected void onInputKeyButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(inputKeyChoiceBox.getValue().send()));
+        boolean longpress = false;
+        RemoteInputKey key = RemoteInput.key(longpress, inputKeyChoiceBox.getValue().getKeycode());
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
     @FXML
@@ -231,58 +232,10 @@ public class AdbMimeController {
         Node node = (Node) event.getSource() ;
         String data = (String) node.getUserData();
         int keycode = Integer.parseInt(data);
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.keycode(keycode).send()));
-    }
 
-//    SOFT_LEFT(1),
-//    SOFT_RIGHT(2),
-//    HOME(3),
-//    BACK(4),
-//    DEL(67),
-//    ENTER(66),
-//    EXPLORER(64),
-//    BACK(4),
-//    MENU(82),
-//
-//    static RemoteInputKey homeButton() {
-//        return RemoteInputKey.HOME;
-//    }
-//
-//    static RemoteInputKey delButton() {
-//        return RemoteInputKey.DEL;
-//    }
-//
-//    static RemoteInputKey enterButton() {
-//        return RemoteInputKey.ENTER;
-//    }
-//
-//    static RemoteInputKey browserButton() {
-//        return RemoteInputKey.EXPLORER;
-//    }
-
-    @FXML
-    protected void onHomeButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.HOME.send()));
-    }
-
-    @FXML
-    protected void onBackButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.BACK.send()));
-    }
-
-    @FXML
-    protected void onOpenBrowserButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.EXPLORER.send()));
-    }
-
-    @FXML
-    protected void onDeleteButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.DEL.send()));
-    }
-
-    @FXML
-    protected void onEnterButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.ENTER.send()));
+        boolean longpress = false;
+        RemoteInputKey key = RemoteInput.key(longpress, keycode);
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
     @FXML

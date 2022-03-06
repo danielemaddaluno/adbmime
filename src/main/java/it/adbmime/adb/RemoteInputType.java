@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 // Test regex at: https://regex101.com/
 public enum RemoteInputType {
-    KEY(RemoteInputKey.class, "adb shell input keyevent %d", "^.+ input keyevent (\\d+)?"),
+    KEY(RemoteInputKey.class, "adb shell input keyevent " + RemoteInputKey.LONGPRESS + "%d", "^.+ input keyevent(.*) (\\d+)?", boolean.class, int.class),
     SWIPE(RemoteInputSwipe.class, "adb shell input swipe %d %d %d %d", "^.+ input swipe (\\d+) (\\d+) (\\d+) (\\d+)?", int.class, int.class, int.class, int.class),
     TAP(RemoteInputTap.class, "adb shell input tap %d %d", "^.+ input tap (\\d+) (\\d+)?", int.class, int.class),
     TEXT(RemoteInputText.class, "adb shell input text '%s'", "^.+ input text '(.*?)'", String.class),

@@ -35,6 +35,8 @@ public interface RemoteInput {
                             Class<?> parameterClass = type.getParameterTypes()[i];
                             if(parameterClass == int.class){
                                 parameters[i] = Integer.valueOf(matcher.group(i+1));
+                            } else if(parameterClass == boolean.class){
+                                parameters[i] = !matcher.group(i+1).isEmpty();
                             } else if(parameterClass == File.class){
                                 parameters[i] = new File(matcher.group(i+1));
                             } else {
@@ -59,8 +61,8 @@ public interface RemoteInput {
         return null;
     }
 
-    static RemoteInputKey keycode(int keycode) {
-        return RemoteInputKey.fromKeycode(keycode);
+    static RemoteInputKey key(boolean longpress, int keycode) {
+        return RemoteInputKey.newInstance(longpress, keycode);
     }
 
     static RemoteInputText text(String text) {
