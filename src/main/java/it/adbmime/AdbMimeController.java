@@ -234,15 +234,15 @@ public class AdbMimeController {
         String data = (String) node.getUserData();
         int keycode = Integer.parseInt(data);
 
-        boolean longpress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
-        RemoteInputKey key = RemoteInput.key(longpress, keycode);
+        boolean longPress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
+        RemoteInputKey key = RemoteInput.key(longPress, keycode);
         remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
     @FXML
     public void onKeyReleasedActionChoiceBox(MouseEvent event){
-        boolean longpress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
-        RemoteInputKey key = RemoteInput.key(longpress, inputKeyChoiceBox.getValue().getKeycode());
+        boolean longPress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
+        RemoteInputKey key = RemoteInput.key(longPress, inputKeyChoiceBox.getValue().getKeycode());
         remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 

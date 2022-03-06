@@ -61,8 +61,8 @@ public interface RemoteInput {
         return null;
     }
 
-    static RemoteInputKey key(boolean longpress, int keycode) {
-        return RemoteInputKey.newInstance(longpress, keycode);
+    static RemoteInputKey key(boolean longPress, int keycode) {
+        return RemoteInputKey.newInstance(longPress, keycode);
     }
 
     static RemoteInputText text(String text) {
