@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -226,29 +227,62 @@ public class AdbMimeController {
     }
 
     @FXML
+    private void onRemoteInputKey(ActionEvent event) {
+        Node node = (Node) event.getSource() ;
+        String data = (String) node.getUserData();
+        int keycode = Integer.parseInt(data);
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.keycode(keycode).send()));
+    }
+
+//    SOFT_LEFT(1),
+//    SOFT_RIGHT(2),
+//    HOME(3),
+//    BACK(4),
+//    DEL(67),
+//    ENTER(66),
+//    EXPLORER(64),
+//    BACK(4),
+//    MENU(82),
+//
+//    static RemoteInputKey homeButton() {
+//        return RemoteInputKey.HOME;
+//    }
+//
+//    static RemoteInputKey delButton() {
+//        return RemoteInputKey.DEL;
+//    }
+//
+//    static RemoteInputKey enterButton() {
+//        return RemoteInputKey.ENTER;
+//    }
+//
+//    static RemoteInputKey browserButton() {
+//        return RemoteInputKey.EXPLORER;
+//    }
+
+    @FXML
     protected void onHomeButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.homeButton().send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.HOME.send()));
     }
 
     @FXML
     protected void onBackButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.homeButton().send()));
-        RemoteInput.backButton().send();
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.BACK.send()));
     }
 
     @FXML
     protected void onOpenBrowserButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.browserButton().send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.EXPLORER.send()));
     }
 
     @FXML
     protected void onDeleteButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.delButton().send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.DEL.send()));
     }
 
     @FXML
     protected void onEnterButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.enterButton().send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInputKey.ENTER.send()));
     }
 
     @FXML

@@ -59,24 +59,8 @@ public interface RemoteInput {
         return null;
     }
 
-    static RemoteInputKey homeButton() {
-        return RemoteInputKey.HOME;
-    }
-
-    static RemoteInputKey delButton() {
-        return RemoteInputKey.DEL;
-    }
-
-    static RemoteInputKey enterButton() {
-        return RemoteInputKey.ENTER;
-    }
-
-    static RemoteInputKey browserButton() {
-        return RemoteInputKey.EXPLORER;
-    }
-
-    static RemoteInputKey backButton() {
-        return RemoteInputKey.BACK;
+    static RemoteInputKey keycode(int keycode) {
+        return RemoteInputKey.fromKeycode(keycode);
     }
 
     static RemoteInputText text(String text) {
