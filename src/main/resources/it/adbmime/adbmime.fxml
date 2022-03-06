@@ -104,7 +104,7 @@
                      <children>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <Button onAction="#onRemoteInputKey" userData="66" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="66" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -117,7 +117,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <Button onAction="#onRemoteInputKey" userData="67" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="67" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -130,7 +130,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                            <children>
-                              <Button onAction="#onRemoteInputKey" userData="112" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="112" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -143,7 +143,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
                            <children>
-                              <Button onAction="#onRemoteInputKey" userData="64" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="64" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -156,7 +156,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
                            <children>
-                              <Button onAction="#onRemoteInputKey" userData="21" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="21" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -169,7 +169,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5">
                            <children>
-                              <Button onAction="#onRemoteInputKey" userData="22" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="22" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -207,7 +207,7 @@
                      <children>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <Button onAction="#onRemoteInputKey" userData="4" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="4" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -220,7 +220,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <Button onAction="#onRemoteInputKey" userData="3" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="3" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -233,7 +233,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                            <children>
-                              <Button onAction="#onRemoteInputKey" userData="187" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="187" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -357,7 +357,7 @@
                                     <HBox alignment="CENTER" layoutX="112.0" layoutY="23.0" prefHeight="26.0" prefWidth="179.0" spacing="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="46.0">
                                        <children>
                                           <ChoiceBox fx:id="inputKeyChoiceBox" prefHeight="26.0" prefWidth="106.0" />
-                                          <Button onAction="#onInputKeyButtonClick" prefHeight="26.0" prefWidth="69.0" text="Send" />
+                                          <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionChoiceBox" prefHeight="26.0" prefWidth="69.0" text="Send" />
                                        </children>
                                     </HBox>
                                     <Button fx:id="installApkButton" layoutX="28.0" layoutY="11.0" onAction="#installApk" text="Install Apk">
