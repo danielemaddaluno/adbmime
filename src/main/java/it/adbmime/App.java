@@ -21,6 +21,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         setStageIcon(stage);
+        stage.setMinWidth(1000);
+        stage.setMinHeight(800);
 
         scene = new Scene(loadFXML("adbmime"));
         scene.getStylesheets().add(getClass().getResource("/css/default-theme.css").toExternalForm());

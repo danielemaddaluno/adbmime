@@ -3,6 +3,7 @@ package it.adbmime.view;
 import it.adbmime.AdbMimeController;
 import it.adbmime.App;
 import it.adbmime.adb.RemoteInput;
+import it.adbmime.adb.RemoteInputInstall;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
@@ -92,6 +93,31 @@ public final class ImportExportUtils {
             }
         } catch (IOException e){
             e.printStackTrace();
+        }
+    }
+
+    public static void installApk(AdbMimeController adbMimeController, ObservableList<RemoteInputTableViewRow> remoteInputsData) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Install from apk:");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("APK files (*.apk)", "*.apk")
+        );
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File file = fileChooser.showOpenDialog(null);
+
+        if (file != null) {
+            System.out.println(file);
+            Platform.runLater(() -> {
+                adbMimeController.setDisabledForActions(true);
+                RemoteInput remoteInput = RemoteInput.install(file);
+                if(remoteInput != null) {
+                    remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
+                }
+                remoteInput.send();
+                adbMimeController.setDisabledForActions(false);
+            });
+        } else {
+            System.out.println("Install command cancelled by user.");
         }
     }
 }

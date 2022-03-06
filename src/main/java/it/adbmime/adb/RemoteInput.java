@@ -2,6 +2,7 @@ package it.adbmime.adb;
 
 import javafx.scene.input.MouseEvent;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
@@ -34,6 +35,10 @@ public interface RemoteInput {
                             Class<?> parameterClass = type.getParameterTypes()[i];
                             if(parameterClass == int.class){
                                 parameters[i] = Integer.valueOf(matcher.group(i+1));
+                            } else if(parameterClass == boolean.class){
+                                parameters[i] = !matcher.group(i+1).isEmpty();
+                            } else if(parameterClass == File.class){
+                                parameters[i] = new File(matcher.group(i+1));
                             } else {
                                 parameters[i] = matcher.group(i+1);
                             }
@@ -56,24 +61,8 @@ public interface RemoteInput {
         return null;
     }
 
-    static RemoteInputKey homeButton() {
-        return RemoteInputKey.HOME;
-    }
-
-    static RemoteInputKey delButton() {
-        return RemoteInputKey.DEL;
-    }
-
-    static RemoteInputKey enterButton() {
-        return RemoteInputKey.ENTER;
-    }
-
-    static RemoteInputKey browserButton() {
-        return RemoteInputKey.EXPLORER;
-    }
-
-    static RemoteInputKey backButton() {
-        return RemoteInputKey.BACK;
+    static RemoteInputKey key(boolean longpress, int keycode) {
+        return RemoteInputKey.newInstance(longpress, keycode);
     }
 
     static RemoteInputText text(String text) {
@@ -102,5 +91,13 @@ public interface RemoteInput {
 
     static RemoteInputSwipe swipe(MouseEvent e0, MouseEvent e1){
         return RemoteInputSwipe.newInstance(e0, e1);
+    }
+
+    static RemoteInputInstall install(File apk){
+        return RemoteInputInstall.newInstance(apk);
+    }
+
+    static RemoteInputUninstall uninstall(String packageName){
+        return RemoteInputUninstall.newInstance(packageName);
     }
 }

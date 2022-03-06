@@ -3,11 +3,11 @@ package it.adbmime;
 import it.adbmime.adb.*;
 import it.adbmime.view.ImportExportUtils;
 import it.adbmime.view.RemoteInputTableViewRow;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -22,7 +22,7 @@ import java.util.List;
 public class AdbMimeController {
     private DeviceTap deviceTap;
     @FXML
-    private ChoiceBox<RemoteInputKey> inputKeyChoiceBox;
+    private ChoiceBox<RemoteInputKeycode> inputKeyChoiceBox;
     @FXML
     private ImageView imageView;
     @FXML
@@ -63,8 +63,8 @@ public class AdbMimeController {
     protected void initialize() {
 //        DeviceScreenSize deviceScreenSize = DeviceOutput.getScreenSize();
 
-        inputKeyChoiceBox.getItems().addAll(RemoteInputKey.values());
-        inputKeyChoiceBox.setValue(RemoteInputKey.HOME);
+        inputKeyChoiceBox.getItems().addAll(RemoteInputKeycode.values());
+        inputKeyChoiceBox.setValue(RemoteInputKeycode.HOME);
 
         // https://stackoverflow.com/a/12635224/3138238
         // https://stackoverflow.com/questions/49820196/javafx-resize-imageview-to-anchorpane
@@ -142,6 +142,11 @@ public class AdbMimeController {
     }
 
     @FXML
+    private void installApk() {
+        ImportExportUtils.installApk(this, remoteInputsData);
+    }
+
+    @FXML
     private void deleteTableRows() {
         remoteInputsData.clear();
     }
@@ -215,35 +220,30 @@ public class AdbMimeController {
         App.setRoot("about");
     }
 
+    private static final long LONGPRESS_THRESHOLD = 2000;
+    private long startTime;
+
     @FXML
-    protected void onInputKeyButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(inputKeyChoiceBox.getValue().send()));
+    public void onKeyPressedAction(){
+        this.startTime = System.currentTimeMillis();;
     }
 
     @FXML
-    protected void onHomeButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.homeButton().send()));
+    public void onKeyReleasedActionSimple(MouseEvent event) {
+        Node node = (Node) event.getSource() ;
+        String data = (String) node.getUserData();
+        int keycode = Integer.parseInt(data);
+
+        boolean longpress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
+        RemoteInputKey key = RemoteInput.key(longpress, keycode);
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
     @FXML
-    protected void onBackButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.homeButton().send()));
-        RemoteInput.backButton().send();
-    }
-
-    @FXML
-    protected void onOpenBrowserButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.browserButton().send()));
-    }
-
-    @FXML
-    protected void onDeleteButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.delButton().send()));
-    }
-
-    @FXML
-    protected void onEnterButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.enterButton().send()));
+    public void onKeyReleasedActionChoiceBox(MouseEvent event){
+        boolean longpress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
+        RemoteInputKey key = RemoteInput.key(longpress, inputKeyChoiceBox.getValue().getKeycode());
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
     @FXML
