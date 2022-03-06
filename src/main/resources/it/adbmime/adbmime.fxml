@@ -8,6 +8,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -20,7 +22,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.adbmime.AdbMimeController">
     <children>
@@ -78,44 +79,178 @@
                 </Menu>
             </menus>
         </MenuBar>
-      <SplitPane dividerPositions="0.2, 0.5" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="29.0">
+      <SplitPane dividerPositions="0.3" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="29.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-
-                    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                        <children>
-                        <HBox alignment="CENTER" prefHeight="9.0" prefWidth="354.0" spacing="20.0">
+                  <StackPane fx:id="stackPaneForImage" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+                     <children>
+                          <ImageView fx:id="imageView" fitHeight="418.0" fitWidth="306.0" nodeOrientation="INHERIT" onMousePressed="#onMousePressedAction" onMouseReleased="#onMouseReleasedAction" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </StackPane>
+                  <GridPane layoutX="5.0" layoutY="-31.0" prefHeight="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <ChoiceBox fx:id="inputKeyChoiceBox" prefWidth="150.0" />
-                              <Button onAction="#onInputKeyButtonClick" text="Send" />
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="66" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/subdirectory-arrow-left.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
-                        </HBox>
-                            <Button onAction="#onHomeButtonClick" text="Home" />
-                            <Button onAction="#onBackButtonClick" text="Back" />
-                        <Button onAction="#onDeleteButtonClick" text="Delete" />
-                        <Button onAction="#onEnterButtonClick" text="Enter" />
-                            <Button onAction="#onOpenBrowserButtonClick" text="Open Browser" />
-                            <TextField fx:id="textField" onAction="#textFieldAction" />
-                            <Button onAction="#onScreenUpdateButtonClick" text="Screen Update" />
-                        <HBox alignment="CENTER" prefHeight="9.0" prefWidth="354.0" spacing="20.0">
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                                  <Button onAction="#onCaptureTapButtonClick" text="Capture Tap" />
-                                  <Button onAction="#onReplayTapButtonClick" text="Replay Tap" />
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="67" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/backspace.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
-                        </HBox>
-                        </children>
-                    </VBox>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <children>
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="112" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/backspace-reverse.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+                           <children>
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="64" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/earth.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
+                           <children>
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="21" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/chevron-left.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5">
+                           <children>
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="22" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/chevron-right.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6">
+                           <children>
+                              <Button onAction="#onScreenUpdateButtonClick" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/image-sync.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </GridPane>
+                  <GridPane layoutX="15.0" layoutY="-21.0" prefHeight="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="4" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/arrow-left.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="3" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/home.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <children>
+                              <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionSimple" userData="187" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/buttons/menu.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </GridPane>
                </children>
             </AnchorPane>
-            <StackPane fx:id="stackPaneForImage" prefHeight="150.0" prefWidth="200.0">
-               <children>
-                    <ImageView fx:id="imageView" fitHeight="418.0" fitWidth="306.0" nodeOrientation="INHERIT" onMousePressed="#onMousePressedAction" onMouseReleased="#onMouseReleasedAction" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </StackPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="remoteInputsTable" prefHeight="602.0" prefWidth="605.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <TableView fx:id="remoteInputsTable" prefHeight="602.0" prefWidth="605.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="188.0">
                       <columns>
                           <TableColumn fx:id="iconColumn" style="-fx-alignment: CENTER;" styleClass="iconColumn" text="Icon" />
                           <TableColumn fx:id="typeColumn" style="-fx-alignment: CENTER;" text="Type" />
@@ -212,6 +347,46 @@
                         </AnchorPane>
                     </content>
                   </TitledPane>
+                  <TabPane prefHeight="160.0" prefWidth="605.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                    <tabs>
+                      <Tab text="Inputs">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="130.0" prefWidth="605.0">
+                                 <children>
+                                        <TextField fx:id="textField" layoutX="658.0" layoutY="22.0" onAction="#textFieldAction" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                                    <HBox alignment="CENTER" layoutX="112.0" layoutY="23.0" prefHeight="26.0" prefWidth="179.0" spacing="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="46.0">
+                                       <children>
+                                          <ChoiceBox fx:id="inputKeyChoiceBox" prefHeight="26.0" prefWidth="106.0" />
+                                          <Button onMousePressed="#onKeyPressedAction" onMouseReleased="#onKeyReleasedActionChoiceBox" prefHeight="26.0" prefWidth="69.0" text="Send" />
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="installApkButton" layoutX="28.0" layoutY="11.0" onAction="#installApk" text="Install Apk">
+                                       <graphic>
+                                          <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../images/type/INSTALL.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                        <Button layoutX="228.0" layoutY="72.0" onAction="#onReplayTapButtonClick" text="Replay Tap" />
+                                        <Button layoutX="104.0" layoutY="85.0" onAction="#onCaptureTapButtonClick" text="Capture Tap" />
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab text="App">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                        <Tab text="Untitled Tab3">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
                </children>
             </AnchorPane>
         </items>

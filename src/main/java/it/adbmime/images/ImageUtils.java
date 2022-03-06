@@ -1,18 +1,15 @@
 package it.adbmime.images;
 
+import javafx.scene.image.Image;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Base64;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
-import javafx.scene.image.Image;
 
 public class ImageUtils {
 

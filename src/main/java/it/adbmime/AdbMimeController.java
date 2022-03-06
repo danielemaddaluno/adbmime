@@ -3,11 +3,11 @@ package it.adbmime;
 import it.adbmime.adb.*;
 import it.adbmime.view.ImportExportUtils;
 import it.adbmime.view.RemoteInputTableViewRow;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -22,7 +22,7 @@ import java.util.List;
 public class AdbMimeController {
     private DeviceTap deviceTap;
     @FXML
-    private ChoiceBox<RemoteInputKey> inputKeyChoiceBox;
+    private ChoiceBox<RemoteInputKeycode> inputKeyChoiceBox;
     @FXML
     private ImageView imageView;
     @FXML
@@ -31,9 +31,19 @@ public class AdbMimeController {
     private StackPane stackPaneForImage;
 
     @FXML
-    private Spinner<Integer> replayCommandsSleepSpinner;
+    private TableView<RemoteInputTableViewRow> remoteInputsTable;
+    private ObservableList<RemoteInputTableViewRow> remoteInputsData = FXCollections.observableArrayList();
     @FXML
-    private Button replayCommandsButton;
+    private TableColumn<RemoteInputTableViewRow, String> iconColumn;
+    @FXML
+    private TableColumn<RemoteInputTableViewRow, String> typeColumn;
+    @FXML
+    private TableColumn<RemoteInputTableViewRow, String> cmndColumn;
+
+    @FXML
+    private TitledPane tableRowsActionsTitlePane;
+    @FXML
+    private TitledPane replayActionsTitlePane;
 
     @FXML
     private Button deleteTableRowsButton;
@@ -43,39 +53,18 @@ public class AdbMimeController {
     private Button exportTableRowsButton;
     @FXML
     private Button importTableRowsButton;
-
     @FXML
-    private TableView<RemoteInputTableViewRow> remoteInputsTable;
-    private ObservableList<RemoteInputTableViewRow> remoteInputsData = FXCollections.observableArrayList();
-    /**
-     * Icon
-     */
+    private Button replayCommandsButton;
     @FXML
-    private TableColumn<RemoteInputTableViewRow, String> iconColumn;
-    /**
-     * RemoteInputType
-     */
-    @FXML
-    private TableColumn<RemoteInputTableViewRow, String> typeColumn;
-    /**
-     * Description
-     */
-    @FXML
-    private TableColumn<RemoteInputTableViewRow, String> cmndColumn;
-
-    @FXML
-    private TitledPane tableRowsActionsTitlePane;
-
-    @FXML
-    private TitledPane replayActionsTitlePane;
+    private Spinner<Integer> replayCommandsSleepSpinner;
 
 
     @FXML
     protected void initialize() {
 //        DeviceScreenSize deviceScreenSize = DeviceOutput.getScreenSize();
 
-        inputKeyChoiceBox.getItems().addAll(RemoteInputKey.values());
-        inputKeyChoiceBox.setValue(RemoteInputKey.HOME);
+        inputKeyChoiceBox.getItems().addAll(RemoteInputKeycode.values());
+        inputKeyChoiceBox.setValue(RemoteInputKeycode.HOME);
 
         // https://stackoverflow.com/a/12635224/3138238
         // https://stackoverflow.com/questions/49820196/javafx-resize-imageview-to-anchorpane
@@ -84,7 +73,12 @@ public class AdbMimeController {
 
         onScreenUpdateButtonClick();
 //        Observable.interval(10, TimeUnit.SECONDS, JavaFxScheduler.platform()).map(next -> DeviceOutput.getScreenCapture()).map(DeviceScreenCapture::getImage).subscribe(imageView::setImage);
+//        Observable.interval(2, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(tick -> new Thread(() -> imageView.setImage(DeviceOutput.getScreenCapture().getImage())).start());
 
+        setupTableView();
+    }
+
+    private void setupTableView() {
         iconColumn.setCellValueFactory(cellData -> cellData.getValue().getIconProp());
         typeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProp());
         cmndColumn.setCellValueFactory(cellData -> cellData.getValue().getCmndProp());
@@ -95,7 +89,7 @@ public class AdbMimeController {
         // Setting dynamic size
         iconColumn.prefWidthProperty().bind(remoteInputsTable.widthProperty().multiply(0.10));
         typeColumn.prefWidthProperty().bind(remoteInputsTable.widthProperty().multiply(0.20));
-        cmndColumn.prefWidthProperty().bind(remoteInputsTable.widthProperty().multiply(0.70));
+        cmndColumn.prefWidthProperty().bind(remoteInputsTable.widthProperty().multiply(0.695));
 
         iconColumn.setResizable(false);
         typeColumn.setResizable(false);
@@ -115,10 +109,8 @@ public class AdbMimeController {
         tableRowsActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3).multiply(2).subtract(10));
         replayActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3));
 
-
-
-//        economicEventsTable.setRowFactory(tableView -> {
-//            TableRow<EconomicEvent> row = new TableRow<>();
+//        remoteInputsTable.setRowFactory(tableView -> {
+//            TableRow<RemoteInputTableViewRow> row = new TableRow<>();
 //            ChangeListener<String> changeListener = (obs, oldTitle, newTitle) -> {
 //                ColorString.setRowColor(rowColors, row, newTitle);
 //            };
@@ -137,7 +129,6 @@ public class AdbMimeController {
 //            });
 //            return row;
 //        });
-
     }
 
     @FXML
@@ -148,6 +139,11 @@ public class AdbMimeController {
     @FXML
     private void importTableRows() {
         ImportExportUtils.importRows(this, remoteInputsData);
+    }
+
+    @FXML
+    private void installApk() {
+        ImportExportUtils.installApk(this, remoteInputsData);
     }
 
     @FXML
@@ -203,6 +199,7 @@ public class AdbMimeController {
     }
     @FXML
     protected void onReplayCommandsButtonClick(){
+        remoteInputsTable.requestFocus();
         new Thread(() -> {
             setDisabledForActions(true);
             for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
@@ -223,62 +220,57 @@ public class AdbMimeController {
         App.setRoot("about");
     }
 
+    private static final long LONGPRESS_THRESHOLD = 2000;
+    private long startTime;
+
     @FXML
-    protected void onInputKeyButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(inputKeyChoiceBox.getValue().send()));
+    public void onKeyPressedAction(){
+        this.startTime = System.currentTimeMillis();;
     }
 
     @FXML
-    protected void onHomeButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.homeButton().send()));
+    public void onKeyReleasedActionSimple(MouseEvent event) {
+        Node node = (Node) event.getSource() ;
+        String data = (String) node.getUserData();
+        int keycode = Integer.parseInt(data);
+
+        boolean longpress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
+        RemoteInputKey key = RemoteInput.key(longpress, keycode);
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
     @FXML
-    protected void onBackButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.homeButton().send()));
-        RemoteInput.backButton().send();
-    }
-
-    @FXML
-    protected void onOpenBrowserButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.browserButton().send()));
-    }
-
-    @FXML
-    protected void onDeleteButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.delButton().send()));
-    }
-
-    @FXML
-    protected void onEnterButtonClick() {
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.enterButton().send()));
+    public void onKeyReleasedActionChoiceBox(MouseEvent event){
+        boolean longpress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
+        RemoteInputKey key = RemoteInput.key(longpress, inputKeyChoiceBox.getValue().getKeycode());
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
     @FXML
     protected void onScreenUpdateButtonClick() {
-        Platform.runLater(() -> {
+        new Thread(() -> {
             DeviceScreenCapture screen = DeviceOutput.getScreenCapture();
             imageView.setImage(screen.getImage());
-        });
+        }).start();
     }
 
     @FXML
     protected void onCaptureTapButtonClick() {
-        Platform.runLater(() -> {
+        new Thread(() -> {
             this.deviceTap = DeviceOutput.getTap();
             System.out.println(deviceTap + "\n");
-        });
+        }).start();
     }
 
     @FXML
     protected void onReplayTapButtonClick() {
-        Platform.runLater(() -> {
+        new Thread(() -> {
             if(deviceTap != null){
                 int x = deviceTap.getX();
                 int y = deviceTap.getY();
                 RemoteInput.tap(x, y).send();
             }
-        });
+        }).start();
     }
 
     @FXML

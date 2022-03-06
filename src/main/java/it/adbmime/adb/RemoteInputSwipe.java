@@ -19,6 +19,10 @@ public final class RemoteInputSwipe implements RemoteInput {
         this.p1 = p1;
     }
 
+    protected static RemoteInputSwipe newInstance(int x0, int y0, int x1, int y1) {
+        return new RemoteInputSwipe(x0, y0, x1, y1);
+    }
+
     protected static RemoteInputSwipe newInstance(RemotePoint p0, RemotePoint p1) {
         return new RemoteInputSwipe(p0, p1);
     }
