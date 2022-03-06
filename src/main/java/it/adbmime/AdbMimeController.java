@@ -51,6 +51,9 @@ public class AdbMimeController {
     private TitledPane inputActionsTitlePane2;
 
     @FXML
+    private TextField textFieldPackageName;
+
+    @FXML
     private Button deleteTableRowsButton;
     @FXML
     private Button deleteTableRowButton;
@@ -147,11 +150,6 @@ public class AdbMimeController {
     @FXML
     private void importTableRows() {
         ImportExportUtils.importRows(this, remoteInputsData);
-    }
-
-    @FXML
-    private void installApk() {
-        ImportExportUtils.installApk(this, remoteInputsData);
     }
 
     @FXML
@@ -303,4 +301,43 @@ public class AdbMimeController {
 //            }
 //        }).start();
 //    }
+
+    @FXML
+    private void onInstallApp() {
+        ImportExportUtils.installApk(this, remoteInputsData);
+    }
+
+    @FXML
+    private void onOpenApp() {
+        String packageName = textFieldPackageName.getText();
+        if(packageName != null && !packageName.isEmpty()){
+
+        }
+    }
+
+    @FXML
+    private void onHideApp() {
+        String packageName = textFieldPackageName.getText();
+        if(packageName != null && !packageName.isEmpty()){
+
+        }
+    }
+
+    @FXML
+    private void onUnHideApp() {
+        String packageName = textFieldPackageName.getText();
+        if(packageName != null && !packageName.isEmpty()){
+
+        }
+    }
+
+    @FXML
+    private void onUninstallApp() {
+        String packageName = textFieldPackageName.getText();
+        if(packageName != null && !packageName.isEmpty()){
+            RemoteInput remoteInput = RemoteInput.uninstall(packageName).send();
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
+        }
+    }
+
 }
