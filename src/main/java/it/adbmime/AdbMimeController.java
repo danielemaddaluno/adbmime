@@ -46,6 +46,11 @@ public class AdbMimeController {
     private TitledPane replayActionsTitlePane;
 
     @FXML
+    private TitledPane inputActionsTitlePane1;
+    @FXML
+    private TitledPane inputActionsTitlePane2;
+
+    @FXML
     private Button deleteTableRowsButton;
     @FXML
     private Button deleteTableRowButton;
@@ -108,6 +113,9 @@ public class AdbMimeController {
 
         tableRowsActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3).multiply(2).subtract(10));
         replayActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3));
+
+        inputActionsTitlePane1.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
+        inputActionsTitlePane2.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
 
 //        remoteInputsTable.setRowFactory(tableView -> {
 //            TableRow<RemoteInputTableViewRow> row = new TableRow<>();
@@ -220,7 +228,7 @@ public class AdbMimeController {
         App.setRoot("about");
     }
 
-    private static final long LONGPRESS_THRESHOLD = 2000;
+    private static final long LONG_PRESS_THRESHOLD = 1500;
     private long startTime;
 
     @FXML
@@ -234,14 +242,14 @@ public class AdbMimeController {
         String data = (String) node.getUserData();
         int keycode = Integer.parseInt(data);
 
-        boolean longPress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
+        boolean longPress = System.currentTimeMillis() - startTime > LONG_PRESS_THRESHOLD;
         RemoteInputKey key = RemoteInput.key(longPress, keycode);
         remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
     @FXML
     public void onKeyReleasedActionChoiceBox(MouseEvent event){
-        boolean longPress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
+        boolean longPress = System.currentTimeMillis() - startTime > LONG_PRESS_THRESHOLD;
         RemoteInputKey key = RemoteInput.key(longPress, inputKeyChoiceBox.getValue().getKeycode());
         remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
@@ -251,25 +259,6 @@ public class AdbMimeController {
         new Thread(() -> {
             DeviceScreenCapture screen = DeviceOutput.getScreenCapture();
             imageView.setImage(screen.getImage());
-        }).start();
-    }
-
-    @FXML
-    protected void onCaptureTapButtonClick() {
-        new Thread(() -> {
-            this.deviceTap = DeviceOutput.getTap();
-            System.out.println(deviceTap + "\n");
-        }).start();
-    }
-
-    @FXML
-    protected void onReplayTapButtonClick() {
-        new Thread(() -> {
-            if(deviceTap != null){
-                int x = deviceTap.getX();
-                int y = deviceTap.getY();
-                RemoteInput.tap(x, y).send();
-            }
         }).start();
     }
 
@@ -295,4 +284,23 @@ public class AdbMimeController {
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInputSwipe.send()));
         }
     }
+
+//    @FXML
+//    protected void onCaptureTapButtonClick() {
+//        new Thread(() -> {
+//            this.deviceTap = DeviceOutput.getTap();
+//            System.out.println(deviceTap + "\n");
+//        }).start();
+//    }
+//
+//    @FXML
+//    protected void onReplayTapButtonClick() {
+//        new Thread(() -> {
+//            if(deviceTap != null){
+//                int x = deviceTap.getX();
+//                int y = deviceTap.getY();
+//                RemoteInput.tap(x, y).send();
+//            }
+//        }).start();
+//    }
 }
