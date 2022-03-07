@@ -1,25 +1,23 @@
 package it.adbmime.adb;
 
-/**
- * https://stackoverflow.com/a/45328796/3138238
- */
-public final class RemoteInputUninstall implements RemoteInput {
+
+public final class RemoteInputAppUnHide implements RemoteInput {
     private String packageName;
 
     /**
      * This is used to instantiate it with reflection
      */
-    private RemoteInputUninstall(String packageName){
+    private RemoteInputAppUnHide(String packageName){
         this.packageName = packageName;
     }
 
-    static RemoteInputUninstall newInstance(String text) {
-        return new RemoteInputUninstall(text);
+    static RemoteInputAppUnHide newInstance(String text) {
+        return new RemoteInputAppUnHide(text);
     }
 
     @Override
     public RemoteInputType type() {
-        return RemoteInputType.UNINSTALL;
+        return RemoteInputType.UNHIDE;
     }
 
     @Override
@@ -35,7 +33,7 @@ public final class RemoteInputUninstall implements RemoteInput {
 
     @Override
     public String toString() {
-        return "RemoteInputUninstall{" +
+        return "RemoteInputAppUnHide{" +
                 "packageName='" + packageName + '\'' +
                 '}';
     }
