@@ -93,11 +93,23 @@ public interface RemoteInput {
         return RemoteInputSwipe.newInstance(e0, e1);
     }
 
-    static RemoteInputInstall install(File apk){
-        return RemoteInputInstall.newInstance(apk);
+    static RemoteInputAppInstall install(File apk){
+        return RemoteInputAppInstall.newInstance(apk);
     }
 
-    static RemoteInputUninstall uninstall(String packageName){
-        return RemoteInputUninstall.newInstance(packageName);
+    static RemoteInputAppUnInstall uninstall(String packageName){
+        return RemoteInputAppUnInstall.newInstance(packageName);
+    }
+
+    static RemoteInputAppOpen open(String packageName){
+        return RemoteInputAppOpen.newInstance(packageName);
+    }
+
+    static RemoteInputAppHide hide(String packageName){
+        return RemoteInputAppHide.newInstance(packageName);
+    }
+
+    static RemoteInputAppUnHide unhide(String packageName){
+        return RemoteInputAppUnHide.newInstance(packageName);
     }
 }

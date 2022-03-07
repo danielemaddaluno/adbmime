@@ -3,7 +3,6 @@ package it.adbmime.view;
 import it.adbmime.AdbMimeController;
 import it.adbmime.App;
 import it.adbmime.adb.RemoteInput;
-import it.adbmime.adb.RemoteInputInstall;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;

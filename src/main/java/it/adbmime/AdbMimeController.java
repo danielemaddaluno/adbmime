@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
@@ -49,6 +50,10 @@ public class AdbMimeController {
     private TitledPane inputActionsTitlePane1;
     @FXML
     private TitledPane inputActionsTitlePane2;
+    @FXML
+    private GridPane gridPaneButtonsTop;
+    @FXML
+    private GridPane gridPaneButtonsBottom;
 
     @FXML
     private TextField textFieldPackageName;
@@ -66,6 +71,17 @@ public class AdbMimeController {
     @FXML
     private Spinner<Integer> replayCommandsSleepSpinner;
 
+    @FXML
+    private Button appButtonInstall;
+    @FXML
+    private Button appButtonOpen;
+    @FXML
+    private Button appButtonUnInstall;
+    @FXML
+    private Button appButtonHide;
+    @FXML
+    private Button appButtonUnHide;
+
 
     @FXML
     protected void initialize() {
@@ -79,11 +95,23 @@ public class AdbMimeController {
         imageView.fitWidthProperty().bind(stackPaneForImage.widthProperty().subtract(10));
         imageView.fitHeightProperty().bind(stackPaneForImage.heightProperty().subtract(10));
 
+        inputActionsTitlePane1.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
+        inputActionsTitlePane2.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
+
         onScreenUpdateButtonClick();
 //        Observable.interval(10, TimeUnit.SECONDS, JavaFxScheduler.platform()).map(next -> DeviceOutput.getScreenCapture()).map(DeviceScreenCapture::getImage).subscribe(imageView::setImage);
 //        Observable.interval(2, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(tick -> new Thread(() -> imageView.setImage(DeviceOutput.getScreenCapture().getImage())).start());
 
         setupTableView();
+
+        textFieldPackageName.textProperty().addListener((observable, oldValue, newValue) -> {
+            //System.out.println("textfield changed from " + oldValue + " to " + newValue);
+            boolean disable = !(newValue != null && !newValue.isEmpty());
+            appButtonOpen.setDisable(disable);
+            appButtonUnInstall.setDisable(disable);
+            appButtonHide.setDisable(disable);
+            appButtonUnHide.setDisable(disable);
+        });
     }
 
     private void setupTableView() {
@@ -116,9 +144,6 @@ public class AdbMimeController {
 
         tableRowsActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3).multiply(2).subtract(10));
         replayActionsTitlePane.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(3));
-
-        inputActionsTitlePane1.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
-        inputActionsTitlePane2.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
 
 //        remoteInputsTable.setRowFactory(tableView -> {
 //            TableRow<RemoteInputTableViewRow> row = new TableRow<>();
@@ -311,7 +336,8 @@ public class AdbMimeController {
     private void onOpenApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-
+            RemoteInput remoteInput = RemoteInput.open(packageName).send();
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
 
@@ -319,7 +345,8 @@ public class AdbMimeController {
     private void onHideApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-
+            RemoteInput remoteInput = RemoteInput.hide(packageName).send();
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
 
@@ -327,7 +354,8 @@ public class AdbMimeController {
     private void onUnHideApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-
+            RemoteInput remoteInput = RemoteInput.unhide(packageName).send();
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
 

@@ -86,7 +86,7 @@
                           <ImageView fx:id="imageView" fitHeight="418.0" fitWidth="306.0" nodeOrientation="INHERIT" onMousePressed="#onMousePressedAction" onMouseReleased="#onMouseReleasedAction" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </StackPane>
-                  <GridPane layoutX="5.0" layoutY="-31.0" prefHeight="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <GridPane fx:id="gridPaneButtonsTop" layoutX="5.0" layoutY="-31.0" prefHeight="60.0" prefWidth="400.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -259,7 +259,7 @@
                         </AnchorPane>
                      </children>
                   </GridPane>
-                  <GridPane layoutX="15.0" layoutY="-21.0" prefHeight="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <GridPane fx:id="gridPaneButtonsBottom" layoutX="15.0" layoutY="-21.0" prefHeight="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -314,7 +314,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="remoteInputsTable" prefHeight="602.0" prefWidth="605.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="180.0">
+                  <TableView fx:id="remoteInputsTable" prefHeight="602.0" prefWidth="605.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="170.0">
                       <columns>
                           <TableColumn fx:id="iconColumn" style="-fx-alignment: CENTER;" styleClass="iconColumn" text="Icon" />
                           <TableColumn fx:id="typeColumn" style="-fx-alignment: CENTER;" text="Type" />
@@ -411,7 +411,7 @@
                         </AnchorPane>
                     </content>
                   </TitledPane>
-                  <TitledPane fx:id="inputActionsTitlePane1" collapsible="false" layoutX="23.0" layoutY="14.0" maxHeight="160.0" prefHeight="160.0" prefWidth="450.0" text="Text/Key Input" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <TitledPane fx:id="inputActionsTitlePane1" collapsible="false" layoutX="23.0" layoutY="14.0" maxHeight="150.0" prefHeight="150.0" prefWidth="450.0" text="Text/Key Input" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <content>
                         <GridPane>
                            <columnConstraints>
@@ -464,7 +464,7 @@
                         </GridPane>
                      </content>
                   </TitledPane>
-                  <TitledPane fx:id="inputActionsTitlePane2" collapsible="false" layoutX="33.0" layoutY="24.0" maxHeight="160.0" prefHeight="160.0" prefWidth="394.0" text="App" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <TitledPane fx:id="inputActionsTitlePane2" collapsible="false" layoutX="33.0" layoutY="24.0" maxHeight="150.0" prefHeight="150.0" prefWidth="394.0" text="App" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <content>
                         <GridPane>
                            <columnConstraints>
@@ -473,28 +473,9 @@
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                 <children>
-                                    <Label maxWidth="110.0" prefWidth="110.0" text="Install apk:" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Button fx:id="installApkButton" layoutX="154.0" layoutY="4.0" onAction="#onInstallApp" text="Choose Apk" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0">
-                                       <graphic>
-                                          <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../images/type/INSTALL.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                  <children>
                                     <Label maxWidth="110.0" prefWidth="110.0" text="Package name:" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                                        <font>
@@ -504,8 +485,9 @@
                                     <TextField fx:id="textFieldPackageName" layoutX="-7.0" layoutY="7.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0" />
                                  </children>
                               </AnchorPane>
-                              <GridPane GridPane.rowIndex="2">
+                              <GridPane GridPane.rowIndex="1">
                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -515,9 +497,9 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                                        <children>
-                                          <Button onAction="#onOpenApp" userData="64" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                          <Button fx:id="appButtonOpen" disable="true" onAction="#onOpenApp" userData="64" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
                                              <graphic>
                                                 <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -528,9 +510,9 @@
                                           </Button>
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
                                        <children>
-                                          <Button onAction="#onHideApp" userData="64" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                          <Button fx:id="appButtonHide" disable="true" onAction="#onHideApp" userData="64" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
                                              <graphic>
                                                 <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -541,9 +523,9 @@
                                           </Button>
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
                                        <children>
-                                          <Button onAction="#onUnHideApp" userData="64" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                          <Button fx:id="appButtonUnHide" disable="true" onAction="#onUnHideApp" userData="64" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
                                              <graphic>
                                                 <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -554,9 +536,22 @@
                                           </Button>
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                        <children>
-                                          <Button onAction="#onUninstallApp" userData="64" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                          <Button fx:id="appButtonInstall" onAction="#onInstallApp" userData="64" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
+                                             <graphic>
+                                                <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../images/type/INSTALL.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                                       <children>
+                                          <Button fx:id="appButtonUnInstall" disable="true" onAction="#onUninstallApp" userData="64" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
                                              <graphic>
                                                 <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

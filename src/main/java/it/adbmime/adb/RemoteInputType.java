@@ -9,8 +9,11 @@ public enum RemoteInputType {
     SWIPE(RemoteInputSwipe.class, "adb shell input swipe %d %d %d %d", "^.+ input swipe (\\d+) (\\d+) (\\d+) (\\d+)?", int.class, int.class, int.class, int.class),
     TAP(RemoteInputTap.class, "adb shell input tap %d %d", "^.+ input tap (\\d+) (\\d+)?", int.class, int.class),
     TEXT(RemoteInputText.class, "adb shell input text '%s'", "^.+ input text '(.*?)'", String.class),
-    UNINSTALL(RemoteInputUninstall.class, "adb uninstall %s", "^adb uninstall (.+)?", String.class),
-    INSTALL(RemoteInputInstall.class, "adb install -r %s", "^adb install -r (.+)?", File.class);
+    UNINSTALL(RemoteInputAppUnInstall.class, "adb uninstall %s", "^.+ uninstall (.+)?", String.class),
+    INSTALL(RemoteInputAppInstall.class, "adb install -r %s", "^.+ install -r (.+)?", File.class),
+    OPEN(RemoteInputAppOpen.class, "adb shell monkey --pct-syskeys 0 -p %s 1", "^.+ monkey --pct-syskeys 0 -p (.+) 1?", String.class),
+    HIDE(RemoteInputAppUnInstall.class, "adb shell pm hide %s", "^.+ pm hide (.+)?", String.class),
+    UNHIDE(RemoteInputAppUnInstall.class, "adb shell pm unhide %s", "^.+ pm unhide (.+)?", String.class);
 
     private final Class<? extends RemoteInput> clazz;
     private final String command;
