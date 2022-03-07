@@ -5,18 +5,18 @@ import java.io.File;
 /**
  *
  */
-public final class RemoteInputInstall implements RemoteInput {
+public final class RemoteInputAppInstall implements RemoteInput {
     private File apk;
 
     /**
      * This is used to instantiate it with reflection
      */
-    private RemoteInputInstall(File apk){
+    private RemoteInputAppInstall(File apk){
         this.apk = apk;
     }
 
-    static RemoteInputInstall newInstance(File apk) {
-        return new RemoteInputInstall(apk);
+    static RemoteInputAppInstall newInstance(File apk) {
+        return new RemoteInputAppInstall(apk);
     }
 
     @Override

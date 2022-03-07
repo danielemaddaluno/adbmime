@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
@@ -46,6 +47,18 @@ public class AdbMimeController {
     private TitledPane replayActionsTitlePane;
 
     @FXML
+    private TitledPane inputActionsTitlePane1;
+    @FXML
+    private TitledPane inputActionsTitlePane2;
+    @FXML
+    private GridPane gridPaneButtonsTop;
+    @FXML
+    private GridPane gridPaneButtonsBottom;
+
+    @FXML
+    private TextField textFieldPackageName;
+
+    @FXML
     private Button deleteTableRowsButton;
     @FXML
     private Button deleteTableRowButton;
@@ -57,6 +70,17 @@ public class AdbMimeController {
     private Button replayCommandsButton;
     @FXML
     private Spinner<Integer> replayCommandsSleepSpinner;
+
+    @FXML
+    private Button appButtonInstall;
+    @FXML
+    private Button appButtonOpen;
+    @FXML
+    private Button appButtonUnInstall;
+    @FXML
+    private Button appButtonHide;
+    @FXML
+    private Button appButtonUnHide;
 
 
     @FXML
@@ -71,11 +95,23 @@ public class AdbMimeController {
         imageView.fitWidthProperty().bind(stackPaneForImage.widthProperty().subtract(10));
         imageView.fitHeightProperty().bind(stackPaneForImage.heightProperty().subtract(10));
 
+        inputActionsTitlePane1.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
+        inputActionsTitlePane2.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
+
         onScreenUpdateButtonClick();
 //        Observable.interval(10, TimeUnit.SECONDS, JavaFxScheduler.platform()).map(next -> DeviceOutput.getScreenCapture()).map(DeviceScreenCapture::getImage).subscribe(imageView::setImage);
 //        Observable.interval(2, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(tick -> new Thread(() -> imageView.setImage(DeviceOutput.getScreenCapture().getImage())).start());
 
         setupTableView();
+
+        textFieldPackageName.textProperty().addListener((observable, oldValue, newValue) -> {
+            //System.out.println("textfield changed from " + oldValue + " to " + newValue);
+            boolean disable = !(newValue != null && !newValue.isEmpty());
+            appButtonOpen.setDisable(disable);
+            appButtonUnInstall.setDisable(disable);
+            appButtonHide.setDisable(disable);
+            appButtonUnHide.setDisable(disable);
+        });
     }
 
     private void setupTableView() {
@@ -139,11 +175,6 @@ public class AdbMimeController {
     @FXML
     private void importTableRows() {
         ImportExportUtils.importRows(this, remoteInputsData);
-    }
-
-    @FXML
-    private void installApk() {
-        ImportExportUtils.installApk(this, remoteInputsData);
     }
 
     @FXML
@@ -220,7 +251,7 @@ public class AdbMimeController {
         App.setRoot("about");
     }
 
-    private static final long LONGPRESS_THRESHOLD = 2000;
+    private static final long LONG_PRESS_THRESHOLD = 1500;
     private long startTime;
 
     @FXML
@@ -234,15 +265,15 @@ public class AdbMimeController {
         String data = (String) node.getUserData();
         int keycode = Integer.parseInt(data);
 
-        boolean longpress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
-        RemoteInputKey key = RemoteInput.key(longpress, keycode);
+        boolean longPress = System.currentTimeMillis() - startTime > LONG_PRESS_THRESHOLD;
+        RemoteInputKey key = RemoteInput.key(longPress, keycode);
         remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
     @FXML
     public void onKeyReleasedActionChoiceBox(MouseEvent event){
-        boolean longpress = System.currentTimeMillis() - startTime > LONGPRESS_THRESHOLD;
-        RemoteInputKey key = RemoteInput.key(longpress, inputKeyChoiceBox.getValue().getKeycode());
+        boolean longPress = System.currentTimeMillis() - startTime > LONG_PRESS_THRESHOLD;
+        RemoteInputKey key = RemoteInput.key(longPress, inputKeyChoiceBox.getValue().getKeycode());
         remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
     }
 
@@ -251,25 +282,6 @@ public class AdbMimeController {
         new Thread(() -> {
             DeviceScreenCapture screen = DeviceOutput.getScreenCapture();
             imageView.setImage(screen.getImage());
-        }).start();
-    }
-
-    @FXML
-    protected void onCaptureTapButtonClick() {
-        new Thread(() -> {
-            this.deviceTap = DeviceOutput.getTap();
-            System.out.println(deviceTap + "\n");
-        }).start();
-    }
-
-    @FXML
-    protected void onReplayTapButtonClick() {
-        new Thread(() -> {
-            if(deviceTap != null){
-                int x = deviceTap.getX();
-                int y = deviceTap.getY();
-                RemoteInput.tap(x, y).send();
-            }
         }).start();
     }
 
@@ -295,4 +307,65 @@ public class AdbMimeController {
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInputSwipe.send()));
         }
     }
+
+//    @FXML
+//    protected void onCaptureTapButtonClick() {
+//        new Thread(() -> {
+//            this.deviceTap = DeviceOutput.getTap();
+//            System.out.println(deviceTap + "\n");
+//        }).start();
+//    }
+//
+//    @FXML
+//    protected void onReplayTapButtonClick() {
+//        new Thread(() -> {
+//            if(deviceTap != null){
+//                int x = deviceTap.getX();
+//                int y = deviceTap.getY();
+//                RemoteInput.tap(x, y).send();
+//            }
+//        }).start();
+//    }
+
+    @FXML
+    private void onInstallApp() {
+        ImportExportUtils.installApk(this, remoteInputsData);
+    }
+
+    @FXML
+    private void onOpenApp() {
+        String packageName = textFieldPackageName.getText();
+        if(packageName != null && !packageName.isEmpty()){
+            RemoteInput remoteInput = RemoteInput.open(packageName).send();
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
+        }
+    }
+
+    @FXML
+    private void onHideApp() {
+        String packageName = textFieldPackageName.getText();
+        if(packageName != null && !packageName.isEmpty()){
+            RemoteInput remoteInput = RemoteInput.hide(packageName).send();
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
+        }
+    }
+
+    @FXML
+    private void onUnHideApp() {
+        String packageName = textFieldPackageName.getText();
+        if(packageName != null && !packageName.isEmpty()){
+            RemoteInput remoteInput = RemoteInput.unhide(packageName).send();
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
+        }
+    }
+
+    @FXML
+    private void onUninstallApp() {
+        String packageName = textFieldPackageName.getText();
+        if(packageName != null && !packageName.isEmpty()){
+            RemoteInput remoteInput = RemoteInput.uninstall(packageName).send();
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
+        }
+    }
+
 }

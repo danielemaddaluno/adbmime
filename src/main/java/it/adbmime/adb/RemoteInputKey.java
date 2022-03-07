@@ -2,13 +2,13 @@ package it.adbmime.adb;
 
 
 public class RemoteInputKey implements RemoteInput {
-    static final String LONGPRESS = "--longpress ";
+    static final String LONG_PRESS = "--longpress ";
     /** Adds a '--longpress' to the command **/
-    private boolean longpress;
+    private boolean longPress;
     private final RemoteInputKeycode keycode;
 
-    RemoteInputKey(boolean longpress, int keycode) {
-        this.longpress = longpress;
+    RemoteInputKey(boolean longPress, int keycode) {
+        this.longPress = longPress;
         this.keycode = RemoteInputKeycode.fromKeycode(keycode);
     }
 
@@ -16,17 +16,17 @@ public class RemoteInputKey implements RemoteInput {
         return new RemoteInputKey(longpress, keycode);
     }
 
-    public boolean isLongpress() {
-        return longpress;
+    public boolean isLongPress() {
+        return longPress;
     }
 
-    public RemoteInputKey longpress(boolean longpress) {
-        this.longpress = longpress;
+    public RemoteInputKey longPress(boolean longPress) {
+        this.longPress = longPress;
         return this;
     }
 
-    public RemoteInputKey longpress() {
-        return longpress(true);
+    public RemoteInputKey longPress() {
+        return longPress(true);
     }
 
     public RemoteInputKeycode getKeycode() {
@@ -41,7 +41,7 @@ public class RemoteInputKey implements RemoteInput {
     @Override
     public String command() {
         String command = String.format(type().getCommand(), this.getKeycode().getKeycode());
-        command = isLongpress() ? command : command.replace(LONGPRESS, "");
+        command = isLongPress() ? command : command.replace(LONG_PRESS, "");
         return command;
     }
 
