@@ -12,8 +12,12 @@ public enum RemoteInputType {
     UNINSTALL(RemoteInputAppUnInstall.class, "adb uninstall %s", "^.+ uninstall (.+)?", String.class),
     INSTALL(RemoteInputAppInstall.class, "adb install -r %s", "^.+ install -r (.+)?", File.class),
     OPEN(RemoteInputAppOpen.class, "adb shell monkey --pct-syskeys 0 -p %s 1", "^.+ monkey --pct-syskeys 0 -p (.+) 1?", String.class),
-    HIDE(RemoteInputAppUnInstall.class, "adb shell pm hide %s", "^.+ pm hide (.+)?", String.class),
-    UNHIDE(RemoteInputAppUnInstall.class, "adb shell pm unhide %s", "^.+ pm unhide (.+)?", String.class);
+    HIDE(RemoteInputAppHide.class, "adb shell pm hide %s", "^.+ pm hide (.+)?", String.class),
+    UNHIDE(RemoteInputAppUnHide.class, "adb shell pm unhide %s", "^.+ pm unhide (.+)?", String.class),
+    COMMENT(RemoteInputComment.class, "#%s", "^\\s*#(.*)?", String.class),
+    SLEEP(RemoteInputSleep.class, "sleep %d", "\\s*sleep (\\d+)?", int.class),
+    EMPTY(RemoteInputEmpty.class, "", "^\\s*$"),
+    UNKNOWN(RemoteInputUnknown.class, "%s", "^(.*)?", String.class);
 
     private final Class<? extends RemoteInput> clazz;
     private final String command;
