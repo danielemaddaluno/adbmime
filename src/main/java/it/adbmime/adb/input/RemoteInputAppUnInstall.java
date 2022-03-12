@@ -1,25 +1,27 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
+
+import it.adbmime.adb.AdbHelper;
 
 /**
- * https://stackoverflow.com/a/46935109/3138238
+ * https://stackoverflow.com/a/45328796/3138238
  */
-public final class RemoteInputAppOpen implements RemoteInput {
+public final class RemoteInputAppUnInstall implements RemoteInput {
     private String packageName;
 
     /**
      * This is used to instantiate it with reflection
      */
-    private RemoteInputAppOpen(String packageName){
+    private RemoteInputAppUnInstall(String packageName){
         this.packageName = packageName;
     }
 
-    static RemoteInputAppOpen newInstance(String text) {
-        return new RemoteInputAppOpen(text);
+    static RemoteInputAppUnInstall newInstance(String text) {
+        return new RemoteInputAppUnInstall(text);
     }
 
     @Override
     public RemoteInputType type() {
-        return RemoteInputType.OPEN;
+        return RemoteInputType.UNINSTALL;
     }
 
     @Override
@@ -35,7 +37,7 @@ public final class RemoteInputAppOpen implements RemoteInput {
 
     @Override
     public String toString() {
-        return "RemoteInputOpen{" +
+        return "RemoteInputUninstall{" +
                 "packageName='" + packageName + '\'' +
                 '}';
     }

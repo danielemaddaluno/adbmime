@@ -1,6 +1,8 @@
 package it.adbmime;
 
-import it.adbmime.adb.*;
+import it.adbmime.adb.input.*;
+import it.adbmime.adb.output.DeviceOutput;
+import it.adbmime.adb.output.DeviceScreenCapture;
 import it.adbmime.view.ImportExportUtils;
 import it.adbmime.view.RemoteInputTableViewRow;
 import javafx.collections.FXCollections;

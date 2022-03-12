@@ -1,4 +1,6 @@
-package it.adbmime.adb;
+package it.adbmime.adb.output;
+
+import it.adbmime.adb.AdbHelper;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

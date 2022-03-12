@@ -1,5 +1,7 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
 
+
+import it.adbmime.adb.AdbHelper;
 
 public class RemoteInputKey implements RemoteInput {
     static final String LONG_PRESS = "--longpress ";

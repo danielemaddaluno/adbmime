@@ -1,5 +1,7 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
 
+
+import it.adbmime.adb.AdbHelper;
 
 public final class RemoteInputUnknown implements RemoteInput {
     private String command;

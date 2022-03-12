@@ -1,5 +1,6 @@
 package it.adbmime.adb;
 
+import it.adbmime.adb.output.AdbStreamResult;
 import javafx.scene.image.Image;
 
 import java.io.BufferedReader;
@@ -8,7 +9,7 @@ import java.lang.reflect.Constructor;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AdbHelper {
-    static String run(String command){
+    public static String run(String command){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
@@ -26,7 +27,7 @@ public abstract class AdbHelper {
         }
     }
 
-    static Image runForImage(String command){
+    public static Image runForImage(String command){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
@@ -39,7 +40,7 @@ public abstract class AdbHelper {
         }
     }
 
-    static <T extends AdbStreamResult> T runForAdbStreamResult(String command, Class<T> clazz){
+    public static <T extends AdbStreamResult> T runForAdbStreamResult(String command, Class<T> clazz){
         try {
             Constructor<T> constructor = clazz.getDeclaredConstructor();
             constructor.setAccessible(true);

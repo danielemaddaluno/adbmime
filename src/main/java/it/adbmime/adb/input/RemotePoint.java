@@ -1,4 +1,4 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
 
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;

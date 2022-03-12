@@ -1,5 +1,6 @@
 package it.adbmime.adb;
 
+import it.adbmime.adb.input.RemoteInput;
 import org.junit.jupiter.api.Test;
 
 public class RemoteInputTest {

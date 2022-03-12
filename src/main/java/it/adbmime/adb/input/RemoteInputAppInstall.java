@@ -1,4 +1,6 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
+
+import it.adbmime.adb.AdbHelper;
 
 import java.io.File;
 
