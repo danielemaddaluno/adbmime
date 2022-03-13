@@ -73,6 +73,15 @@ public class AdbMimeController {
     private Spinner<Integer> replayCommandsSleepSpinner;
 
     @FXML
+    private Spinner<Integer> ip1Spinner;
+    @FXML
+    private Spinner<Integer> ip2Spinner;
+    @FXML
+    private Spinner<Integer> ip3Spinner;
+    @FXML
+    private Spinner<Integer> ip4Spinner;
+
+    @FXML
     private Button appButtonInstall;
     @FXML
     private Button appButtonOpen;
@@ -86,25 +95,28 @@ public class AdbMimeController {
 
     @FXML
     protected void initialize() {
-//        DeviceScreenSize deviceScreenSize = DeviceOutput.getScreenSize();
-
+        // Configure inputKeyChoiceBox list
         inputKeyChoiceBox.getItems().addAll(RemoteInputKeycode.values());
         inputKeyChoiceBox.setValue(RemoteInputKeycode.HOME);
 
+        // Configure device ImageView Size and load image
         // https://stackoverflow.com/a/12635224/3138238
         // https://stackoverflow.com/questions/49820196/javafx-resize-imageview-to-anchorpane
         imageView.fitWidthProperty().bind(stackPaneForImage.widthProperty().subtract(10));
         imageView.fitHeightProperty().bind(stackPaneForImage.heightProperty().subtract(10));
+        onScreenUpdateButtonClick();
 
+        // Resize title panes
         inputActionsTitlePane1.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
         inputActionsTitlePane2.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
 
-        onScreenUpdateButtonClick();
-//        Observable.interval(10, TimeUnit.SECONDS, JavaFxScheduler.platform()).map(next -> DeviceOutput.getScreenCapture()).map(DeviceScreenCapture::getImage).subscribe(imageView::setImage);
-//        Observable.interval(2, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(tick -> new Thread(() -> imageView.setImage(DeviceOutput.getScreenCapture().getImage())).start());
+        // Setup Table View for Devices
+        setupTableViewForDevices();
 
-        setupTableView();
+        // Setup Table View for Remote Inputs
+        setupTableViewForRemoteInputs();
 
+        // Enable disable app buttons based on textFieldPackageName property
         textFieldPackageName.textProperty().addListener((observable, oldValue, newValue) -> {
             //System.out.println("textfield changed from " + oldValue + " to " + newValue);
             boolean disable = !(newValue != null && !newValue.isEmpty());
@@ -115,7 +127,11 @@ public class AdbMimeController {
         });
     }
 
-    private void setupTableView() {
+    private void setupTableViewForDevices(){
+
+    }
+
+    private void setupTableViewForRemoteInputs() {
         iconColumn.setCellValueFactory(cellData -> cellData.getValue().getIconProp());
         typeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProp());
         cmndColumn.setCellValueFactory(cellData -> cellData.getValue().getCmndProp());
@@ -367,6 +383,14 @@ public class AdbMimeController {
             RemoteInput remoteInput = RemoteInput.uninstall(packageName).send();
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
+    }
+
+    @FXML
+    private void onIpScan() {
+        System.out.println(ip1Spinner.getValue());
+        System.out.println(ip2Spinner.getValue());
+        System.out.println(ip3Spinner.getValue());
+        System.out.println(ip4Spinner.getValue());
     }
 
 }
