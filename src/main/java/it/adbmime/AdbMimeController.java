@@ -80,6 +80,8 @@ public class AdbMimeController {
     private Spinner<Integer> ip3Spinner;
     @FXML
     private Spinner<Integer> ip4Spinner;
+    @FXML
+    private Spinner<Integer> portSpinner;
 
     @FXML
     private Button appButtonInstall;
@@ -386,11 +388,16 @@ public class AdbMimeController {
     }
 
     @FXML
-    private void onIpScan() {
-        System.out.println(ip1Spinner.getValue());
-        System.out.println(ip2Spinner.getValue());
-        System.out.println(ip3Spinner.getValue());
-        System.out.println(ip4Spinner.getValue());
+    private void onListDevices() {
+        System.out.println(ip1Spinner.getValue() + "." + ip2Spinner.getValue() + "." + ip3Spinner.getValue() + "." + ip4Spinner.getValue() + ":" + portSpinner.getValue());
+    }
+
+    @FXML
+    private void onConnectDevices() {
+    }
+
+    @FXML
+    private void onDisconnectDevices() {
     }
 
 }

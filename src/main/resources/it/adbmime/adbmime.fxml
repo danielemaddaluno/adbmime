@@ -109,45 +109,85 @@
                                           <AnchorPane GridPane.columnIndex="1">
                                              <children>
                                                 <Spinner fx:id="ip2Spinner" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Label layoutX="-2.0" layoutY="14.0" text="." AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="10.0">
+                                                   <font>
+                                                      <Font name="System Bold" size="20.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane GridPane.columnIndex="2">
                                              <children>
                                                 <Spinner fx:id="ip3Spinner" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Label layoutX="2.0" layoutY="12.0" text="." AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="10.0">
+                                                   <font>
+                                                      <Font name="System Bold" size="20.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane GridPane.columnIndex="3">
                                              <children>
                                                 <Spinner fx:id="ip4Spinner" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Label layoutX="-4.0" layoutY="14.0" text="." AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="10.0">
+                                                   <font>
+                                                      <Font name="System Bold" size="20.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane GridPane.columnIndex="4">
                                              <children>
-                                                <Button maxWidth="40.0" onAction="#onIpScan" prefHeight="25.0" prefWidth="40.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-                                                   <graphic>
-                                                      <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../../images/buttons/radar.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
+                                                <Spinner fx:id="portSpinner" initialValue="4444" max="65535" min="1" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: red; -fx-focus-color: red;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Label layoutX="-2.0" layoutY="4.0" text=":" AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="4.0">
+                                                   <font>
+                                                      <Font name="System Bold" size="20.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
                                           </AnchorPane>
                                        </children>
                                     </GridPane>
-                                    <Label layoutX="14.0" layoutY="14.0" text="Scan for Devices with IP (use -1 for regex):" AnchorPane.topAnchor="8.0">
+                                    <Label layoutX="14.0" layoutY="14.0" prefHeight="20.0" prefWidth="272.0" text="IPAddress (use -1 for regex):" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="86.0" AnchorPane.topAnchor="8.0">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <TableView fx:id="devicesTable" layoutX="14.0" layoutY="59.0" prefHeight="648.0" prefWidth="350.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="69.0">
+                                    <TableView fx:id="devicesTable" layoutX="14.0" layoutY="59.0" prefHeight="648.0" prefWidth="350.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="180.0">
                                       <columns>
                                         <TableColumn prefWidth="104.0" text="IP" />
                                         <TableColumn prefWidth="117.0" text="Device" />
                                           <TableColumn prefWidth="126.0" text="Name" />
                                       </columns>
                                     </TableView>
+                                    <AnchorPane layoutX="295.0" layoutY="1.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="1.0" />
+                                    <Button layoutX="109.0" layoutY="68.0" maxWidth="40.0" onAction="#onConnectDevices" prefHeight="25.0" prefWidth="40.0" text="Connect Devices by IP" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="69.0">
+                                       <graphic>
+                                          <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../images/buttons/connection.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button layoutX="10.0" layoutY="114.0" maxWidth="40.0" onAction="#onListDevices" prefHeight="25.0" prefWidth="40.0" text="List Connected Devices" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="105.0">
+                                       <graphic>
+                                          <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../images/buttons/radar.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button layoutX="20.0" layoutY="124.0" maxWidth="40.0" onAction="#onDisconnectDevices" prefHeight="25.0" prefWidth="40.0" text="Disconnect All Devices" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="142.0">
+                                       <graphic>
+                                          <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../images/buttons/cellphone-remove.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
                                  </children>
                               </AnchorPane>
                            </children>
