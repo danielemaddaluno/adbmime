@@ -1,7 +1,8 @@
 package it.adbmime.images;
 
-import javax.swing.ImageIcon;
 import javafx.scene.image.Image;
+
+import javax.swing.*;
 
 public enum AppFileIcon implements AppFile {
 	LOGO("/application/linux/adbmime.png");
