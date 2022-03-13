@@ -489,6 +489,7 @@ public class AdbMimeController {
     @FXML
     private void onDisconnectDevices() {
         DeviceDisconnect.disconnect();
+        onListDevices();
     }
 
 }

@@ -21,15 +21,33 @@ public final class DeviceConnect {
         CartesianProduct<Integer> cartesianProduct = new CartesianProduct<>();
         List<List<Integer>> ips = cartesianProduct.product(input);
 
-        for(List<Integer> ip: ips){
-            int IP1 = ip.get(0);
-            int IP2 = ip.get(1);
-            int IP3 = ip.get(2);
-            int IP4 = ip.get(3);
+        ips.parallelStream().forEach(
+                ip -> {
+                    int IP1 = ip.get(0);
+                    int IP2 = ip.get(1);
+                    int IP3 = ip.get(2);
+                    int IP4 = ip.get(3);
 
-            String ipPort = IP1 + "." + IP2 + "." + IP3 + "." + IP4 + ":" + port;
-            AdbHelper.run(DEVICE_CONNECT + ipPort, 10);
-        }
+                    Thread t = new Thread(() -> {
+                        String ipPort = IP1 + "." + IP2 + "." + IP3 + "." + IP4 + ":" + port;
+                        AdbHelper.run(DEVICE_CONNECT + ipPort);
+                    });
+                    t.start();
+                    try {
+                        t.join(200);
+                    } catch (InterruptedException e) {
+                    }
+                }
+        );
+//        for(List<Integer> ip: ips){
+//            int IP1 = ip.get(0);
+//            int IP2 = ip.get(1);
+//            int IP3 = ip.get(2);
+//            int IP4 = ip.get(3);
+//
+//            String ipPort = IP1 + "." + IP2 + "." + IP3 + "." + IP4 + ":" + port;
+//            AdbHelper.run(DEVICE_CONNECT + ipPort, 10);
+//        }
     }
 
     /**

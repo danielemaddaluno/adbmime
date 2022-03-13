@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @see https://rosettacode.org/wiki/Cartesian_product_of_two_or_more_lists#Java
+ * @param <V>
+ */
 public class CartesianProduct<V> {
 
     public List<List<V>> product(List<List<V>> lists) {
