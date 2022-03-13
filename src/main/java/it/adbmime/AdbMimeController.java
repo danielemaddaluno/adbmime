@@ -1,8 +1,12 @@
 package it.adbmime;
 
+import it.adbmime.adb.devices.DeviceConnect;
+import it.adbmime.adb.devices.DeviceDisconnect;
+import it.adbmime.adb.devices.DevicesList;
 import it.adbmime.adb.input.*;
 import it.adbmime.adb.output.DeviceOutput;
 import it.adbmime.adb.output.DeviceScreenCapture;
+import it.adbmime.view.DeviceTableViewRow;
 import it.adbmime.view.ImportExportUtils;
 import it.adbmime.view.RemoteInputTableViewRow;
 import javafx.collections.FXCollections;
@@ -21,6 +25,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdbMimeController {
     @FXML
@@ -96,6 +101,19 @@ public class AdbMimeController {
 
 
     @FXML
+    private TableView<DeviceTableViewRow> devicesTable;
+    private ObservableList<DeviceTableViewRow> devicesData = FXCollections.observableArrayList();
+    @FXML
+    private TableColumn<DeviceTableViewRow, String> devicesStatusColumn;
+    @FXML
+    private TableColumn<DeviceTableViewRow, String> devicesIdColumn;
+    @FXML
+    private TableColumn<DeviceTableViewRow, String> devicesIpColumn;
+    @FXML
+    private TableColumn<DeviceTableViewRow, String> devicesNameColumn;
+
+
+    @FXML
     protected void initialize() {
         // Configure inputKeyChoiceBox list
         inputKeyChoiceBox.getItems().addAll(RemoteInputKeycode.values());
@@ -130,7 +148,34 @@ public class AdbMimeController {
     }
 
     private void setupTableViewForDevices(){
+        devicesStatusColumn.setCellValueFactory(cellData -> cellData.getValue().getStatusProp());
+        devicesIdColumn.setCellValueFactory(cellData -> cellData.getValue().getIdProp());
+        devicesIpColumn.setCellValueFactory(cellData -> cellData.getValue().getStatusProp());
+        devicesNameColumn.setCellValueFactory(cellData -> cellData.getValue().getIdProp());
+        devicesStatusColumn.setCellFactory(getIconCellDevice());
 
+        devicesTable.setItems(devicesData);
+
+        // Setting dynamic size
+        devicesStatusColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.10));
+        devicesIdColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.3));
+        devicesIpColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.3));
+        devicesNameColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.3));
+
+        devicesIdColumn.setResizable(false);
+        devicesIpColumn.setResizable(false);
+        devicesNameColumn.setResizable(false);
+
+        devicesIdColumn.setSortable(true);
+        devicesIpColumn.setSortable(false);
+        devicesNameColumn.setSortable(false);
+
+//        // Delete button listener
+//        devicesTable.setOnKeyPressed(keyEvent -> {
+//            if (keyEvent.getCode().equals(KeyCode.DELETE) || keyEvent.getCode().equals(KeyCode.BACK_SPACE)) {
+//                deleteTableRow2();
+//            }
+//        });
     }
 
     private void setupTableViewForRemoteInputs() {
@@ -210,7 +255,7 @@ public class AdbMimeController {
         }
     }
 
-    private static final int FLAG_SIZE = 20;
+    private static final int ICON_SIZE = 20;
 
     /**
      * https://edencoding.com/resources/css_properties/url/
@@ -233,7 +278,28 @@ public class AdbMimeController {
                 String imageUrl = AdbMimeController.class.getResource("/images/type/" + typePng + ".png").toExternalForm();
                 setStyle("-fx-background-image: url('" + imageUrl + "');" + ";"
                         + "-fx-background-repeat: stretch;"
-                        + "-fx-background-size: " + FLAG_SIZE + " " + FLAG_SIZE + ";"
+                        + "-fx-background-size: " + ICON_SIZE + " " + ICON_SIZE + ";"
+                        + "-fx-background-position: center center;");
+            }
+        };
+    }
+
+    private static <ROW, T> Callback<TableColumn<ROW, T>, TableCell<ROW, T>> getIconCellDevice() {
+        return column -> new TableCell<ROW, T>() {
+            @Override
+            protected void updateItem(T type, boolean empty) {
+                super.updateItem(type, empty);
+
+                String typePng = null;
+                if (type == null || empty) {
+                    typePng = "no_type";
+                } else {
+                    typePng = type.toString().trim();
+                }
+                String imageUrl = AdbMimeController.class.getResource("/images/status/" + typePng + ".png").toExternalForm();
+                setStyle("-fx-background-image: url('" + imageUrl + "');" + ";"
+                        + "-fx-background-repeat: stretch;"
+                        + "-fx-background-size: " + ICON_SIZE + " " + ICON_SIZE + ";"
                         + "-fx-background-position: center center;");
             }
         };
@@ -387,17 +453,42 @@ public class AdbMimeController {
         }
     }
 
+    private String getIpPort(){
+        int ip1 = ip1Spinner.getValue();
+        int ip2 = ip2Spinner.getValue();
+        int ip3 = ip3Spinner.getValue();
+        int ip4 = ip4Spinner.getValue();
+        int port = portSpinner.getValue();
+        return ip1 + "." + ip2 + "." + ip3 + "." + ip4 + ":" + port;
+    }
+
     @FXML
     private void onListDevices() {
-        System.out.println(ip1Spinner.getValue() + "." + ip2Spinner.getValue() + "." + ip3Spinner.getValue() + "." + ip4Spinner.getValue() + ":" + portSpinner.getValue());
+        System.out.println(getIpPort());
+        DevicesList devicesList = DevicesList.newInstance();
+        List<DeviceTableViewRow> devices = devicesList.getDevices()
+                .stream()
+                .map(d -> DeviceTableViewRow.getInstance(d))
+                .collect(Collectors.toList());
+        devicesData.clear();
+        devicesData.addAll(devices);
     }
 
     @FXML
     private void onConnectDevices() {
+        int ip1 = ip1Spinner.getValue();
+        int ip2 = ip2Spinner.getValue();
+        int ip3 = ip3Spinner.getValue();
+        int ip4 = ip4Spinner.getValue();
+        int port = portSpinner.getValue();
+
+        DeviceConnect.connect(ip1, ip2, ip3, ip4, port);
+        onListDevices();
     }
 
     @FXML
     private void onDisconnectDevices() {
+        DeviceDisconnect.disconnect();
     }
 
 }

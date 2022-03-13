@@ -17,11 +17,28 @@ public final class AdbHelper {
 
     private AdbHelper() {}
 
-    public static String run(String command){
+    /**
+     *
+     * @param command
+     * @param timeout
+     * <ul>
+     *     <li>null --> waitFor</li>
+     *     <li>>0 --> timeout</li>
+     *     <li><=0 --> does not wait</li>
+     * </ul>
+     * @return
+     */
+    public static String run(String command, Integer timeout){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
-            pr.waitFor();
+            if(timeout != null){
+                if(timeout > 0){
+                    pr.waitFor(timeout, TimeUnit.MILLISECONDS);
+                }
+            } else {
+                pr.waitFor();
+            }
             BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             StringBuffer sb = new StringBuffer();
             String line;
@@ -33,6 +50,10 @@ public final class AdbHelper {
             e.printStackTrace();
             return EMPTY;
         }
+    }
+
+    public static String run(String command){
+        return run(command, null);
     }
 
     public static List<String> runForLines(String command){

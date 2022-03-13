@@ -103,12 +103,12 @@
                                        <children>
                                           <AnchorPane>
                                              <children>
-                                                <Spinner fx:id="ip1Spinner" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Spinner fx:id="ip1Spinner" editable="true" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane GridPane.columnIndex="1">
                                              <children>
-                                                <Spinner fx:id="ip2Spinner" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Spinner fx:id="ip2Spinner" editable="true" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                                 <Label layoutX="-2.0" layoutY="14.0" text="." AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="10.0">
                                                    <font>
                                                       <Font name="System Bold" size="20.0" />
@@ -118,7 +118,7 @@
                                           </AnchorPane>
                                           <AnchorPane GridPane.columnIndex="2">
                                              <children>
-                                                <Spinner fx:id="ip3Spinner" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Spinner fx:id="ip3Spinner" editable="true" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                                 <Label layoutX="2.0" layoutY="12.0" text="." AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="10.0">
                                                    <font>
                                                       <Font name="System Bold" size="20.0" />
@@ -128,7 +128,7 @@
                                           </AnchorPane>
                                           <AnchorPane GridPane.columnIndex="3">
                                              <children>
-                                                <Spinner fx:id="ip4Spinner" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Spinner fx:id="ip4Spinner" editable="true" initialValue="0" max="255" min="-1" prefHeight="26.0" prefWidth="61.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                                 <Label layoutX="-4.0" layoutY="14.0" text="." AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="10.0">
                                                    <font>
                                                       <Font name="System Bold" size="20.0" />
@@ -138,7 +138,7 @@
                                           </AnchorPane>
                                           <AnchorPane GridPane.columnIndex="4">
                                              <children>
-                                                <Spinner fx:id="portSpinner" initialValue="4444" max="65535" min="1" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: red; -fx-focus-color: red;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Spinner fx:id="portSpinner" editable="true" initialValue="4444" max="65535" min="1" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: red; -fx-focus-color: red;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                                 <Label layoutX="-2.0" layoutY="4.0" text=":" AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="4.0">
                                                    <font>
                                                       <Font name="System Bold" size="20.0" />
@@ -155,9 +155,10 @@
                                     </Label>
                                     <TableView fx:id="devicesTable" layoutX="14.0" layoutY="59.0" prefHeight="648.0" prefWidth="350.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="180.0">
                                       <columns>
-                                        <TableColumn prefWidth="104.0" text="IP" />
-                                        <TableColumn prefWidth="117.0" text="Device" />
-                                          <TableColumn prefWidth="126.0" text="Name" />
+                                          <TableColumn fx:id="devicesStatusColumn" prefWidth="30.0" text="⏼" />
+                                        <TableColumn fx:id="devicesIdColumn" prefWidth="178.0" text="ID" />
+                                        <TableColumn fx:id="devicesIpColumn" prefWidth="117.0" text="IP" />
+                                          <TableColumn fx:id="devicesNameColumn" prefWidth="126.0" text="Name" />
                                       </columns>
                                     </TableView>
                                     <AnchorPane layoutX="295.0" layoutY="1.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="1.0" />

@@ -1,4 +1,4 @@
-package it.adbmime.adb.output;
+package it.adbmime.adb.devices;
 
 import it.adbmime.adb.AdbHelper;
 
@@ -11,22 +11,22 @@ import java.util.stream.Collectors;
 public final class DevicesList {
     private final static String TAB = "\t";
     protected static final String DEVICES_LIST = "adb devices";
-    private final List<String> devices;
+    private final List<Device> devices;
 
     private DevicesList(){
         List<String> lines = AdbHelper.runForLines(DEVICES_LIST);
         this.devices = lines
                 .stream()
                 .filter(l -> l.contains(TAB))
-                .map(l -> l.split(TAB)[0])
+                .map(l -> Device.newInstance(l.split(TAB)[0], l.split(TAB)[1]))
                 .collect(Collectors.toList());
     }
 
-    protected static DevicesList newInstance() {
+    public static DevicesList newInstance() {
         return new DevicesList();
     }
 
-    public List<String> getDevices() {
+    public List<Device> getDevices() {
         return devices;
     }
 }
