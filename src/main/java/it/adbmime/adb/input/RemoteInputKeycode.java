@@ -1,4 +1,4 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
 
 /**
  * https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/view/KeyEvent.java

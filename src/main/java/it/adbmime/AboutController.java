@@ -1,9 +1,10 @@
 package it.adbmime;
 
-import java.io.IOException;
 import it.adbmime.web.WebViewUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
+
+import java.io.IOException;
 
 public class AboutController {
 

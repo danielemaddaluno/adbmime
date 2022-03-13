@@ -1,23 +1,25 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
 
 
-public final class RemoteInputAppUnHide implements RemoteInput {
+import it.adbmime.adb.AdbHelper;
+
+public final class RemoteInputAppHide implements RemoteInput {
     private String packageName;
 
     /**
      * This is used to instantiate it with reflection
      */
-    private RemoteInputAppUnHide(String packageName){
+    private RemoteInputAppHide(String packageName){
         this.packageName = packageName;
     }
 
-    static RemoteInputAppUnHide newInstance(String text) {
-        return new RemoteInputAppUnHide(text);
+    static RemoteInputAppHide newInstance(String text) {
+        return new RemoteInputAppHide(text);
     }
 
     @Override
     public RemoteInputType type() {
-        return RemoteInputType.UNHIDE;
+        return RemoteInputType.HIDE;
     }
 
     @Override
@@ -33,7 +35,7 @@ public final class RemoteInputAppUnHide implements RemoteInput {
 
     @Override
     public String toString() {
-        return "RemoteInputAppUnHide{" +
+        return "RemoteInputAppHide{" +
                 "packageName='" + packageName + '\'' +
                 '}';
     }

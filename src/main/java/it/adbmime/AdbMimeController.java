@@ -1,9 +1,10 @@
 package it.adbmime;
 
-import it.adbmime.adb.*;
+import it.adbmime.adb.input.*;
+import it.adbmime.adb.output.DeviceOutput;
+import it.adbmime.adb.output.DeviceScreenCapture;
 import it.adbmime.view.ImportExportUtils;
 import it.adbmime.view.RemoteInputTableViewRow;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdbMimeController {
-    private DeviceTap deviceTap;
     @FXML
     private ChoiceBox<RemoteInputKeycode> inputKeyChoiceBox;
     @FXML

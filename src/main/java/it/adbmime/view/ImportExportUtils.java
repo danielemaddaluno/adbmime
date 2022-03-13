@@ -2,21 +2,16 @@ package it.adbmime.view;
 
 import it.adbmime.AdbMimeController;
 import it.adbmime.App;
-import it.adbmime.adb.RemoteInput;
+import it.adbmime.adb.input.RemoteInput;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class ImportExportUtils {
     private ImportExportUtils(){}
@@ -46,14 +41,8 @@ public final class ImportExportUtils {
     }
 
     private static void exportRows(ObservableList<RemoteInputTableViewRow> remoteInputsData, File file) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            for(RemoteInputTableViewRow row: remoteInputsData){
-                writer.write(row.getRemoteInput().command());
-                writer.write("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<RemoteInput> remoteInputs = remoteInputsData.stream().map(i -> i.getRemoteInput()).collect(Collectors.toList());
+        RemoteInput.toCommands(remoteInputs, file);
     }
 
     public static void importRows(AdbMimeController adbMimeController, ObservableList<RemoteInputTableViewRow> remoteInputsData) {
@@ -81,17 +70,9 @@ public final class ImportExportUtils {
 
     private static void importRows(ObservableList<RemoteInputTableViewRow> remoteInputsData, File file) {
         remoteInputsData.clear();
-        try {
-            Path path = Paths.get(file.toURI());
-            List<String> lines = Files.readAllLines(path);
-            for(String line: lines){
-                RemoteInput remoteInput = RemoteInput.fromCommand(line);
-                if(remoteInput != null){
-                    remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
-                }
-            }
-        } catch (IOException e){
-            e.printStackTrace();
+        List<RemoteInput> remoteInputs = RemoteInput.fromCommands(file);
+        for(RemoteInput remoteInput: remoteInputs){
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
 

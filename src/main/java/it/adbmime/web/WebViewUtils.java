@@ -1,14 +1,13 @@
 package it.adbmime.web;
 
-import java.awt.Desktop;
-import java.io.StringWriter;
-import java.net.URI;
-
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
+import java.io.StringWriter;
+import java.net.URI;
 
 public class WebViewUtils {
 	

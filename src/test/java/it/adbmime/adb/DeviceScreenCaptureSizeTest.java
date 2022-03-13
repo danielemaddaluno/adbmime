@@ -1,5 +1,7 @@
 package it.adbmime.adb;
 
+import it.adbmime.adb.output.DeviceOutput;
+import it.adbmime.adb.output.DeviceScreenSize;
 import it.adbmime.utils.ReflectionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

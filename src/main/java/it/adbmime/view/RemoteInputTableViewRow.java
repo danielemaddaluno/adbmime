@@ -1,6 +1,6 @@
 package it.adbmime.view;
 
-import it.adbmime.adb.RemoteInput;
+import it.adbmime.adb.input.RemoteInput;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

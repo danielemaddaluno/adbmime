@@ -1,32 +1,45 @@
 package it.adbmime.adb;
 
+import it.adbmime.adb.output.AdbStreamResult;
 import javafx.scene.image.Image;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
-public abstract class AdbHelper {
-    static String run(String command){
+public final class AdbHelper {
+    private static String EMPTY = "";
+    private static String NEWLINE = "\n";
+
+    private AdbHelper() {}
+
+    public static String run(String command){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
             pr.waitFor();
             BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            String line = "";
             StringBuffer sb = new StringBuffer();
-            while ((line=buf.readLine())!=null) {
-                sb.append(line + "\n");
+            String line;
+            while ((line=buf.readLine()) != null) {
+                sb.append(line + NEWLINE);
             }
             return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return "";
+            return EMPTY;
         }
     }
 
-    static Image runForImage(String command){
+    public static List<String> runForLines(String command){
+        return Arrays.stream(run(command).split(NEWLINE)).collect(Collectors.toList());
+    }
+
+    public static Image runForImage(String command){
         try {
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(command);
@@ -39,7 +52,7 @@ public abstract class AdbHelper {
         }
     }
 
-    static <T extends AdbStreamResult> T runForAdbStreamResult(String command, Class<T> clazz){
+    public static <T extends AdbStreamResult> T runForAdbStreamResult(String command, Class<T> clazz){
         try {
             Constructor<T> constructor = clazz.getDeclaredConstructor();
             constructor.setAccessible(true);
@@ -49,8 +62,8 @@ public abstract class AdbHelper {
                 Process pr = run.exec(command);
                 pr.waitFor(500, TimeUnit.MILLISECONDS);
                 BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-                String line = "";
-                while ((line=buf.readLine())!=null) {
+                String line;
+                while ((line=buf.readLine()) != null) {
                     if(result.isReady(line)){
                         return (T) result;
                     }

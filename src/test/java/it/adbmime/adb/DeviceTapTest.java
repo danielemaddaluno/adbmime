@@ -1,5 +1,9 @@
 package it.adbmime.adb;
 
+import it.adbmime.adb.input.RemoteInput;
+import it.adbmime.adb.output.DeviceOutput;
+import it.adbmime.adb.output.DeviceScreenSize;
+import it.adbmime.adb.output.DeviceTap;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;

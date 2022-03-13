@@ -1,4 +1,4 @@
-package it.adbmime.adb;
+package it.adbmime.adb.output;
 
 public interface DeviceOutput {
     static DeviceScreenSize getScreenSize(){

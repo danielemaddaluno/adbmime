@@ -1,5 +1,6 @@
-package it.adbmime.adb;
+package it.adbmime.adb.output;
 
+import it.adbmime.adb.AdbHelper;
 import javafx.scene.image.Image;
 
 /**

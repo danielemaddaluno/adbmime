@@ -1,10 +1,18 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
 
 import javafx.scene.input.MouseEvent;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
@@ -19,6 +27,25 @@ public interface RemoteInput {
     RemoteInputType type();
     String command();
     RemoteInput send();
+
+    static List<RemoteInput> fromCommands(File file) {
+        List<RemoteInput> remoteInputs = new ArrayList<>();
+        try {
+            Path path = Paths.get(file.toURI());
+            List<String> lines = Files.readAllLines(path);
+            for(String line: lines){
+                RemoteInput remoteInput = RemoteInput.fromCommand(line);
+                if(remoteInput != null){
+                    remoteInputs.add(remoteInput);
+                }
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return remoteInputs;
+    }
+
     static RemoteInput fromCommand(String command){
         try {
             for(RemoteInputType type: RemoteInputType.values()){
@@ -59,6 +86,17 @@ public interface RemoteInput {
             e.printStackTrace();
         }
         return null;
+    }
+
+    static void toCommands(List<RemoteInput> remoteInputs, File file) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for(RemoteInput row: remoteInputs){
+                writer.write(row.command());
+                writer.write("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     static RemoteInputKey key(boolean longPress, int keycode) {

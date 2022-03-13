@@ -1,5 +1,6 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
 
+import it.adbmime.adb.AdbHelper;
 import javafx.scene.input.MouseEvent;
 
 public final class RemoteInputTap implements RemoteInput {

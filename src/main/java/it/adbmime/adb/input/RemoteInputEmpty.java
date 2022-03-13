@@ -1,4 +1,4 @@
-package it.adbmime.adb;
+package it.adbmime.adb.input;
 
 
 public final class RemoteInputEmpty implements RemoteInput {
