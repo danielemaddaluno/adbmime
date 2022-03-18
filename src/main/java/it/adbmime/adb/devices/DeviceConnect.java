@@ -34,7 +34,8 @@ public final class DeviceConnect {
                     });
                     t.start();
                     try {
-                        t.join(200);
+                        t.join(50);
+                        t.stop();
                     } catch (InterruptedException e) {
                     }
                 }

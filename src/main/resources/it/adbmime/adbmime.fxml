@@ -138,7 +138,7 @@
                                           </AnchorPane>
                                           <AnchorPane GridPane.columnIndex="4">
                                              <children>
-                                                <Spinner fx:id="portSpinner" editable="true" initialValue="4444" max="65535" min="1" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: red; -fx-focus-color: red;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                <Spinner fx:id="portSpinner" editable="true" initialValue="5555" max="65535" min="1" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: red; -fx-focus-color: red;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                                 <Label layoutX="-2.0" layoutY="4.0" text=":" AnchorPane.leftAnchor="-2.0" AnchorPane.topAnchor="4.0">
                                                    <font>
                                                       <Font name="System Bold" size="20.0" />
