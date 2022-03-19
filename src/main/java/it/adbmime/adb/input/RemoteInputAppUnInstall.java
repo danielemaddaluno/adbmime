@@ -1,11 +1,9 @@
 package it.adbmime.adb.input;
 
-import it.adbmime.adb.AdbHelper;
-
 /**
  * https://stackoverflow.com/a/45328796/3138238
  */
-public final class RemoteInputAppUnInstall implements RemoteInput {
+public final class RemoteInputAppUnInstall extends RemoteInput {
     private String packageName;
 
     /**
@@ -27,12 +25,6 @@ public final class RemoteInputAppUnInstall implements RemoteInput {
     @Override
     public String command() {
         return String.format(type().getCommand(), packageName);
-    }
-
-    @Override
-    public RemoteInput send() {
-        AdbHelper.run(command());
-        return this;
     }
 
     @Override

@@ -3,8 +3,6 @@ package it.adbmime.adb.devices;
 public class Device {
     private String id;
     private String status;
-    private String name;
-    private String ip;
 
     private Device(String id, String status) {
         this.id = id;
@@ -21,13 +19,5 @@ public class Device {
 
     public String getStatus() {
         return status;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getIp() {
-        return ip;
     }
 }

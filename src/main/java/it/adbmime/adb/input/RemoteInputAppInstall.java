@@ -7,7 +7,7 @@ import java.io.File;
 /**
  *
  */
-public final class RemoteInputAppInstall implements RemoteInput {
+public final class RemoteInputAppInstall extends RemoteInput {
     private File apk;
 
     /**
@@ -29,12 +29,6 @@ public final class RemoteInputAppInstall implements RemoteInput {
     @Override
     public String command() {
         return String.format(type().getCommand(), apk.getAbsolutePath());
-    }
-
-    @Override
-    public RemoteInput send() {
-        AdbHelper.run(command());
-        return this;
     }
 
     @Override

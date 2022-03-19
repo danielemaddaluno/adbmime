@@ -153,7 +153,7 @@
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <TableView fx:id="devicesTable" layoutX="14.0" layoutY="59.0" prefHeight="648.0" prefWidth="350.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="180.0">
+                                    <TableView fx:id="devicesTable" layoutX="14.0" layoutY="59.0" prefHeight="648.0" prefWidth="350.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="180.0">
                                       <columns>
                                           <TableColumn fx:id="devicesStatusColumn" prefWidth="30.0" text="⏼" />
                                         <TableColumn fx:id="devicesIdColumn" prefWidth="178.0" text="ID" />
@@ -185,6 +185,15 @@
                                           <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../images/buttons/cellphone-remove.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="replayOnAllDevicesCommandsButton" layoutX="164.0" layoutY="687.0" onAction="#onReplayOnAllDevicesCommandsButtonClick" prefHeight="26.0" prefWidth="179.0" text="Replay On All Devices With Delay" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                                       <graphic>
+                                          <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../images/buttons/clipboard-text-play.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>

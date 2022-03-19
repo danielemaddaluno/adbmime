@@ -1,11 +1,9 @@
 package it.adbmime.adb.input;
 
-import it.adbmime.adb.AdbHelper;
-
 /**
  * https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/view/KeyEvent.java
  */
-public final class RemoteInputText implements RemoteInput {
+public final class RemoteInputText extends RemoteInput {
     private String text;
 
     /**
@@ -27,12 +25,6 @@ public final class RemoteInputText implements RemoteInput {
     @Override
     public String command() {
         return String.format(type().getCommand(), text.replace(" ", "%s"));
-    }
-
-    @Override
-    public RemoteInput send() {
-        AdbHelper.run(command());
-        return this;
     }
 
     @Override

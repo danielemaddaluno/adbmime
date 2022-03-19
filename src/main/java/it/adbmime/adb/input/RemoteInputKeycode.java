@@ -324,7 +324,4 @@ public enum RemoteInputKeycode {
         return RemoteInputKeycode.values()[keycode];
     }
 
-//    public RemoteInput send() {
-//        return new RemoteInputKey(false, this.keycode);
-//    }
 }

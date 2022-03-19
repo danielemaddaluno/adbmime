@@ -75,6 +75,8 @@ public class AdbMimeController {
     @FXML
     private Button replayCommandsButton;
     @FXML
+    private Button replayOnAllDevicesCommandsButton;
+    @FXML
     private Spinner<Integer> replayCommandsSleepSpinner;
 
     @FXML
@@ -107,10 +109,6 @@ public class AdbMimeController {
     private TableColumn<DeviceTableViewRow, String> devicesStatusColumn;
     @FXML
     private TableColumn<DeviceTableViewRow, String> devicesIdColumn;
-    @FXML
-    private TableColumn<DeviceTableViewRow, String> devicesIpColumn;
-    @FXML
-    private TableColumn<DeviceTableViewRow, String> devicesNameColumn;
 
 
     @FXML
@@ -150,25 +148,18 @@ public class AdbMimeController {
     private void setupTableViewForDevices(){
         devicesStatusColumn.setCellValueFactory(cellData -> cellData.getValue().getStatusProp());
         devicesIdColumn.setCellValueFactory(cellData -> cellData.getValue().getIdProp());
-        devicesIpColumn.setCellValueFactory(cellData -> cellData.getValue().getStatusProp());
-        devicesNameColumn.setCellValueFactory(cellData -> cellData.getValue().getIdProp());
         devicesStatusColumn.setCellFactory(getIconCellDevice());
 
         devicesTable.setItems(devicesData);
 
         // Setting dynamic size
         devicesStatusColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.10));
-        devicesIdColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.3));
-        devicesIpColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.3));
-        devicesNameColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.3));
+        devicesIdColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.9));
 
+        devicesStatusColumn.setResizable(false);
         devicesIdColumn.setResizable(false);
-        devicesIpColumn.setResizable(false);
-        devicesNameColumn.setResizable(false);
-
+        devicesStatusColumn.setSortable(false);
         devicesIdColumn.setSortable(true);
-        devicesIpColumn.setSortable(false);
-        devicesNameColumn.setSortable(false);
 
 //        // Delete button listener
 //        devicesTable.setOnKeyPressed(keyEvent -> {
@@ -307,12 +298,14 @@ public class AdbMimeController {
 
     public void setDisabledForActions(boolean disabled){
         replayCommandsSleepSpinner.setDisable(disabled);
+        replayOnAllDevicesCommandsButton.setDisable(disabled);
         replayCommandsButton.setDisable(disabled);
         deleteTableRowsButton.setDisable(disabled);
         deleteTableRowButton.setDisable(disabled);
         exportTableRowsButton.setDisable(disabled);
         importTableRowsButton.setDisable(disabled);
     }
+
     @FXML
     protected void onReplayCommandsButtonClick(){
         remoteInputsTable.requestFocus();
@@ -321,6 +314,30 @@ public class AdbMimeController {
             for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
                 remoteInputsTable.getSelectionModel().select(row);
                 row.getRemoteInput().send();
+                try {
+                    Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
+                } catch (InterruptedException e) {
+                }
+            }
+            remoteInputsTable.getSelectionModel().clearSelection();
+            setDisabledForActions(false);
+        }).start();
+    }
+
+    @FXML
+    protected void onReplayOnAllDevicesCommandsButtonClick(){
+        remoteInputsTable.requestFocus();
+        new Thread(() -> {
+            setDisabledForActions(true);
+            for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
+                remoteInputsTable.getSelectionModel().select(row);
+
+                devicesData.parallelStream().forEach(
+                        device -> {
+                            row.getRemoteInput().send(device.getDevice().getId());
+                        }
+                );
+
                 try {
                     Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
                 } catch (InterruptedException e) {

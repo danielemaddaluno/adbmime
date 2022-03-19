@@ -1,7 +1,7 @@
 package it.adbmime.adb.input;
 
 
-public final class RemoteInputSleep implements RemoteInput {
+public final class RemoteInputSleep extends RemoteInput {
     private int seconds;
 
     /**
@@ -27,6 +27,15 @@ public final class RemoteInputSleep implements RemoteInput {
 
     @Override
     public RemoteInput send() {
+        try {
+            Thread.sleep(1000*seconds);
+        } catch (InterruptedException e) {
+        }
+        return this;
+    }
+
+    @Override
+    public RemoteInput send(String deviceId) {
         try {
             Thread.sleep(1000*seconds);
         } catch (InterruptedException e) {

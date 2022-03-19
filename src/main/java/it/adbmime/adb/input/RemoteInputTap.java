@@ -1,9 +1,8 @@
 package it.adbmime.adb.input;
 
-import it.adbmime.adb.AdbHelper;
 import javafx.scene.input.MouseEvent;
 
-public final class RemoteInputTap implements RemoteInput {
+public final class RemoteInputTap extends RemoteInput {
     private final RemotePoint point;
 
     /**
@@ -42,12 +41,6 @@ public final class RemoteInputTap implements RemoteInput {
     @Override
     public String command() {
         return String.format(type().getCommand(), point.x(), point.y());
-    }
-
-    @Override
-    public RemoteInput send() {
-        AdbHelper.run(command());
-        return this;
     }
 
     @Override
