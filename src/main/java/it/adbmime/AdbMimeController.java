@@ -110,6 +110,14 @@ public class AdbMimeController {
     @FXML
     private TableColumn<DeviceTableViewRow, String> devicesIdColumn;
 
+    private RemoteInput send(RemoteInput remoteInput) {
+        DeviceTableViewRow deviceRow = devicesTable.getSelectionModel().getSelectedItem();
+        if(deviceRow == null){
+            return remoteInput.send();
+        } else {
+            return remoteInput.send(deviceRow.getDevice().getId());
+        }
+    }
 
     @FXML
     protected void initialize() {
@@ -313,7 +321,8 @@ public class AdbMimeController {
             setDisabledForActions(true);
             for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
                 remoteInputsTable.getSelectionModel().select(row);
-                row.getRemoteInput().send();
+                send(row.getRemoteInput());
+
                 try {
                     Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
                 } catch (InterruptedException e) {
@@ -369,14 +378,14 @@ public class AdbMimeController {
 
         boolean longPress = System.currentTimeMillis() - startTime > LONG_PRESS_THRESHOLD;
         RemoteInputKey key = RemoteInput.key(longPress, keycode);
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(key)));
     }
 
     @FXML
     public void onKeyReleasedActionChoiceBox(MouseEvent event){
         boolean longPress = System.currentTimeMillis() - startTime > LONG_PRESS_THRESHOLD;
         RemoteInputKey key = RemoteInput.key(longPress, inputKeyChoiceBox.getValue().getKeycode());
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(key)));
     }
 
     @FXML
@@ -389,7 +398,7 @@ public class AdbMimeController {
 
     @FXML
     public void textFieldAction(ActionEvent ae){
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.text(textField.getText()).send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(RemoteInput.text(textField.getText()))));
     }
 
     private MouseEvent lastMousePressed;
@@ -403,10 +412,10 @@ public class AdbMimeController {
     public void onMouseReleasedAction(MouseEvent e){
         if(lastMousePressed.getX() == e.getX() && lastMousePressed.getY() == e.getY()){
             RemoteInputTap remoteInputTap = RemoteInput.tap(e);
-            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInputTap.send()));
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(remoteInputTap)));
         } else {
             RemoteInputSwipe remoteInputSwipe = RemoteInput.swipe(lastMousePressed, e);
-            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInputSwipe.send()));
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(remoteInputSwipe)));
         }
     }
 
@@ -438,7 +447,7 @@ public class AdbMimeController {
     private void onOpenApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-            RemoteInput remoteInput = RemoteInput.open(packageName).send();
+            RemoteInput remoteInput = send(RemoteInput.open(packageName));
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
@@ -447,7 +456,7 @@ public class AdbMimeController {
     private void onHideApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-            RemoteInput remoteInput = RemoteInput.hide(packageName).send();
+            RemoteInput remoteInput = send(RemoteInput.hide(packageName));
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
@@ -456,7 +465,7 @@ public class AdbMimeController {
     private void onUnHideApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-            RemoteInput remoteInput = RemoteInput.unhide(packageName).send();
+            RemoteInput remoteInput = send(RemoteInput.unhide(packageName));
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
@@ -465,7 +474,7 @@ public class AdbMimeController {
     private void onUninstallApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-            RemoteInput remoteInput = RemoteInput.uninstall(packageName).send();
+            RemoteInput remoteInput = send(RemoteInput.uninstall(packageName));
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
