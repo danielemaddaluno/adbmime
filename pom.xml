@@ -115,7 +115,7 @@
 											<goal>package</goal>
 									</goals>
 									<configuration>
-											<mainClass>it.adbmime.App</mainClass>
+											<mainClass>it.adbmime.demo.App</mainClass>
 											<bundleJre>true</bundleJre>
 											<customizedJre>false</customizedJre>
 											<assetsDir>${project.basedir}/src/main/resources/application</assetsDir>
