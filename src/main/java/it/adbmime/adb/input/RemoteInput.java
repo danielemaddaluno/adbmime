@@ -34,7 +34,10 @@ public abstract class RemoteInput {
     }
 
     public RemoteInput send(String deviceId) {
-        AdbHelper.run(command().replace("adb ", "adb -s " + deviceId + " "));
+        String command = command();
+        if(command.startsWith("adb ")){
+            AdbHelper.run(command.replace("adb ", "adb -s " + deviceId + " "));
+        }
         return this;
     }
 

@@ -391,7 +391,14 @@ public class AdbMimeController {
     @FXML
     protected void onScreenUpdateButtonClick() {
         new Thread(() -> {
-            DeviceScreenCapture screen = DeviceOutput.getScreenCapture();
+            DeviceTableViewRow deviceRow = devicesTable.getSelectionModel().getSelectedItem();
+            DeviceScreenCapture screen;
+            if(deviceRow == null){
+                screen = DeviceOutput.getScreenCapture();
+            } else {
+                screen = DeviceOutput.getScreenCapture(deviceRow.getDevice().getId());
+            }
+
             imageView.setImage(screen.getImage());
         }).start();
     }

@@ -29,6 +29,10 @@ public final class DeviceScreenCapture {
         return new DeviceScreenCapture(AdbHelper.runForImage(SCREENCAPTURE));
     }
 
+    public static DeviceScreenCapture newInstance(String deviceId) {
+        return new DeviceScreenCapture(AdbHelper.runForImage(SCREENCAPTURE.replace("adb ", "adb -s " + deviceId + " ")));
+    }
+
     public Image getImage() {
         return image;
     }
