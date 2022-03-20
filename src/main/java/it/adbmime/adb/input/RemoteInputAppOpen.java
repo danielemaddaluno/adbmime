@@ -5,7 +5,7 @@ import it.adbmime.adb.AdbHelper;
 /**
  * https://stackoverflow.com/a/46935109/3138238
  */
-public final class RemoteInputAppOpen implements RemoteInput {
+public final class RemoteInputAppOpen extends RemoteInput {
     private String packageName;
 
     /**
@@ -27,12 +27,6 @@ public final class RemoteInputAppOpen implements RemoteInput {
     @Override
     public String command() {
         return String.format(type().getCommand(), packageName);
-    }
-
-    @Override
-    public RemoteInput send() {
-        AdbHelper.run(command());
-        return this;
     }
 
     @Override

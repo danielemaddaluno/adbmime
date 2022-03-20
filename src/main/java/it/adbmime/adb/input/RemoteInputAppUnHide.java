@@ -1,9 +1,6 @@
 package it.adbmime.adb.input;
 
-
-import it.adbmime.adb.AdbHelper;
-
-public final class RemoteInputAppUnHide implements RemoteInput {
+public final class RemoteInputAppUnHide extends RemoteInput {
     private String packageName;
 
     /**
@@ -25,12 +22,6 @@ public final class RemoteInputAppUnHide implements RemoteInput {
     @Override
     public String command() {
         return String.format(type().getCommand(), packageName);
-    }
-
-    @Override
-    public RemoteInput send() {
-        AdbHelper.run(command());
-        return this;
     }
 
     @Override

@@ -1,8 +1,12 @@
 package it.adbmime;
 
+import it.adbmime.adb.devices.DeviceConnect;
+import it.adbmime.adb.devices.DeviceDisconnect;
+import it.adbmime.adb.devices.DevicesList;
 import it.adbmime.adb.input.*;
 import it.adbmime.adb.output.DeviceOutput;
 import it.adbmime.adb.output.DeviceScreenCapture;
+import it.adbmime.view.DeviceTableViewRow;
 import it.adbmime.view.ImportExportUtils;
 import it.adbmime.view.RemoteInputTableViewRow;
 import javafx.collections.FXCollections;
@@ -21,6 +25,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdbMimeController {
     @FXML
@@ -70,7 +75,20 @@ public class AdbMimeController {
     @FXML
     private Button replayCommandsButton;
     @FXML
+    private Button replayOnAllDevicesCommandsButton;
+    @FXML
     private Spinner<Integer> replayCommandsSleepSpinner;
+
+    @FXML
+    private Spinner<Integer> ip1Spinner;
+    @FXML
+    private Spinner<Integer> ip2Spinner;
+    @FXML
+    private Spinner<Integer> ip3Spinner;
+    @FXML
+    private Spinner<Integer> ip4Spinner;
+    @FXML
+    private Spinner<Integer> portSpinner;
 
     @FXML
     private Button appButtonInstall;
@@ -85,26 +103,46 @@ public class AdbMimeController {
 
 
     @FXML
-    protected void initialize() {
-//        DeviceScreenSize deviceScreenSize = DeviceOutput.getScreenSize();
+    private TableView<DeviceTableViewRow> devicesTable;
+    private ObservableList<DeviceTableViewRow> devicesData = FXCollections.observableArrayList();
+    @FXML
+    private TableColumn<DeviceTableViewRow, String> devicesStatusColumn;
+    @FXML
+    private TableColumn<DeviceTableViewRow, String> devicesIdColumn;
 
+    private RemoteInput send(RemoteInput remoteInput) {
+        DeviceTableViewRow deviceRow = devicesTable.getSelectionModel().getSelectedItem();
+        if(deviceRow == null){
+            return remoteInput.send();
+        } else {
+            return remoteInput.send(deviceRow.getDevice().getId());
+        }
+    }
+
+    @FXML
+    protected void initialize() {
+        // Configure inputKeyChoiceBox list
         inputKeyChoiceBox.getItems().addAll(RemoteInputKeycode.values());
         inputKeyChoiceBox.setValue(RemoteInputKeycode.HOME);
 
+        // Configure device ImageView Size and load image
         // https://stackoverflow.com/a/12635224/3138238
         // https://stackoverflow.com/questions/49820196/javafx-resize-imageview-to-anchorpane
         imageView.fitWidthProperty().bind(stackPaneForImage.widthProperty().subtract(10));
         imageView.fitHeightProperty().bind(stackPaneForImage.heightProperty().subtract(10));
+        onScreenUpdateButtonClick();
 
+        // Resize title panes
         inputActionsTitlePane1.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
         inputActionsTitlePane2.prefWidthProperty().bind(remoteInputsTable.widthProperty().divide(2).subtract(5));
 
-        onScreenUpdateButtonClick();
-//        Observable.interval(10, TimeUnit.SECONDS, JavaFxScheduler.platform()).map(next -> DeviceOutput.getScreenCapture()).map(DeviceScreenCapture::getImage).subscribe(imageView::setImage);
-//        Observable.interval(2, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(tick -> new Thread(() -> imageView.setImage(DeviceOutput.getScreenCapture().getImage())).start());
+        // Setup Table View for Devices
+        setupTableViewForDevices();
 
-        setupTableView();
+        // Setup Table View for Remote Inputs
+        setupTableViewForRemoteInputs();
 
+        // Enable disable app buttons based on textFieldPackageName property
         textFieldPackageName.textProperty().addListener((observable, oldValue, newValue) -> {
             //System.out.println("textfield changed from " + oldValue + " to " + newValue);
             boolean disable = !(newValue != null && !newValue.isEmpty());
@@ -115,7 +153,31 @@ public class AdbMimeController {
         });
     }
 
-    private void setupTableView() {
+    private void setupTableViewForDevices(){
+        devicesStatusColumn.setCellValueFactory(cellData -> cellData.getValue().getStatusProp());
+        devicesIdColumn.setCellValueFactory(cellData -> cellData.getValue().getIdProp());
+        devicesStatusColumn.setCellFactory(getIconCellDevice());
+
+        devicesTable.setItems(devicesData);
+
+        // Setting dynamic size
+        devicesStatusColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.10));
+        devicesIdColumn.prefWidthProperty().bind(devicesTable.widthProperty().multiply(0.9));
+
+        devicesStatusColumn.setResizable(false);
+        devicesIdColumn.setResizable(false);
+        devicesStatusColumn.setSortable(false);
+        devicesIdColumn.setSortable(true);
+
+//        // Delete button listener
+//        devicesTable.setOnKeyPressed(keyEvent -> {
+//            if (keyEvent.getCode().equals(KeyCode.DELETE) || keyEvent.getCode().equals(KeyCode.BACK_SPACE)) {
+//                deleteTableRow2();
+//            }
+//        });
+    }
+
+    private void setupTableViewForRemoteInputs() {
         iconColumn.setCellValueFactory(cellData -> cellData.getValue().getIconProp());
         typeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProp());
         cmndColumn.setCellValueFactory(cellData -> cellData.getValue().getCmndProp());
@@ -192,7 +254,7 @@ public class AdbMimeController {
         }
     }
 
-    private static final int FLAG_SIZE = 20;
+    private static final int ICON_SIZE = 20;
 
     /**
      * https://edencoding.com/resources/css_properties/url/
@@ -215,7 +277,28 @@ public class AdbMimeController {
                 String imageUrl = AdbMimeController.class.getResource("/images/type/" + typePng + ".png").toExternalForm();
                 setStyle("-fx-background-image: url('" + imageUrl + "');" + ";"
                         + "-fx-background-repeat: stretch;"
-                        + "-fx-background-size: " + FLAG_SIZE + " " + FLAG_SIZE + ";"
+                        + "-fx-background-size: " + ICON_SIZE + " " + ICON_SIZE + ";"
+                        + "-fx-background-position: center center;");
+            }
+        };
+    }
+
+    private static <ROW, T> Callback<TableColumn<ROW, T>, TableCell<ROW, T>> getIconCellDevice() {
+        return column -> new TableCell<ROW, T>() {
+            @Override
+            protected void updateItem(T type, boolean empty) {
+                super.updateItem(type, empty);
+
+                String typePng = null;
+                if (type == null || empty) {
+                    typePng = "no_type";
+                } else {
+                    typePng = type.toString().trim();
+                }
+                String imageUrl = AdbMimeController.class.getResource("/images/status/" + typePng + ".png").toExternalForm();
+                setStyle("-fx-background-image: url('" + imageUrl + "');" + ";"
+                        + "-fx-background-repeat: stretch;"
+                        + "-fx-background-size: " + ICON_SIZE + " " + ICON_SIZE + ";"
                         + "-fx-background-position: center center;");
             }
         };
@@ -223,12 +306,14 @@ public class AdbMimeController {
 
     public void setDisabledForActions(boolean disabled){
         replayCommandsSleepSpinner.setDisable(disabled);
+        replayOnAllDevicesCommandsButton.setDisable(disabled);
         replayCommandsButton.setDisable(disabled);
         deleteTableRowsButton.setDisable(disabled);
         deleteTableRowButton.setDisable(disabled);
         exportTableRowsButton.setDisable(disabled);
         importTableRowsButton.setDisable(disabled);
     }
+
     @FXML
     protected void onReplayCommandsButtonClick(){
         remoteInputsTable.requestFocus();
@@ -236,7 +321,32 @@ public class AdbMimeController {
             setDisabledForActions(true);
             for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
                 remoteInputsTable.getSelectionModel().select(row);
-                row.getRemoteInput().send();
+                send(row.getRemoteInput());
+
+                try {
+                    Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
+                } catch (InterruptedException e) {
+                }
+            }
+            remoteInputsTable.getSelectionModel().clearSelection();
+            setDisabledForActions(false);
+        }).start();
+    }
+
+    @FXML
+    protected void onReplayOnAllDevicesCommandsButtonClick(){
+        remoteInputsTable.requestFocus();
+        new Thread(() -> {
+            setDisabledForActions(true);
+            for(RemoteInputTableViewRow row: remoteInputsTable.getItems()){
+                remoteInputsTable.getSelectionModel().select(row);
+
+                devicesData.parallelStream().forEach(
+                        device -> {
+                            row.getRemoteInput().send(device.getDevice().getId());
+                        }
+                );
+
                 try {
                     Thread.sleep(1000*replayCommandsSleepSpinner.getValue());
                 } catch (InterruptedException e) {
@@ -268,27 +378,34 @@ public class AdbMimeController {
 
         boolean longPress = System.currentTimeMillis() - startTime > LONG_PRESS_THRESHOLD;
         RemoteInputKey key = RemoteInput.key(longPress, keycode);
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(key)));
     }
 
     @FXML
     public void onKeyReleasedActionChoiceBox(MouseEvent event){
         boolean longPress = System.currentTimeMillis() - startTime > LONG_PRESS_THRESHOLD;
         RemoteInputKey key = RemoteInput.key(longPress, inputKeyChoiceBox.getValue().getKeycode());
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(key.send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(key)));
     }
 
     @FXML
     protected void onScreenUpdateButtonClick() {
         new Thread(() -> {
-            DeviceScreenCapture screen = DeviceOutput.getScreenCapture();
+            DeviceTableViewRow deviceRow = devicesTable.getSelectionModel().getSelectedItem();
+            DeviceScreenCapture screen;
+            if(deviceRow == null){
+                screen = DeviceOutput.getScreenCapture();
+            } else {
+                screen = DeviceOutput.getScreenCapture(deviceRow.getDevice().getId());
+            }
+
             imageView.setImage(screen.getImage());
         }).start();
     }
 
     @FXML
     public void textFieldAction(ActionEvent ae){
-        remoteInputsData.add(RemoteInputTableViewRow.getInstance(RemoteInput.text(textField.getText()).send()));
+        remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(RemoteInput.text(textField.getText()))));
     }
 
     private MouseEvent lastMousePressed;
@@ -302,10 +419,10 @@ public class AdbMimeController {
     public void onMouseReleasedAction(MouseEvent e){
         if(lastMousePressed.getX() == e.getX() && lastMousePressed.getY() == e.getY()){
             RemoteInputTap remoteInputTap = RemoteInput.tap(e);
-            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInputTap.send()));
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(remoteInputTap)));
         } else {
             RemoteInputSwipe remoteInputSwipe = RemoteInput.swipe(lastMousePressed, e);
-            remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInputSwipe.send()));
+            remoteInputsData.add(RemoteInputTableViewRow.getInstance(send(remoteInputSwipe)));
         }
     }
 
@@ -337,7 +454,7 @@ public class AdbMimeController {
     private void onOpenApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-            RemoteInput remoteInput = RemoteInput.open(packageName).send();
+            RemoteInput remoteInput = send(RemoteInput.open(packageName));
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
@@ -346,7 +463,7 @@ public class AdbMimeController {
     private void onHideApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-            RemoteInput remoteInput = RemoteInput.hide(packageName).send();
+            RemoteInput remoteInput = send(RemoteInput.hide(packageName));
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
@@ -355,7 +472,7 @@ public class AdbMimeController {
     private void onUnHideApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-            RemoteInput remoteInput = RemoteInput.unhide(packageName).send();
+            RemoteInput remoteInput = send(RemoteInput.unhide(packageName));
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
     }
@@ -364,9 +481,48 @@ public class AdbMimeController {
     private void onUninstallApp() {
         String packageName = textFieldPackageName.getText();
         if(packageName != null && !packageName.isEmpty()){
-            RemoteInput remoteInput = RemoteInput.uninstall(packageName).send();
+            RemoteInput remoteInput = send(RemoteInput.uninstall(packageName));
             remoteInputsData.add(RemoteInputTableViewRow.getInstance(remoteInput));
         }
+    }
+
+    private String getIpPort(){
+        int ip1 = ip1Spinner.getValue();
+        int ip2 = ip2Spinner.getValue();
+        int ip3 = ip3Spinner.getValue();
+        int ip4 = ip4Spinner.getValue();
+        int port = portSpinner.getValue();
+        return ip1 + "." + ip2 + "." + ip3 + "." + ip4 + ":" + port;
+    }
+
+    @FXML
+    private void onListDevices() {
+        System.out.println(getIpPort());
+        DevicesList devicesList = DevicesList.newInstance();
+        List<DeviceTableViewRow> devices = devicesList.getDevices()
+                .stream()
+                .map(d -> DeviceTableViewRow.getInstance(d))
+                .collect(Collectors.toList());
+        devicesData.clear();
+        devicesData.addAll(devices);
+    }
+
+    @FXML
+    private void onConnectDevices() {
+        int ip1 = ip1Spinner.getValue();
+        int ip2 = ip2Spinner.getValue();
+        int ip3 = ip3Spinner.getValue();
+        int ip4 = ip4Spinner.getValue();
+        int port = portSpinner.getValue();
+
+        DeviceConnect.connect(ip1, ip2, ip3, ip4, port);
+        onListDevices();
+    }
+
+    @FXML
+    private void onDisconnectDevices() {
+        DeviceDisconnect.disconnect();
+        onListDevices();
     }
 
 }

@@ -1,7 +1,6 @@
 package it.adbmime.adb.input;
 
-
-public final class RemoteInputEmpty implements RemoteInput {
+public final class RemoteInputEmpty extends RemoteInput {
 
     /**
      * This is used to instantiate it with reflection
@@ -24,7 +23,13 @@ public final class RemoteInputEmpty implements RemoteInput {
 
     @Override
     public RemoteInput send() {
-        // Do nothing, it's just an empty line
+        // Do nothing, it's just a comment
+        return this;
+    }
+
+    @Override
+    public RemoteInput send(String deviceId) {
+        // Do nothing, it's just a comment
         return this;
     }
 

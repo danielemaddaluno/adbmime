@@ -1,5 +1,6 @@
 package it.adbmime.adb.input;
 
+import it.adbmime.adb.AdbHelper;
 import javafx.scene.input.MouseEvent;
 
 import java.io.BufferedWriter;
@@ -23,12 +24,24 @@ import java.util.regex.Matcher;
  * adb -s 192.168.56.101:5555 shell
  *
  */
-public interface RemoteInput {
-    RemoteInputType type();
-    String command();
-    RemoteInput send();
+public abstract class RemoteInput {
+    public abstract RemoteInputType type();
+    public abstract String command();
 
-    static List<RemoteInput> fromCommands(File file) {
+    public RemoteInput send(){
+        AdbHelper.run(command());
+        return this;
+    }
+
+    public RemoteInput send(String deviceId) {
+        String command = command();
+        if(command.startsWith("adb ")){
+            AdbHelper.run(command.replace("adb ", "adb -s " + deviceId + " "));
+        }
+        return this;
+    }
+
+    public static List<RemoteInput> fromCommands(File file) {
         List<RemoteInput> remoteInputs = new ArrayList<>();
         try {
             Path path = Paths.get(file.toURI());
@@ -46,7 +59,7 @@ public interface RemoteInput {
         return remoteInputs;
     }
 
-    static RemoteInput fromCommand(String command){
+    public static RemoteInput fromCommand(String command){
         try {
             for(RemoteInputType type: RemoteInputType.values()){
                 Matcher matcher = type.getRegexPattern().matcher(command);
@@ -88,7 +101,7 @@ public interface RemoteInput {
         return null;
     }
 
-    static void toCommands(List<RemoteInput> remoteInputs, File file) {
+    public static void toCommands(List<RemoteInput> remoteInputs, File file) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for(RemoteInput row: remoteInputs){
                 writer.write(row.command());
@@ -99,55 +112,56 @@ public interface RemoteInput {
         }
     }
 
-    static RemoteInputKey key(boolean longPress, int keycode) {
+    public static RemoteInputKey key(boolean longPress, int keycode) {
         return RemoteInputKey.newInstance(longPress, keycode);
     }
 
-    static RemoteInputText text(String text) {
+    public static RemoteInputText text(String text) {
         return RemoteInputText.newInstance(text);
     }
 
-    static RemoteInputTap tap(int x, int y){
+    public static RemoteInputTap tap(int x, int y){
         return RemoteInputTap.newInstance(x, y);
     }
 
-    static RemoteInputTap tap(RemotePoint p){
+    public static RemoteInputTap tap(RemotePoint p){
         return RemoteInputTap.newInstance(p);
     }
 
-    static RemoteInputTap tap(MouseEvent e){
+    public static RemoteInputTap tap(MouseEvent e){
         return RemoteInputTap.newInstance(e);
     }
 
-    static RemoteInputSwipe swipe(int x0, int y0, int x1, int y1){
+    public static RemoteInputSwipe swipe(int x0, int y0, int x1, int y1){
         return RemoteInputSwipe.newInstance(x0, y0, x1, y1);
     }
 
-    static RemoteInputSwipe swipe(RemotePoint p0, RemotePoint p1){
+    public static RemoteInputSwipe swipe(RemotePoint p0, RemotePoint p1){
         return RemoteInputSwipe.newInstance(p0, p1);
     }
 
-    static RemoteInputSwipe swipe(MouseEvent e0, MouseEvent e1){
+    public static RemoteInputSwipe swipe(MouseEvent e0, MouseEvent e1){
         return RemoteInputSwipe.newInstance(e0, e1);
     }
 
-    static RemoteInputAppInstall install(File apk){
+    public static RemoteInputAppInstall install(File apk){
         return RemoteInputAppInstall.newInstance(apk);
     }
 
-    static RemoteInputAppUnInstall uninstall(String packageName){
+    public static RemoteInputAppUnInstall uninstall(String packageName){
         return RemoteInputAppUnInstall.newInstance(packageName);
     }
 
-    static RemoteInputAppOpen open(String packageName){
+    public static RemoteInputAppOpen open(String packageName){
         return RemoteInputAppOpen.newInstance(packageName);
     }
 
-    static RemoteInputAppHide hide(String packageName){
+    public static RemoteInputAppHide hide(String packageName){
         return RemoteInputAppHide.newInstance(packageName);
     }
 
-    static RemoteInputAppUnHide unhide(String packageName){
+    public static RemoteInputAppUnHide unhide(String packageName){
         return RemoteInputAppUnHide.newInstance(packageName);
     }
+
 }

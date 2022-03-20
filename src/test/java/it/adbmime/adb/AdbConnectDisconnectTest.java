@@ -12,7 +12,7 @@ public class AdbConnectDisconnectTest {
 
 	@Test
 	public void connectTest() {
-		String result = AdbHelper.run("adb connect 192.168.1.86:42593");
+		String result = AdbHelper.run("adb connect 192.168.1.17:42593", 0);
 		System.out.println(result);
 	}
 

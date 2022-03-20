@@ -1,9 +1,8 @@
 package it.adbmime.adb.input;
 
-import it.adbmime.adb.AdbHelper;
 import javafx.scene.input.MouseEvent;
 
-public final class RemoteInputSwipe implements RemoteInput {
+public final class RemoteInputSwipe extends RemoteInput {
     private final RemotePoint p0;
     private final RemotePoint p1;
 
@@ -50,12 +49,6 @@ public final class RemoteInputSwipe implements RemoteInput {
     @Override
     public String command() {
         return String.format(type().getCommand(), p0.x(), p0.y(), p1.x(), p1.y());
-    }
-
-    @Override
-    public RemoteInput send() {
-        AdbHelper.run(command());
-        return this;
     }
 
     @Override
