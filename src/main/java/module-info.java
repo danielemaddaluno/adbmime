@@ -15,4 +15,6 @@ module it.adbmime {
     opens it.adbmime.adb.input to javafx.fxml;
     exports it.adbmime.adb.output;
     opens it.adbmime.adb.output to javafx.fxml;
+    exports it.adbmime.adb.devices;
+    opens it.adbmime.adb.devices to javafx.fxml;
 }

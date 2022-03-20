@@ -1,15 +1,7 @@
 package it.adbmime.adb.output;
 
-import it.adbmime.adb.input.RemoteInput;
-import it.adbmime.adb.output.DeviceOutput;
-import it.adbmime.adb.output.DeviceScreenSize;
-import it.adbmime.adb.output.DeviceTap;
-import it.adbmime.adb.output.DevicesList;
+import it.adbmime.adb.devices.DevicesList;
 import org.junit.jupiter.api.Test;
-
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
 public class DevicesListTest {
 	private final static String RESULT_1 = "List of devices attached\n" +

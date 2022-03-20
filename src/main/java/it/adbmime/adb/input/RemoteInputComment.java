@@ -1,7 +1,7 @@
 package it.adbmime.adb.input;
 
 
-public final class RemoteInputComment implements RemoteInput {
+public final class RemoteInputComment extends RemoteInput {
     private String comment;
 
     /**
@@ -27,6 +27,12 @@ public final class RemoteInputComment implements RemoteInput {
 
     @Override
     public RemoteInput send() {
+        // Do nothing, it's just a comment
+        return this;
+    }
+
+    @Override
+    public RemoteInput send(String deviceId) {
         // Do nothing, it's just a comment
         return this;
     }
